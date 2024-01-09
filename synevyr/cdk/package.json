@@ -1,0 +1,29 @@
+{
+  "name": "@synevyr/cdk",
+  "version": "0.0.3",
+  "description": "Component Development Kit for building Angular components with any UI",
+  "author": "Denis Timanovskiy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dentiman/synevyr.git"
+  },
+  "keywords": [
+    "angular",
+    "cdk",
+    "component",
+    "development",
+    "kit",
+    "tailwind",
+    "datepicker"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@angular/cdk": "^17.0.4"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

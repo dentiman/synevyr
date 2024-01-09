@@ -1,0 +1,13 @@
+import {Directive} from '@angular/core';
+import {DateState, SELECTION_DATE} from "./datepicker.states";
+
+@Directive({
+    selector: '[cdkDatepicker]',
+    standalone: true,
+    providers: [
+        { provide: SELECTION_DATE, useClass: DateState },
+    ]
+})
+export class Datepicker {
+
+}

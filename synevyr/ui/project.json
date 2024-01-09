@@ -1,0 +1,37 @@
+{
+  "name": "synevyr-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "synevyr/ui/src",
+  "prefix": "sui",
+  "tags": [],
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "synevyr/ui/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "synevyr/ui/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "synevyr/ui/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "synevyr/ui/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}

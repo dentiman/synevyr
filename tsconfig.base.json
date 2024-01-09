@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@synevyr/cdk": ["synevyr/cdk/src/index.ts"]
+      "@synevyr/cdk": ["synevyr/cdk/src/index.ts"],
+      "@synevyr/ui": ["synevyr/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

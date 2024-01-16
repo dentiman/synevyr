@@ -20,7 +20,6 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "synevyr",
             "style": "camelCase"
           }
         ],
@@ -28,7 +27,6 @@
           "error",
           {
             "type": "element",
-            "prefix": "synevyr",
             "style": "kebab-case"
           }
         ]

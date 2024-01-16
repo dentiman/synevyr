@@ -1,4 +1,4 @@
-import {Directive, inject} from '@angular/core';
+import {Directive} from '@angular/core';
 import {DateState, END_DATE, HOVER_DATE, SELECTION_DATE, START_DATE} from "./datepicker.states";
 
 @Directive({
@@ -11,8 +11,5 @@ import {DateState, END_DATE, HOVER_DATE, SELECTION_DATE, START_DATE} from "./dat
         { provide: HOVER_DATE, useClass: DateState },
     ]
 })
-export class DateRangePicker {
-
-
-
+export class CdkDateRangePickerDirective {
 }

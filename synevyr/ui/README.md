@@ -1,7 +1,12 @@
-# synevyr-ui
+# Synevyr CDK
 
-This library was generated with [Nx](https://nx.dev).
+Component Development Kit for building Angular components with any UI
 
-## Running unit tests
+## Installation
 
-Run `nx test synevyr-ui` to execute the unit tests.
+`npm i @synevyr/cdk`
+
+## CDK
+
+### Datapicker
+We provide a cap of directives to help create custom datepicker component with any design

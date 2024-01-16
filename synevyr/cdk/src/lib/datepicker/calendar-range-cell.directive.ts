@@ -1,8 +1,7 @@
 import {computed, Directive, inject, Input} from '@angular/core';
-import {DateRangePicker} from "./date-range-picker";
-import {DateAdapter} from "./date-adapter";
-import {DateState, END_DATE, HOVER_DATE, START_DATE} from "./datepicker.states";
-import {toSignal} from "@angular/core/rxjs-interop";
+import {END_DATE, HOVER_DATE, START_DATE} from "./datepicker.states";
+import { CdkCalendarDirective } from './calendar.directive';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Directive({
     selector: '[cdkCalendarRangeCell]',
@@ -11,14 +10,17 @@ import {toSignal} from "@angular/core/rxjs-interop";
     host: {
         '(mouseenter)': '_handleMouseenter()',
         '(mouseleave)': '_handleMouseleave()',
-        '(click)': 'setBySelection()'
+        '(click)': 'setBySelection()',
+        '[attr.type]': '"button"'
     }
 })
-export class CalendarRangeCell {
+export class CdkCalendarRangeCellDirective {
 
     startDate = inject(START_DATE,{optional: true})
     endDate = inject(END_DATE,{optional: true})
     hoverDate =  inject(HOVER_DATE,{optional: true})
+    calendar = inject(CdkCalendarDirective)
+    private dialogRef? = inject(DialogRef,{optional: true})
 
     @Input({required: true})
     date: Date
@@ -31,6 +33,25 @@ export class CalendarRangeCell {
         this.hoverDate?.setValue(null)
     }
 
+    isSelected = computed(() => {
+        const selected = this.calendar.selected
+        return selected && this.date.toDateString() === selected.toDateString()
+    })
+
+    isActiveMonth = computed(() => {
+        return this.date.getMonth() === this.calendar.activeDate().getMonth()
+    })
+
+    disabled = computed(() => {
+        const minDate = this.calendar.minDate
+        const maxDate = this.calendar.maxDate
+        return (minDate && minDate.getTime() > this.date.getTime()) ||
+          (maxDate && maxDate.getTime() < this.date.getTime())
+    })
+
+    isToday = computed(()=> {
+        return this.date.toDateString() === (new Date).toDateString()
+    })
 
     isInRange = computed(()=> {
         return this.startDate?.value()
@@ -74,6 +95,7 @@ export class CalendarRangeCell {
             && this.date >= this.startDate.value()
         ) {
             this.endDate.setValue(this.date)
+            this.dialogRef?.close()
         } else if (
             this.startDate.value() && this.endDate.value() === null
             && this.date < this.startDate.value()

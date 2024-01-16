@@ -8,6 +8,6 @@ import {DateState, SELECTION_DATE} from "./datepicker.states";
         { provide: SELECTION_DATE, useClass: DateState },
     ]
 })
-export class Datepicker {
+export class DatepickerDirective {
 
 }

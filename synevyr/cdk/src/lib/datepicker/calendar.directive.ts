@@ -1,9 +1,8 @@
-import {computed, Directive, effect, EventEmitter, inject, Input, Output, Signal, signal} from '@angular/core';
-import {takeUntilDestroyed, toObservable, toSignal} from "@angular/core/rxjs-interop";
+import {computed, Directive, inject, Input, Output, Signal, signal} from '@angular/core';
+import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 import {DateAdapter} from "./date-adapter";
 import {ActiveDateState} from "./active-date.state";
-import {DateState, SELECTION_DATE} from "./datepicker.states";
-
+import { SELECTION_DATE, START_DATE } from './datepicker.states';
 
 
 @Directive({
@@ -11,9 +10,11 @@ import {DateState, SELECTION_DATE} from "./datepicker.states";
     exportAs: 'cdkCalendar',
     standalone: true
 })
-export class Calendar {
+export class CdkCalendarDirective {
 
     private _dateAdapter = inject(DateAdapter)
+
+    isRangePicker = !!inject(START_DATE, { optional: true })
 
     @Input()
     get minDate() {

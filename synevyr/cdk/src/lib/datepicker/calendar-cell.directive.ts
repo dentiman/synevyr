@@ -1,5 +1,6 @@
 import {computed, Directive, inject, Input} from '@angular/core';
-import {Calendar} from "./calendar.directive";
+import {CdkCalendarDirective} from "./calendar.directive";
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Directive({
     selector: '[cdkCalendarCell]',
@@ -7,18 +8,21 @@ import {Calendar} from "./calendar.directive";
     standalone: true,
     host: {
         '(click)': 'select()',
-        '[attr.disabled]': 'disabled() || null'
+        '[attr.disabled]': 'disabled() || null',
+        '[attr.type]': '"button"'
     }
 })
-export class CalendarCell {
+export class CdkCalendarCellDirective {
 
-    calendar = inject(Calendar)
+    calendar = inject(CdkCalendarDirective)
+    private dialogRef? = inject(DialogRef,{optional: true})
 
     @Input({required: true})
     date: Date
 
     select() {
         this.calendar.selectDate(this.date)
+        this.dialogRef?.close()
     }
 
     isActiveMonth = computed(() => {

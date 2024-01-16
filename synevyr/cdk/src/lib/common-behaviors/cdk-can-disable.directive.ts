@@ -15,7 +15,7 @@ import {merge} from 'rxjs';
         '[class.cursor-progress]': 'isLoading === true',
     }
 })
-export class CanDisable implements OnInit {
+export class CdkCanDisableDirective implements OnInit {
 
     destroyRef = inject(DestroyRef);
     ngControl? = inject(NgControl, {optional: true})
@@ -26,7 +26,7 @@ export class CanDisable implements OnInit {
 
     disabledSignal = toSignal(this.disabled$)
 
-    parentDisabled$? = inject(CanDisable, {optional: true, skipSelf: true})?.disabled$
+    parentDisabled$? = inject(CdkCanDisableDirective, {optional: true, skipSelf: true})?.disabled$
 
     @Input('disabled')
     get disabled(): boolean {

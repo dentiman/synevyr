@@ -9,8 +9,7 @@ import {
     OnInit,
     Renderer2
 } from '@angular/core';
-import {Calendar} from "./calendar.directive";
-import {takeUntilDestroyed, toObservable} from "@angular/core/rxjs-interop";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {formatDate} from "@angular/common";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl} from "@angular/forms";
 import {DateAdapter} from "./date-adapter";
@@ -87,7 +86,7 @@ export class DatepickerInputBase implements ControlValueAccessor {
     providers: [
         {
             provide:NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(()=>DatepickerInput),
+            useExisting: forwardRef(()=>CdkDatepickerInputDirective),
             multi: true
         },
         {
@@ -95,7 +94,7 @@ export class DatepickerInputBase implements ControlValueAccessor {
         }
     ]
 })
-export class DatepickerInput extends  DatepickerInputBase{
+export class CdkDatepickerInputDirective extends  DatepickerInputBase{
 }
 
 
@@ -105,7 +104,7 @@ export class DatepickerInput extends  DatepickerInputBase{
     providers: [
         {
             provide:NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(()=> StartDateInput ),
+            useExisting: forwardRef(()=> CdkStartDateInputDirective ),
             multi: true
         },
         {
@@ -113,7 +112,7 @@ export class DatepickerInput extends  DatepickerInputBase{
         }
     ]
 })
-export class StartDateInput extends  DatepickerInputBase{
+export class CdkStartDateInputDirective extends  DatepickerInputBase{
 }
 
 
@@ -123,7 +122,7 @@ export class StartDateInput extends  DatepickerInputBase{
     providers: [
         {
             provide:NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(()=> EndDateInput ),
+            useExisting: forwardRef(()=> CdkEndDateInputDirective ),
             multi: true
         },
         {
@@ -131,5 +130,5 @@ export class StartDateInput extends  DatepickerInputBase{
         }
     ]
 })
-export class EndDateInput extends  DatepickerInputBase{
+export class CdkEndDateInputDirective extends  DatepickerInputBase{
 }

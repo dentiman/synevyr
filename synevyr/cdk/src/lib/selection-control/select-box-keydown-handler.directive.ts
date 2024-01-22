@@ -6,11 +6,13 @@ import {
   HostListener,
   inject,
   InjectionToken,
-  OnDestroy
+  OnDestroy, signal
 } from '@angular/core';
 import {LIST_BOX, ListBoxInterface, ListBoxOptionInterface} from "./listbox.injectors";
 import {ActiveDescendantKeyManager} from "@angular/cdk/a11y";
 import {DOWN_ARROW, ENTER, hasModifierKey, SPACE, UP_ARROW} from "@angular/cdk/keycodes";
+import { SelectBoxDirective, SelectOptionDirective } from '@synevyr/cdk';
+import { isEqual } from 'lodash';
 
 
 export const LIST_KEY_MANAGER_KEYDOWN_HANDLER = new InjectionToken<ListKeyManagerKeydownHandler>(
@@ -22,14 +24,16 @@ export interface  ListKeyManagerKeydownHandler {
 }
 
 @Directive({
-  selector: '[listboxKeydownHandler]',
+  selector: '[cdkSelectBoxKeydownHandler]',
   standalone: true
 })
-export class ListboxKeydownHandlerDirective implements  OnDestroy, AfterContentInit {
+export class SelectBoxKeydownHandlerDirective implements  OnDestroy {
 
-  protected readonly listBox: ListBoxInterface = inject(LIST_BOX);
+  protected readonly  selectBox = inject(SelectBoxDirective)
 
-  protected _listKeyManager: ActiveDescendantKeyManager<ListBoxOptionInterface>
+  protected _listKeyManager: ActiveDescendantKeyManager<SelectOptionDirective>
+
+  activeOptionIndex = signal(null,{equal: isEqual})
 
   @HostListener('keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
@@ -45,13 +49,10 @@ export class ListboxKeydownHandlerDirective implements  OnDestroy, AfterContentI
       // because the typing sequence can include the space key.
     } else if (!isTyping && (keyCode === ENTER || keyCode === SPACE) && manager.activeItem && !hasModifierKey(event)) {
       event.preventDefault();
-      manager.activeItem.select();
+      manager.activeItem.triggerSelection();
     } else {
       manager.onKeydown(event);
 
-      // // We setValue a duration on the live announcement, because we want the live element to be
-      // // cleared after a while so that users can't navigate to it using the arrow keys.
-      // this.liveAnnouncer.announce((manager.activeItem as OptionComponent)?.contentElement?.nativeElement?.innerHTML, 10000);
     }
 
   }
@@ -61,7 +62,7 @@ export class ListboxKeydownHandlerDirective implements  OnDestroy, AfterContentI
   }
 
   private _initKeyManager() {
-    this._listKeyManager = new ActiveDescendantKeyManager<ListBoxOptionInterface>(this.listBox.options)
+    this._listKeyManager = new ActiveDescendantKeyManager<ListBoxOptionInterface>(this.selectBox.options)
         .withTypeAhead()
         .withVerticalOrientation()
         .withHomeAndEnd()
@@ -69,14 +70,7 @@ export class ListboxKeydownHandlerDirective implements  OnDestroy, AfterContentI
         .withAllowedModifierKeys(['shiftKey']);
   }
 
-  ngAfterContentInit(): void {
-     this._initKeyManager()
-     this.listBox.activeOptionChange$.subscribe((option)=>{
-      if(option && this._listKeyManager.activeItem !==  option) {
-        this._listKeyManager.setActiveItem(option)
-      }
-    })
-  }
+
 
 
 

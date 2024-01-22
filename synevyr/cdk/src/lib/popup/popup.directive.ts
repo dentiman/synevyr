@@ -14,8 +14,6 @@ import {fromEvent} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {BooleanInput, coerceBooleanProperty} from "@angular/cdk/coercion";
 import PopupConfig, {POPUP_CONFIG, PopupRole} from "./popup-config";
-import {LIST_BOX} from "../listbox/listbox.injectors";
-import {SingleSelectListbox} from "../listbox/single-select-listbox";
 import { ComponentType } from '@angular/cdk/overlay';
 
 export type Interaction = 'toggleOnClick' | 'openOnFocus' | 'openOnClick'
@@ -36,7 +34,7 @@ export abstract class CdkPopupDirective implements AfterViewInit {
     private _id = `popup-id-${popupNextId++}`;
 
     private _popup = inject(POPUP_SERVICE)
-    public listBox? = inject(LIST_BOX, {optional: true});
+
     private popupConfig? = inject(POPUP_CONFIG, {optional: true})
     destroyRef = inject(DestroyRef);
 
@@ -109,13 +107,7 @@ export abstract class CdkPopupDirective implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this._registerInteractionHandler()
-        if (this.listBox instanceof SingleSelectListbox) {
-            this.listBox.optionTriggered.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-                next: () => {
-                    this.close()
-                }
-            })
-        }
+
     }
 }
 

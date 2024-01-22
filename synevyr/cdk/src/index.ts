@@ -19,10 +19,6 @@ export * from './lib/popup/popup-menu.service'
 export * from './lib/popup/popup-positions'
 export * from './lib/popup/popup-ref'
 
-export * from './lib/listbox/listbox-keydown-handler.directive'
-export * from './lib/listbox/listbox.injectors'
-export * from './lib/listbox/listbox-value-control'
-export * from './lib/listbox/multiple-select-listbox'
-export * from './lib/listbox/multiple-select-option'
-export * from './lib/listbox/single-select-listbox'
-export * from './lib/listbox/single-select-option'
+
+export * from './lib/selection-control/select-box.directive'
+export * from './lib/selection-control/select-option.directive'

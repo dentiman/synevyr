@@ -1,0 +1,59 @@
+<div class="border-b border-gray-200 pb-5">
+  <h3 class="text-base font-semibold leading-6 text-gray-900">List Base</h3>
+</div>
+
+<nav class="flex flex-1 flex-col max-w-sm" >
+  <ul cdkSelectBox [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
+    @for (item of items;track item.value) {
+      <li>
+        <a [cdkSelectOption]="item.value"
+           class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 text-gray-700 cursor-pointer
+           aria-selected:bg-indigo-500 aria-selected:aria-disabled:bg-indigo-300 aria-selected:text-white
+           aria-[selected=false]:data-[active=true]:bg-gray-100
+           aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"
+        >
+          {{ item.label }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
+
+<p>
+  Selected: {{ ctrl.value }}
+</p>
+
+<button (click)="ctrl.setValue( 2)">Change form value to 2</button>
+<button (click)="ctrl.setValue( 3)">Change form value to 3</button>
+<button (click)="ctrl.disable()">Disable</button>
+<button (click)="ctrl.enable()">Enable</button>
+
+
+<div class="border-b border-gray-200 pb-5 pt-5">
+  <h3 class="text-base font-semibold leading-6 text-gray-900">Multiple Select List</h3>
+</div>
+
+<nav class="flex flex-1 flex-col max-w-sm">
+  <ul cdkSelectBox cdkSelectBoxMultiple [formControl]="multipleCtrl" role="list" class="-mx-2 space-y-1">
+    @for (item of items;track item.value) {
+      <li>
+        <a [cdkSelectOption]="item.value" [index]="$index"
+           class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 text-gray-700 cursor-pointer
+           aria-selected:bg-indigo-500 aria-selected:aria-disabled:bg-indigo-300 aria-selected:text-white
+           aria-[selected=false]:data-[active=true]:bg-gray-100
+           aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"
+        >
+          {{ item.label }}  {{ $index }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
+<p>
+  Selected: {{ multipleCtrl.value }}
+</p>
+
+<button (click)="addItems()">add items</button>
+
+<p></p>
+

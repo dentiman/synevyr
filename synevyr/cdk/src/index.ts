@@ -19,6 +19,9 @@ export * from './lib/popup/popup-menu.service'
 export * from './lib/popup/popup-positions'
 export * from './lib/popup/popup-ref'
 
-
-export * from './lib/selection-control/select-box.directive'
-export * from './lib/selection-control/select-option.directive'
+export * from './lib/select/select.directive'
+export * from './lib/select/select-option.directive'
+export * from './lib/select/select-portal.directive'
+export * from './lib/select/select-listbox.directive'
+export * from './lib/select/select-trigger-for.directive'
+export * from './lib/select/select-trigger.directive'

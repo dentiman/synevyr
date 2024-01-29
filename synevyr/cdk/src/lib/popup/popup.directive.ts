@@ -1,11 +1,12 @@
 import {
+    AfterContentInit,
     AfterViewInit,
     DestroyRef,
     Directive,
     ElementRef, HostListener,
     inject,
     InjectionToken,
-    Input,
+    Input, signal,
     TemplateRef
 } from '@angular/core';
 import {POPUP_SERVICE} from "./popup.service";
@@ -26,7 +27,7 @@ export const POPUP = new InjectionToken<CdkPopupDirective>('POPUP')
 @Directive({
     standalone: true
 })
-export abstract class CdkPopupDirective implements AfterViewInit {
+export abstract class CdkPopupDirective implements AfterContentInit {
 
     abstract triggerRef: ElementRef
     @Input({alias:'cdkPopupOrigin'}) originRef?: CdkPopupOriginDirective
@@ -40,7 +41,7 @@ export abstract class CdkPopupDirective implements AfterViewInit {
 
 
     @Input() interaction: Interaction = 'toggleOnClick';
-    @Input() popupRole?: PopupRole
+    @Input() popupRole?: PopupRole = 'menu'
     @Input() cdkPopupMaxHeight?: string | number
     @Input() cdkPopupMaxWidth?: string
     @Input() addPopupClass?: string[]
@@ -58,6 +59,10 @@ export abstract class CdkPopupDirective implements AfterViewInit {
 
     popupRef?: PopupRef
 
+    private _opened =  signal<boolean>(false)
+
+    isOpened = this._opened.asReadonly()
+
     open() {
         let config: PopupConfig = {
             //TODO: make id to be required
@@ -71,15 +76,17 @@ export abstract class CdkPopupDirective implements AfterViewInit {
         }
         config = {...this.popupConfig ?? {}, ...config}
         this.popupRef = this._popup.open(this.componentOrTemplateRef, config)
+        this._opened.set(true)
     }
 
     close() {
         this.popupRef?.close()
+        this._opened.set(false)
     }
 
-    private _registerInteractionHandler(): void {
+    public registerInteractionHandler(element: HTMLElement): void {
 
-        fromEvent(this.triggerRef.nativeElement, this.interaction === 'openOnFocus' ? 'focus' : 'click')
+        fromEvent(element, this.interaction === 'openOnFocus' ? 'focus' : 'click')
             .pipe(
                 takeUntilDestroyed(this.destroyRef),
             )
@@ -105,9 +112,10 @@ export abstract class CdkPopupDirective implements AfterViewInit {
         }
     }
 
-    ngAfterViewInit(): void {
-        this._registerInteractionHandler()
-
+    ngAfterContentInit(): void {
+        if(this.triggerRef) {
+            this.registerInteractionHandler(this.triggerRef.nativeElement)
+        }
     }
 }
 

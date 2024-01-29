@@ -3,7 +3,7 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm" >
-  <ul cdkSelectBox [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
+  <ul cdkSelect cdkSelectListbox [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
     @for (item of items;track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"
@@ -34,10 +34,10 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm">
-  <ul cdkSelectBox cdkSelectBoxMultiple [formControl]="multipleCtrl" role="list" class="-mx-2 space-y-1">
+  <ul cdkSelect cdkSelectListbox [formControl]="multipleCtrl" role="list" class="-mx-2 space-y-1">
     @for (item of items;track item.value) {
       <li>
-        <a [cdkSelectOption]="item.value" [index]="$index"
+        <a [cdkSelectOption]="item.value"
            class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 text-gray-700 cursor-pointer
            aria-selected:bg-indigo-500 aria-selected:aria-disabled:bg-indigo-300 aria-selected:text-white
            aria-[selected=false]:data-[active=true]:bg-gray-100

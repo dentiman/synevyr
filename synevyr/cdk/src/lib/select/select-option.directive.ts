@@ -10,6 +10,7 @@ import {
 import { CdkSelectDirective } from './select.directive';
 import { Highlightable } from '@angular/cdk/a11y';
 import { CdkSelectListboxDirective } from './select-listbox.directive';
+import { CdkListboxControlDirective } from './listbox-control.directive';
 
 
 @Directive({
@@ -28,12 +29,13 @@ import { CdkSelectListboxDirective } from './select-listbox.directive';
 })
 export class CdkSelectOptionDirective implements Highlightable {
 
-  readonly selectControl = inject(CdkSelectDirective)
+  readonly selectControl = inject(CdkListboxControlDirective)
+
   readonly listbox = inject(CdkSelectListboxDirective)
 
   readonly element: HTMLElement = inject(ElementRef).nativeElement;
 
-  id =  this.selectControl.id + `-option-${this.listbox.nextSelectOptionId++}`;
+  id =  this.listbox.id + `-option-${this.listbox.nextSelectOptionId++}`;
 
   @Input({required: true, alias:'cdkSelectOption'}) value!: string | number
 

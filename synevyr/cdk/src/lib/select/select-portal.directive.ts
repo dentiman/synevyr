@@ -1,23 +1,20 @@
-import { Directive, ElementRef, inject, Input, TemplateRef } from '@angular/core';
-import { CdkPopupDirective } from '../popup/popup.directive';
+import { Directive, inject, Input, TemplateRef } from '@angular/core';
 import { CdkSelectDirective } from './select.directive';
+import { PopupRole } from '../popup/popup-config';
 
 @Directive({
   selector: '[cdkSelectPortal]',
   standalone: true,
 })
-export class CdkSelectPortalDirective extends CdkPopupDirective {
-  @Input() triggerRef: ElementRef
-  componentOrTemplateRef = inject(TemplateRef)
-  selectControl = inject(CdkSelectDirective)
-  constructor() {
-    super();
-    //TODO:: need unsubscribe
-    this.selectControl.optionTriggered.subscribe(()=> {
-      if(this.selectControl.multiple === false) {
-        this.close()
-      }
-    })
-  }
+export class CdkSelectPortalDirective {
+  select = inject(CdkSelectDirective)
+  templateRef = inject(TemplateRef)
+
+  @Input() popupRole?: PopupRole = 'menu'
+  @Input() cdkPopupMaxHeight?: string | number
+  @Input() cdkPopupMaxWidth?: string
+  @Input() cdkPopupWidth?: string
+  @Input() addPopupClass?: string[]
+
 
 }

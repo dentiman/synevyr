@@ -1,87 +1,94 @@
 import {
   AfterContentInit,
-  booleanAttribute,
   ContentChild,
   Directive,
-  ElementRef, EventEmitter,
+  ElementRef, EventEmitter, inject,
   Input,
   Optional,
   Output,
   Self,
   signal
 } from '@angular/core';
-import { isEqual } from 'lodash';
 
-import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+
 import { CdkSelectListboxDirective } from './select-listbox.directive';
 import { CdkSelectTriggerDirective } from './select-trigger.directive';
+import { CdkListboxControlDirective } from './listbox-control.directive';
+import PopupRef from '../popup/popup-ref';
+import PopupConfig, { POPUP_CONFIG } from '../popup/popup-config';
+import { POPUP_SERVICE } from '../popup/popup.service';
 import { CdkSelectPortalDirective } from './select-portal.directive';
-
+import { CdkPopupOriginDirective } from '../popup/popup.directive';
 
 let nextSelectId = 0;
 
 
 @Directive({
   selector: '[cdkSelect]',
-  standalone: true
+  standalone: true,
 })
-export class CdkSelectDirective implements ControlValueAccessor, AfterContentInit {
+export class CdkSelectDirective  {
 
-  @Input() id = `select-${nextSelectId++}`;
-  @Input({ transform: booleanAttribute, alias: 'cdkSelectMultiple' }) multiple: boolean = false;
+  selectControl = inject(CdkListboxControlDirective);
+  private _popup = inject(POPUP_SERVICE)
 
-  @Input({ transform: booleanAttribute })
-  disabled: boolean = false;
+  private popupConfig? = inject(POPUP_CONFIG, {optional: true})
 
-  value = signal<string | number | string[] | number[]>(null, { equal: isEqual });
+  id = `select-${nextSelectId++}`;
 
-  @Output() optionTriggered = new EventEmitter<void>();
+  get multiple() {
+    return this.selectControl.multiple
+  }
 
-  listbox?: CdkSelectListboxDirective
+  @ContentChild(CdkSelectListboxDirective) listbox?: CdkSelectListboxDirective
 
- @ContentChild(CdkSelectTriggerDirective,{read: ElementRef})  triggerRef?: ElementRef
+  @ContentChild(CdkSelectPortalDirective) selectPortal!: CdkSelectPortalDirective
 
+  @ContentChild(CdkSelectTriggerDirective) selectTrigger!: CdkSelectTriggerDirective
 
-  constructor(@Optional() @Self() public ngControl?: NgControl) {
+  @ContentChild(CdkPopupOriginDirective) popupOrigin?: CdkPopupOriginDirective
 
+  popupRef?: PopupRef
 
-    if (ngControl) {
-      this.ngControl.valueAccessor = this;
+  private _opened =  signal<boolean>(false)
 
-      toObservable(this.value)
-        .pipe(takeUntilDestroyed())
-        .subscribe((value) => {
-          this.onChange(value);
-        });
+  isOpened = this._opened.asReadonly()
+
+  constructor() {
+    this.selectControl.optionTriggered.subscribe(()=> {
+      if(this.selectControl.multiple === false) {
+        this.close()
+      }
+    })
+  }
+
+  open() {
+    let config: PopupConfig = {
+      //TODO: make id to be required
+      id: this.id,
+      popupRole: this.selectPortal?.popupRole ? this.selectPortal.popupRole : 'menu',
+      hasTriggerElementWidth: true,
+      elementRef: this.popupOrigin?.elementRef || this.selectTrigger?.elementRef,
+      maxHeight: this.selectPortal?.cdkPopupMaxHeight ? this.selectPortal?.cdkPopupMaxHeight : '300',
+      width: this.selectPortal?.cdkPopupWidth
     }
+    config = {...this.popupConfig ?? {}, ...config}
+    this.popupRef = this._popup.open(this.selectPortal.templateRef, config)
+    this._opened.set(true)
   }
 
-  private _onTouched = () => {
-  };
-
-  onChange: (value) => void = () => {
-  };
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
+  close() {
+    this.popupRef?.close()
+    this._opened.set(false)
   }
 
-  registerOnTouched(fn: () => {}): void {
-    this._onTouched = fn;
-  }
-
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
-  writeValue(value: any): void {
-    this.value.set(value);
-  }
-
-  ngAfterContentInit(): void {
-
+  toggle() {
+    const opened = this.popupRef?.overlayRef.hasAttached()
+    if (opened) {
+      this.close();
+    } else {
+      this.open()
+    }
   }
 
 

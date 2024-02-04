@@ -1,7 +1,8 @@
 <div class="max-w-sm pb-4">
   <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900">Assigned to</label>
-  <div class="relative mt-2">
-      <sui-select [formControl]="ctrl" [items]="items"></sui-select>
+  <div class="relative mt-2" >
+      <sui-select  [formControl]="ctrl" [items]="items"/>
+
   </div>
 </div>
 
@@ -9,10 +10,11 @@
 Selected : {{ ctrl.value }}
 
 
+
 <div class="max-w-sm pb-4">
   <label id="listbox-label-2" class="block text-sm font-medium leading-6 text-gray-900">Choices to</label>
   <div class="relative mt-2">
-    <sui-select multipleSelect="true" [formControl]="multiplectrl" [items]="items">
+    <sui-select multipleSelect [formControl]="multiplectrl" [items]="items">
 
     </sui-select>
   </div>

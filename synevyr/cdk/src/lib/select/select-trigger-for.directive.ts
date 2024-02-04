@@ -21,11 +21,11 @@ export class CdkSelectTriggerForDirective extends CdkPopupDirective {
   constructor() {
     super();
     //TODO:: need unsubscribe
-    this.selectControl.optionTriggered.subscribe(()=> {
-      if(this.selectControl.multiple === false) {
-        this.close()
-      }
-    })
+    // this.selectControl.optionTriggered.subscribe(()=> {
+    //   if(this.selectControl.multiple === false) {
+    //     this.close()
+    //   }
+    // })
   }
 
   onKeydown(event: KeyboardEvent) {

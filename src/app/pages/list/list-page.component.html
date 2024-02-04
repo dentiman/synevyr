@@ -3,7 +3,7 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm" >
-  <ul cdkSelect cdkSelectListbox [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
+  <ul  cdkSelect cdkSelectListbox  cdkListboxControl [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
     @for (item of items;track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"
@@ -34,7 +34,7 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm">
-  <ul cdkSelect cdkSelectListbox [formControl]="multipleCtrl" role="list" class="-mx-2 space-y-1">
+  <ul cdkSelect cdkSelectListbox cdkListboxControl cdkListboxMultiple [formControl]="multipleCtrl" role="list" class="-mx-2 space-y-1">
     @for (item of items;track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"
@@ -43,7 +43,7 @@
            aria-[selected=false]:data-[active=true]:bg-gray-100
            aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"
         >
-          {{ item.label }}  {{ $index }}
+          {{ item.label }}
         </a>
       </li>
     }

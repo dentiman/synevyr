@@ -8,12 +8,15 @@ import { CdkSelectDirective } from './select.directive';
 import { CdkSelectOptionDirective } from './select-option.directive';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, hasModifierKey, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
-import { filter, fromEvent, pipe, Subscription } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CdkListboxControlDirective } from './listbox-control.directive';
+
+let nextListboxId = 0;
 
 
 @Directive({
   selector: '[cdkSelectListbox]',
+  exportAs: 'cdkSelectListbox',
   standalone: true,
   host: {
     'role': 'listbox',
@@ -28,7 +31,7 @@ export class CdkSelectListboxDirective implements OnDestroy, AfterContentInit {
 
   destroyRef = inject(DestroyRef);
 
-  selectControl = inject(CdkSelectDirective);
+  selectControl = inject(CdkListboxControlDirective);
 
   elementRef = inject(ElementRef)
 
@@ -36,8 +39,7 @@ export class CdkSelectListboxDirective implements OnDestroy, AfterContentInit {
 
   @ContentChildren(CdkSelectOptionDirective, { descendants: true }) options = new QueryList<CdkSelectOptionDirective>();
 
-  id = this.selectControl.id + '-control';
-
+  id = `listbox-${nextListboxId++}`;
 
   protected _listKeyManager: ActiveDescendantKeyManager<CdkSelectOptionDirective>;
 
@@ -79,7 +81,6 @@ export class CdkSelectListboxDirective implements OnDestroy, AfterContentInit {
 
   ngAfterContentInit(): void {
 
-    this.selectControl.listbox = this
 
     this._listKeyManager = new ActiveDescendantKeyManager(this.options)
       .withTypeAhead()
@@ -102,10 +103,8 @@ export class CdkSelectListboxDirective implements OnDestroy, AfterContentInit {
 
   }
 
-
   ngOnDestroy() {
     this._listKeyManager?.destroy();
-
   }
 
 }

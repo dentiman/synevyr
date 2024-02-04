@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CdkPopupTriggerForDirective,  CdkSelectOptionDirective } from '@synevyr/cdk';
+import {
+  CdkPopupTriggerForDirective,
+  CdkSelectDirective,
+  CdkSelectListboxDirective,
+  CdkSelectOptionDirective, CdkSelectPortalDirective, CdkSelectTriggerDirective
+} from '@synevyr/cdk';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { SuiSelectComponent } from '@synevyr/ui';
+import {SuiSelectComponent } from '@synevyr/ui';
 
 @Component({
   selector: 'synevyr-select-page',
   standalone: true,
-  imports: [CommonModule,  ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective, SuiSelectComponent],
+  imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective, SuiSelectComponent, CdkSelectDirective,
+    CdkSelectListboxDirective, CdkSelectPortalDirective, CdkSelectTriggerDirective],
   templateUrl: './select-page.component.html',
 })
 export class SelectPageComponent {

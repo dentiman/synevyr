@@ -1,23 +1,21 @@
-import { Directive, ElementRef, inject, Input, TemplateRef } from '@angular/core';
+import { Directive, ElementRef, inject } from '@angular/core';
 import { CdkSelectDirective } from './select.directive';
-import { ComponentType } from '@angular/cdk/overlay';
-import { CdkPopupDirective } from '../popup/popup.directive';
+import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[cdkSelectTrigger]',
   standalone: true,
   host: {
     'aria-haspopup': 'listbox',
-    '(keydown)': 'onKeydown($event)'
+    '(keydown)': 'select.listbox?.onKeydown($event)',
+    '(click)': 'select.toggle()',
+    '[aria-expanded]': 'select.isOpened()'
   }
 })
 export class CdkSelectTriggerDirective  {
 
-  selectControl = inject(CdkSelectDirective)
-  triggerRef = inject(ElementRef)
-
-  onKeydown(event: KeyboardEvent) {
-    this.selectControl.listbox.onKeydown(event)
-  }
+  select = inject(CdkSelectDirective)
+  elementRef = inject(ElementRef)
+  ngControl?: NgControl = inject(NgControl)
 
 }

@@ -2,12 +2,10 @@ import {
   booleanAttribute,
   computed,
   Directive, ElementRef,
-  HostListener,
   inject,
-  Input, OnDestroy, OnInit,
+  Input,
   Signal
 } from '@angular/core';
-import { CdkSelectDirective } from './select.directive';
 import { Highlightable } from '@angular/cdk/a11y';
 import { CdkSelectListboxDirective } from './select-listbox.directive';
 import { CdkListboxControlDirective } from './listbox-control.directive';

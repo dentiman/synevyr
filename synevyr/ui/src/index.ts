@@ -4,6 +4,6 @@ export * from './lib/datepicker/calendar/calendar.component';
 
 export * from './lib/select/select.component';
 
-export * from './lib/autocomplete/autocomplete.component';
-
 export * from './lib/button/button.component';
+
+export * from './lib/select/select-portal.component';

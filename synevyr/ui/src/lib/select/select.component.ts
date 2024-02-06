@@ -1,12 +1,11 @@
-import { Component, computed, inject, Input, ViewChild } from '@angular/core';
+import { Component, computed, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   CdkListboxControlDirective,
   CdkPopupTriggerForDirective,
-  CdkSelectDirective,
   CdkSelectListboxDirective,
   CdkSelectOptionDirective,
-  CdkSelectPortalDirective, CdkSelectTriggerDirective
+  CdkSelectTriggerDirective
 } from '@synevyr/cdk';
 
 @Component({
@@ -18,8 +17,6 @@ import {
     CdkPopupTriggerForDirective,
     CdkSelectListboxDirective,
     CdkSelectTriggerDirective,
-    CdkSelectPortalDirective,
-    CdkSelectDirective
   ],
   hostDirectives: [
     {

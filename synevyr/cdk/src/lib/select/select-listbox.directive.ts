@@ -4,12 +4,15 @@ import {
   Directive, effect, ElementRef, HostListener, inject, OnDestroy, QueryList, signal
 } from '@angular/core';
 
-import { CdkSelectDirective } from './select.directive';
 import { CdkSelectOptionDirective } from './select-option.directive';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, hasModifierKey, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CdkListboxControlDirective } from './listbox-control.directive';
+import {
+  CdkAbstractSelectControlForDirective,
+  CdkSelectControlForDirective,
+  SELECT_CONTROL
+} from './select-control-for.directive';
 
 let nextListboxId = 0;
 
@@ -23,15 +26,12 @@ let nextListboxId = 0;
     '[attr.tabindex]': '1',
     '[id]': 'id',
     'attr.aria-orientation': 'vertical',
-    '[attr.aria-multiselectable]': 'selectControl.multiple',
     '(keydown)': 'onKeydown($event)'
   }
 })
 export class CdkSelectListboxDirective implements OnDestroy, AfterContentInit {
 
   destroyRef = inject(DestroyRef);
-
-  selectControl = inject(CdkListboxControlDirective);
 
   elementRef = inject(ElementRef)
 
@@ -49,6 +49,14 @@ export class CdkSelectListboxDirective implements OnDestroy, AfterContentInit {
   activeOptionValue = computed(() => {
     return this._activeOption()?.value;
   });
+
+  selectControl = inject(SELECT_CONTROL,{optional: true})
+
+  constructor() {
+    if(this.selectControl) {
+      this.selectControl.listbox = this
+    }
+  }
 
 
   setActiveOption(option: CdkSelectOptionDirective) {

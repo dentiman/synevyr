@@ -19,9 +19,12 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 @Directive({
   selector: '[cdkListboxControl]',
   exportAs: 'cdkListboxControl',
-  standalone: true
+  standalone: true,
+  host: {
+    '(blur)': '_onTouched()',
+  }
 })
-export class CdkListboxControlDirective implements ControlValueAccessor, AfterContentInit {
+export class CdkListboxControlDirective implements ControlValueAccessor {
 
 
   @Input({ transform: booleanAttribute, alias: 'cdkListboxMultiple' }) multiple: boolean = false;
@@ -48,7 +51,7 @@ export class CdkListboxControlDirective implements ControlValueAccessor, AfterCo
     }
   }
 
-  private _onTouched = () => {
+  _onTouched = () => {
   };
 
   onChange: (value) => void = () => {
@@ -70,11 +73,5 @@ export class CdkListboxControlDirective implements ControlValueAccessor, AfterCo
   writeValue(value: any): void {
     this.value.set(value);
   }
-
-  ngAfterContentInit(): void {
-
-  }
-
-
 
 }

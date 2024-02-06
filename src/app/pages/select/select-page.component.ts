@@ -1,25 +1,35 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  CdkListboxControlDirective,
   CdkPopupTriggerForDirective,
-  CdkSelectDirective,
   CdkSelectListboxDirective,
-  CdkSelectOptionDirective, CdkSelectPortalDirective, CdkSelectTriggerDirective
+  CdkSelectOptionDirective,
+  CdkSelectTriggerDirective
 } from '@synevyr/cdk';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {SuiSelectComponent } from '@synevyr/ui';
+import { CdkSelectControlForDirective } from '@synevyr/cdk';
 
 @Component({
   selector: 'synevyr-select-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective, SuiSelectComponent, CdkSelectDirective,
-    CdkSelectListboxDirective, CdkSelectPortalDirective, CdkSelectTriggerDirective],
+  imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective, SuiSelectComponent,
+    CdkSelectListboxDirective,
+    CdkSelectTriggerDirective, CdkListboxControlDirective, CdkSelectControlForDirective],
   templateUrl: './select-page.component.html',
 })
 export class SelectPageComponent {
 
   ctrl = new FormControl(1)
   multiplectrl = new FormControl([1,4])
+
+  setDisabled() {
+    this.ctrl.disable()
+  }
+  setEnabled() {
+    this.ctrl.enable()
+  }
 
   items: any = [
     { value: 1, label: 'First' },

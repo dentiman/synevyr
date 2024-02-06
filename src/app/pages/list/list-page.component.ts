@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   CdkListboxControlDirective,
-  CdkSelectDirective,
   CdkSelectListboxDirective,
   CdkSelectOptionDirective
 } from '@synevyr/cdk';
@@ -12,7 +11,7 @@ import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 @Component({
   selector: 'synevyr-list-page',
   standalone: true,
-  imports: [CommonModule, CdkSelectOptionDirective, ReactiveFormsModule, CdkListbox, CdkOption, CdkSelectDirective, CdkSelectListboxDirective, CdkListboxControlDirective],
+  imports: [CommonModule, CdkSelectOptionDirective, ReactiveFormsModule, CdkListbox, CdkOption,  CdkSelectListboxDirective, CdkListboxControlDirective],
   templateUrl: './list-page.component.html',
 })
 export class ListPageComponent {

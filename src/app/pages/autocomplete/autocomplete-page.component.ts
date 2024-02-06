@@ -1,17 +1,32 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AutocompleteComponent } from '@synevyr/ui';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  CdkAutocompleteInputDirective,
+  CdkSelectControlForDirective,
+  CdkSelectListboxDirective,
+  CdkSelectOptionDirective
+} from '@synevyr/cdk';
 
 @Component({
   selector: 'synevyr-autocomplete-page',
   standalone: true,
-  imports: [CommonModule, AutocompleteComponent, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, CdkSelectListboxDirective,
+    CdkSelectControlForDirective, CdkSelectOptionDirective, CdkAutocompleteInputDirective
+  ],
   templateUrl: './autocomplete-page.component.html',
 })
 export class AutocompletePageComponent {
 
   ctrl = new FormControl(1)
+
+  setDisabled() {
+    this.ctrl.disable()
+  }
+  setEnabled() {
+    this.ctrl.enable()
+  }
+
 
   model = 'One'
 
@@ -19,7 +34,8 @@ export class AutocompletePageComponent {
     'One',
     'Two',
     'Three',
-    'For'
+    'For',
+    'Five'
   ]
 
 }

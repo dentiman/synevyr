@@ -11,6 +11,7 @@ module.exports = {
   theme: {
     extend: {
       aria: {
+        invalid: 'invalid="true"',
         asc: 'sort="ascending"',
         desc: 'sort="descending"',
       }

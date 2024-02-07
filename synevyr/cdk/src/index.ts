@@ -1,4 +1,5 @@
 export * from './lib/common-behaviors/cdk-can-disable.directive'
+export * from './lib/common-behaviors/control-status.directive'
 export * from './lib/datepicker/datepicker.module'
 export * from './lib/datepicker/active-date.state'
 export * from './lib/datepicker/calendar.directive'

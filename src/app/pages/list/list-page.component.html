@@ -34,7 +34,7 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm">
-  <ul cdkSelect cdkSelectListbox cdkListboxControl cdkListboxMultiple [formControl]="multipleCtrl" role="list" class="-mx-2 space-y-1">
+  <ul cdkSelect cdkSelectListbox cdkListboxControl [formControl]="multipleCtrl" role="list" class="-mx-2 space-y-1">
     @for (item of items;track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"

@@ -7,3 +7,4 @@ export * from './lib/select/select.component';
 export * from './lib/button/button.component';
 
 export * from './lib/select/select-portal.component';
+export * from './lib/loading-spin/loading-spin.component';

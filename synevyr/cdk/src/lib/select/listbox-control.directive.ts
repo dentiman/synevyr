@@ -1,6 +1,6 @@
 import {
   AfterContentInit,
-  booleanAttribute,
+  booleanAttribute, computed,
   ContentChild,
   Directive,
   ElementRef, EventEmitter,
@@ -32,10 +32,19 @@ export class CdkListboxControlDirective implements ControlValueAccessor {
   @Input({ transform: booleanAttribute })
   disabled: boolean = false;
 
+
   value = signal<string | number | string[] | number[]>(null, { equal: isEqual });
 
   @Output() optionTriggered = new EventEmitter<void>();
 
+  isEmpty = computed(()=> {
+    const value = this.value()
+    return value === null || value === '' || (Array.isArray(value) && Array.length === 0)
+  })
+
+  clear() {
+    this.value.set(this.multiple ? [] : null);
+  }
 
   constructor(@Optional() @Self() public ngControl?: NgControl) {
 

@@ -20,7 +20,7 @@ import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
     '[required]': 'required',
   }
 })
-export class ControlStatusDirective  {
+export class CdkControlStatusDirective  {
 
   private _cd: AbstractControlDirective|null;
   constructor(@Self() cd: NgControl) {

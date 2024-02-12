@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  CdkControlStatusDirective,
   CdkListboxControlDirective,
   CdkPopupTriggerForDirective,
   CdkSelectListboxDirective,
@@ -8,20 +9,21 @@ import {
   CdkSelectTriggerDirective
 } from '@synevyr/cdk';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {SuiSelectComponent } from '@synevyr/ui';
 import { CdkSelectControlForDirective } from '@synevyr/cdk';
+import { SelectDisplayValueDirective } from '@synevyr/cdk';
+import { ButtonComponent, SuiSelectControlComponent } from '@synevyr/ui';
 
 @Component({
   selector: 'synevyr-select-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective, SuiSelectComponent,
+  imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective,
     CdkSelectListboxDirective,
-    CdkSelectTriggerDirective, CdkListboxControlDirective, CdkSelectControlForDirective],
+    CdkSelectTriggerDirective, CdkListboxControlDirective, CdkSelectControlForDirective, SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective],
   templateUrl: './select-page.component.html',
 })
 export class SelectPageComponent {
 
-  ctrl = new FormControl(1)
+  ctrl = new FormControl(null)
   multiplectrl = new FormControl([1,4])
 
   setDisabled() {

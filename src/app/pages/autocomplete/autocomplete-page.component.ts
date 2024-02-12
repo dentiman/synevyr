@@ -7,7 +7,7 @@ import {
   CdkSelectListboxDirective,
   CdkSelectOptionDirective
 } from '@synevyr/cdk';
-import { ControlStatusDirective } from '@synevyr/cdk';
+import { CdkControlStatusDirective } from '@synevyr/cdk';
 import { map, Observable, startWith } from 'rxjs';
 import { ButtonComponent } from '@synevyr/ui';
 
@@ -15,9 +15,10 @@ import { ButtonComponent } from '@synevyr/ui';
   selector: 'synevyr-autocomplete-page',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, CdkSelectListboxDirective,
-    CdkSelectControlForDirective, CdkSelectOptionDirective, CdkAutocompleteInputDirective, ControlStatusDirective, ButtonComponent
+    CdkSelectControlForDirective, CdkSelectOptionDirective, CdkAutocompleteInputDirective, CdkControlStatusDirective, ButtonComponent
   ],
   templateUrl: './autocomplete-page.component.html',
+
 })
 export class AutocompletePageComponent implements OnInit {
 

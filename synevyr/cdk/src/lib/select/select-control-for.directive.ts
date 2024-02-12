@@ -10,7 +10,7 @@ import {
 import { CdkPopupOriginDirective } from '../popup/popup.directive';
 
 import PopupRef from '../popup/popup-ref';
-import PopupConfig, { POPUP_CONFIG } from '../popup/popup-config';
+import PopupConfig, { POPUP_CONFIG, PopupRole } from '../popup/popup-config';
 import { CdkSelectListboxDirective } from './select-listbox.directive';
 import { CdkSelectTriggerDirective } from './select-trigger.directive';
 import { POPUP_SERVICE } from '../popup/popup.service';
@@ -50,6 +50,9 @@ export abstract class CdkAbstractSelectControlForDirective {
 
   injector = inject(Injector)
 
+  @Input() popupRole: PopupRole = 'menu'
+  @Input() popupWidth: string
+
   selectControl = inject(CdkListboxControlDirective);
 
   constructor() {
@@ -64,10 +67,11 @@ export abstract class CdkAbstractSelectControlForDirective {
     let config: PopupConfig = {
       //TODO: make id to be required
       id: this.id,
-      popupRole:  'menu',
-      hasTriggerElementWidth: true,
+      popupRole:  this.popupRole,
+      hasTriggerElementWidth: !this.popupWidth,
       elementRef: this.popupOrigin?.elementRef || this.elementRef,
       maxHeight:  '300',
+      width: this.popupWidth,
       injector: this.injector
     }
     config = {...this.popupConfig ?? {}, ...config}

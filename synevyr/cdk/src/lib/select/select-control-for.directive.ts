@@ -7,7 +7,7 @@ import {
   signal,
   TemplateRef
 } from '@angular/core';
-import { CdkPopupOriginDirective } from '../popup/popup.directive';
+import { CdkPopupDirective, CdkPopupOriginDirective } from '../popup/popup.directive';
 
 import PopupRef from '../popup/popup-ref';
 import PopupConfig, { POPUP_CONFIG, PopupRole } from '../popup/popup-config';
@@ -17,6 +17,15 @@ import { POPUP_SERVICE } from '../popup/popup.service';
 import { CdkListboxControlDirective } from './listbox-control.directive';
 
 let nextSelectControlId = 0;
+
+
+export interface ccSelectControlInterface {
+  trigger: CdkSelectTriggerDirective
+  listbox: CdkSelectListboxDirective
+  portal: CdkSelectPortalDirective
+  valueControl: CdkListboxControlDirective
+
+}
 
 
 export const SELECT_CONTROL = new InjectionToken<CdkAbstractSelectControlForDirective>('CdkAbstractSelectControlForDirective')
@@ -97,6 +106,15 @@ export abstract class CdkAbstractSelectControlForDirective {
 }
 
 
+@Directive({
+  selector: '[cdkSelectPortal]',
+  standalone: true
+})
+export class CdkSelectPortalDirective  extends CdkPopupDirective {
+  triggerRef: ElementRef
+  componentOrTemplateRef
+
+}
 
 @Directive({
   selector: '[cdkSelectControlFor]',

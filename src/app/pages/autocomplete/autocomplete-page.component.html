@@ -2,8 +2,10 @@
   <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900 peer-aria-invalid:text-pink-600">Assigned to: </label>
   <div class="relative mt-2" >
 
+
+
     <input type="text"
-           [cdkAutocompleteInput]="selectPortal"
+
            [formControl]="ctrl"
            cdkControlStatus
            placeholder="search"
@@ -19,7 +21,7 @@
       This field is invalid
     </p>
 
-    <ng-template #selectPortal>
+    <ng-template cdkPopupPanel>
       <ul cdkSelectListbox >
         @for (item of filteredOptions | async ;track item) {
           <li>

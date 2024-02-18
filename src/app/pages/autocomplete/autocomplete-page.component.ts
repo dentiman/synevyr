@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  CdkAutocompleteInputDirective,
-  CdkSelectControlForDirective,
+  CdkAutocompleteInputDirective, CdkPopupPanelDirective,
   CdkSelectListboxDirective,
   CdkSelectOptionDirective
 } from '@synevyr/cdk';
@@ -15,7 +14,7 @@ import { ButtonComponent } from '@synevyr/ui';
   selector: 'synevyr-autocomplete-page',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, CdkSelectListboxDirective,
-    CdkSelectControlForDirective, CdkSelectOptionDirective, CdkAutocompleteInputDirective, CdkControlStatusDirective, ButtonComponent
+    CdkSelectOptionDirective, CdkAutocompleteInputDirective, CdkControlStatusDirective, ButtonComponent, CdkPopupPanelDirective
   ],
   templateUrl: './autocomplete-page.component.html',
 

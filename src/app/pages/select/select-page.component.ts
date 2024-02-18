@@ -9,7 +9,7 @@ import {
   CdkSelectTriggerDirective
 } from '@synevyr/cdk';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CdkSelectControlForDirective } from '@synevyr/cdk';
+
 import { SelectDisplayValueDirective } from '@synevyr/cdk';
 import { ButtonComponent, SuiSelectControlComponent } from '@synevyr/ui';
 
@@ -18,7 +18,7 @@ import { ButtonComponent, SuiSelectControlComponent } from '@synevyr/ui';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective,
     CdkSelectListboxDirective,
-    CdkSelectTriggerDirective, CdkListboxControlDirective, CdkSelectControlForDirective, SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective],
+    CdkSelectTriggerDirective, CdkListboxControlDirective, SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective],
   templateUrl: './select-page.component.html',
 })
 export class SelectPageComponent {

@@ -3,11 +3,11 @@ import {
   Directive, effect,
   ElementRef,
   inject, InjectionToken, Injector,
-  Input, Renderer2,
+  Input, Renderer2, Signal,
   signal,
   TemplateRef
 } from '@angular/core';
-import { CdkPopupDirective, CdkPopupOriginDirective } from '../popup/popup.directive';
+import { CdkPopupDirective, CdkPopupOriginDirective, CdkPopupPanelDirective } from '../popup/popup.directive';
 
 import PopupRef from '../popup/popup-ref';
 import PopupConfig, { POPUP_CONFIG, PopupRole } from '../popup/popup-config';
@@ -19,91 +19,16 @@ import { CdkListboxControlDirective } from './listbox-control.directive';
 let nextSelectControlId = 0;
 
 
-export interface ccSelectControlInterface {
-  trigger: CdkSelectTriggerDirective
-  listbox: CdkSelectListboxDirective
-  portal: CdkSelectPortalDirective
+export interface CcSelectControlInterface {
+
+  listbox: Signal<CdkSelectListboxDirective>
+  portal: Signal<CdkPopupPanelDirective>
   valueControl: CdkListboxControlDirective
 
 }
 
 
-export const SELECT_CONTROL = new InjectionToken<CdkAbstractSelectControlForDirective>('CdkAbstractSelectControlForDirective')
-
-@Directive()
-export abstract class CdkAbstractSelectControlForDirective {
-
-  abstract portalTemplateRef: TemplateRef<Element>
-
-
-  private _popup = inject(POPUP_SERVICE)
-
-  private popupConfig? = inject(POPUP_CONFIG, {optional: true})
-
-  id = `select-${nextSelectControlId++}`;
-
-  listbox?: CdkSelectListboxDirective
-
-
-  @ContentChild(CdkSelectTriggerDirective) selectTrigger?: CdkSelectTriggerDirective
-
-  @ContentChild(CdkPopupOriginDirective) popupOrigin?: CdkPopupOriginDirective
-
-  elementRef = inject(ElementRef)
-
-  popupRef?: PopupRef
-
-  private _opened =  signal<boolean>(false)
-
-  isOpened = this._opened.asReadonly()
-
-  injector = inject(Injector)
-
-  @Input() popupRole: PopupRole = 'menu'
-  @Input() popupWidth: string
-
-  selectControl = inject(CdkListboxControlDirective);
-
-  constructor() {
-    this.selectControl.optionTriggered.subscribe(()=> {
-      if(this.selectControl.multiple === false) {
-        this.close()
-      }
-    })
-  }
-
-  open() {
-    let config: PopupConfig = {
-      //TODO: make id to be required
-      id: this.id,
-      popupRole:  this.popupRole,
-      hasTriggerElementWidth: !this.popupWidth,
-      elementRef: this.popupOrigin?.elementRef || this.elementRef,
-      maxHeight:  '300',
-      width: this.popupWidth,
-      injector: this.injector
-    }
-    config = {...this.popupConfig ?? {}, ...config}
-    this.popupRef = this._popup.open(this.portalTemplateRef, config)
-    this._opened.set(true)
-  }
-
-  close() {
-    this.popupRef?.close()
-    this._opened.set(false)
-  }
-
-  toggle() {
-    const opened = this.popupRef?.overlayRef.hasAttached()
-    if (opened) {
-      this.close();
-    } else {
-      this.open()
-    }
-  }
-
-
-}
+export const SELECT_CONTROL = new InjectionToken<CcSelectControlInterface>('SELECT_CONTROL')
 
 
 @Directive({
@@ -111,35 +36,13 @@ export abstract class CdkAbstractSelectControlForDirective {
   standalone: true
 })
 export class CdkSelectPortalDirective  extends CdkPopupDirective {
+  select = inject(SELECT_CONTROL)
+
   triggerRef: ElementRef
   componentOrTemplateRef
 
-}
 
-@Directive({
-  selector: '[cdkSelectControlFor]',
-  standalone: true,
-  hostDirectives: [
-    {
-      directive: CdkListboxControlDirective,
-      inputs: ['cdkListboxMultiple: multipleSelect']
-    }
-  ],
-  host: {
-    '(click)': 'toggle()',
-    '(keydown)': 'listbox?.onKeydown($event)',
-    '[aria-expanded]': 'isOpened()',
-    'aria-haspopup': 'listbox',
-  },
-  providers: [
-    {
-      provide: SELECT_CONTROL,
-      useExisting: CdkSelectControlForDirective
-    }
-  ]
-})
-export class CdkSelectControlForDirective extends CdkAbstractSelectControlForDirective {
-  @Input({alias:'cdkSelectControlFor'})  portalTemplateRef: TemplateRef<Element>
+
 }
 
 
@@ -153,13 +56,13 @@ export class CdkSelectControlForDirective extends CdkAbstractSelectControlForDir
     }
   ],
   host: {
-    'aria-haspopup': 'listbox',
-    '(keydown)': '_handleKeydown($event)',
-    '(click)': 'open()',
-    '[aria-expanded]': 'isOpened()',
-    'role': 'combobox',
-    'aria-controls': 'options',
-    '(input)': '_handleInput($event.target.value)'
+    // 'aria-haspopup': 'listbox',
+    // '(keydown)': '_handleKeydown($event)',
+    // '(click)': 'open()',
+    // '[aria-expanded]': 'isOpened()',
+    // 'role': 'combobox',
+    // 'aria-controls': 'options',
+    // '(input)': '_handleInput($event.target.value)'
   },
   providers: [
     {
@@ -168,25 +71,25 @@ export class CdkSelectControlForDirective extends CdkAbstractSelectControlForDir
     }
   ]
 })
-export class CdkAutocompleteInputDirective extends  CdkAbstractSelectControlForDirective {
-
-  @Input({alias:'cdkAutocompleteInput'})  portalTemplateRef: TemplateRef<Element>
-
-  constructor(_renderer: Renderer2) {
-    super();
-    effect(() => {
-     const   value = this.selectControl.value()
-      const normalizedValue = value == null ? '' : value;
-      _renderer.setProperty(this.elementRef.nativeElement,'value',normalizedValue)
-    });
-  }
-
-  _handleKeydown($event) {
-    this.listbox?.onKeydown($event)
-  }
-
-  _handleInput(value: any) {
-      this.selectControl.value.set(value)
-  }
+export class CdkAutocompleteInputDirective  {
+  //
+  // @Input({alias:'cdkAutocompleteInput'})  portalTemplateRef: TemplateRef<Element>
+  //
+  // constructor(_renderer: Renderer2) {
+  //   super();
+  //   effect(() => {
+  //    const   value = this.selectControl.value()
+  //     const normalizedValue = value == null ? '' : value;
+  //     _renderer.setProperty(this.elementRef.nativeElement,'value',normalizedValue)
+  //   });
+  // }
+  //
+  // _handleKeydown($event) {
+  //   this.listbox?.onKeydown($event)
+  // }
+  //
+  // _handleInput(value: any) {
+  //     this.selectControl.value.set(value)
+  // }
 
 }

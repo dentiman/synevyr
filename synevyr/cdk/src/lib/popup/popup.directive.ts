@@ -7,7 +7,7 @@ import {
     inject,
     InjectionToken,
     Input, signal,
-    TemplateRef
+    TemplateRef, ViewContainerRef
 } from '@angular/core';
 import {POPUP_SERVICE} from "./popup.service";
 import PopupRef from "./popup-ref";
@@ -16,6 +16,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {BooleanInput, coerceBooleanProperty} from "@angular/cdk/coercion";
 import PopupConfig, {POPUP_CONFIG, PopupRole} from "./popup-config";
 import { ComponentType } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 
 export type Interaction = 'toggleOnClick' | 'openOnFocus' | 'openOnClick'
 
@@ -142,6 +143,11 @@ export class CdkPopupOriginDirective {
 export class CdkPopupPanelDirective extends CdkPopupDirective {
     @Input() triggerRef: ElementRef
     componentOrTemplateRef = inject(TemplateRef)
+    private _templatePortal: TemplatePortal
+    constructor( viewContainerRef: ViewContainerRef,) {
+        super();
+        this._templatePortal = new TemplatePortal(this.componentOrTemplateRef, viewContainerRef);
+    }
 }
 
 

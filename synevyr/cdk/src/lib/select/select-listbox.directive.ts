@@ -8,11 +8,6 @@ import { CdkSelectOptionDirective } from './select-option.directive';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, hasModifierKey, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  CdkAbstractSelectControlForDirective,
-  CdkSelectControlForDirective,
-  SELECT_CONTROL
-} from './select-control-for.directive';
 
 let nextListboxId = 0;
 
@@ -50,13 +45,7 @@ export class CdkSelectListboxDirective implements OnDestroy, AfterContentInit {
     return this._activeOption()?.value;
   });
 
-  selectControl = inject(SELECT_CONTROL,{optional: true})
 
-  constructor() {
-    if(this.selectControl) {
-      this.selectControl.listbox = this
-    }
-  }
 
 
   setActiveOption(option: CdkSelectOptionDirective) {

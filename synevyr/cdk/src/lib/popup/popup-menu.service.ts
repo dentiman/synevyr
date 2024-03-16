@@ -1,11 +1,10 @@
-import {ElementRef, inject, Injectable, TemplateRef} from '@angular/core';
+import {inject, Injectable, TemplateRef} from '@angular/core';
 import {Dialog} from "@angular/cdk/dialog";
 import PopupRef from "./popup-ref";
 import {
   ComponentType,
   FlexibleConnectedPositionStrategy,
   Overlay,
-  OverlayPositionBuilder,
   ViewportRuler
 } from "@angular/cdk/overlay";
 import PopupConfig, {DEFAULT_POPUP_MENU_CONFIG_DATA} from "./popup-config";

@@ -1,19 +1,18 @@
 import { Component, HostBinding, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CdkCalendarCellDirective, CdkCanDisableDirective } from '@synevyr/cdk';
+import { CdkCalendarCellDirective} from '@synevyr/cdk';
 
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'button[suiCalendarCell]',
   standalone: true,
-  imports: [CommonModule, CdkCalendarCellDirective, CdkCanDisableDirective],
+  imports: [CommonModule, CdkCalendarCellDirective],
   hostDirectives: [
     {
       directive: CdkCalendarCellDirective,
       inputs: ['date'],
-    },
-    CdkCanDisableDirective
+    }
   ],
   templateUrl: './calendar-cell.component.html',
 

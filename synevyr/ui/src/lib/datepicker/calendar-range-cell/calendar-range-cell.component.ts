@@ -1,6 +1,6 @@
 import { Component, HostBinding, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CdkCalendarRangeCellDirective, CdkCanDisableDirective } from '@synevyr/cdk';
+import { CdkCalendarRangeCellDirective } from '@synevyr/cdk';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -11,8 +11,7 @@ import { CdkCalendarRangeCellDirective, CdkCanDisableDirective } from '@synevyr/
     {
       directive: CdkCalendarRangeCellDirective,
       inputs: ['date'],
-    },
-    CdkCanDisableDirective
+    }
   ],
   templateUrl: './calendar-range-cell.component.html',
 })

@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
 import { CdkSelectListboxDirective } from './select-listbox.directive';
-import { CdkListboxControlDirective } from './listbox-control.directive';
 
 
 @Directive({
@@ -27,8 +26,6 @@ import { CdkListboxControlDirective } from './listbox-control.directive';
 })
 export class CdkSelectOptionDirective implements Highlightable {
 
-  readonly selectControl = inject(CdkListboxControlDirective)
-
   readonly listbox = inject(CdkSelectListboxDirective)
 
   readonly element: HTMLElement = inject(ElementRef).nativeElement;
@@ -40,7 +37,7 @@ export class CdkSelectOptionDirective implements Highlightable {
 
   @Input({transform: booleanAttribute})
   get disabled(): boolean {
-    return this.selectControl.disabled || this._disabled;
+    return  this._disabled || this.listbox.disabled();
   }
   set disabled(value: boolean) {
     this._disabled = value;
@@ -49,10 +46,10 @@ export class CdkSelectOptionDirective implements Highlightable {
 
 
   isSelected: Signal<boolean> = computed(()=> {
-      const selected = this.selectControl.value()
+      const selected = this.listbox.value()
 
       // @ts-ignore
-    if(this.selectControl.multiple && Array.isArray(selected) && selected.includes(this.value)) {
+    if(this.listbox.multiple() && Array.isArray(selected) && selected.includes(this.value)) {
         return true
       } else {
         return  selected === this.value
@@ -66,9 +63,9 @@ export class CdkSelectOptionDirective implements Highlightable {
 
   triggerSelection() {
     if(this.disabled) return;
-    if(this.selectControl.multiple) {
+    if(this.listbox.multiple()) {
         // @ts-ignore
-      this.selectControl.value.update(selectedValues => {
+      this.listbox.value.update(selectedValues => {
            // @ts-ignore
           if(Array.isArray(selectedValues)  &&  selectedValues.includes(this.value)) {
               return  selectedValues.filter(value => value !== this.value)
@@ -79,9 +76,9 @@ export class CdkSelectOptionDirective implements Highlightable {
            return [this.value]
         })
     } else {
-       this.selectControl.value.set(this.value)
+       this.listbox.value.set(this.value)
     }
-    this.selectControl.optionTriggered.emit()
+    this.listbox.optionTriggered.emit()
   }
 
   setActive() {

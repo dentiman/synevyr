@@ -43,8 +43,8 @@ export class CdkCalendarRangeCellDirective {
     })
 
     disabled = computed(() => {
-        const minDate = this.calendar.minDate
-        const maxDate = this.calendar.maxDate
+        const minDate = this.calendar.minDate()
+        const maxDate = this.calendar.maxDate()
         return (minDate && minDate.getTime() > this.date.getTime()) ||
           (maxDate && maxDate.getTime() < this.date.getTime())
     })

@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   CdkControlStatusDirective,
-  CdkListboxControlDirective,
   CdkPopupTriggerForDirective,
   CdkSelectListboxDirective,
   CdkSelectOptionDirective,
-  CdkSelectTriggerDirective
+  CdkSelectTriggerDirective, TwClassDirective
 } from '@synevyr/cdk';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,12 +17,14 @@ import { ButtonComponent, SuiSelectControlComponent } from '@synevyr/ui';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective,
     CdkSelectListboxDirective,
-    CdkSelectTriggerDirective, CdkListboxControlDirective, SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective],
+    CdkSelectTriggerDirective,  SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective, TwClassDirective],
   templateUrl: './select-page.component.html',
 })
 export class SelectPageComponent {
 
-  ctrl = new FormControl(null)
+  value = signal(1)
+
+  ctrl = new FormControl(2)
   multiplectrl = new FormControl([1,4])
 
   setDisabled() {
@@ -31,6 +32,10 @@ export class SelectPageComponent {
   }
   setEnabled() {
     this.ctrl.enable()
+  }
+
+  setValue() {
+    this.ctrl.setValue(4)
   }
 
   items: any = [

@@ -1,15 +1,6 @@
-<div class="max-w-sm pb-4">
-  <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900">Assigned to</label>
-  <div class="relative mt-2" >
 
+<button suiButton [class]="'bg-red-500'" (click)="setDisabled()" > Disable </button>
 
-  </div>
-</div>
-
-
-Selected : {{ ctrl.value }}
-
-<button suiButton (click)="setDisabled()" > Disable </button>
 <button suiButton (click)="setEnabled()" > Enable </button>
 
 
@@ -20,4 +11,11 @@ Selected : {{ ctrl.value }}
   </div>
 </div>
 
+<button  suiButton (click)="setValue()" > Set value 4 </button><br>
 
+
+Model: {{value()}}<br>
+Control value : {{ ctrl.value }}<br>
+Errors: {{ ctrl.errors | json}}<br>
+Errors: {{ ctrl.status}}<br>
+Invalid: {{ ctrl.invalid | json}}<br>

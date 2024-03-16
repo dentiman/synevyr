@@ -2,11 +2,11 @@ import {
   AfterViewInit,
   Component, effect, ElementRef, forwardRef,
   inject,
-  input,
+  input, model,
   OnInit,
   signal,
   Signal,
-  TemplateRef,
+  TemplateRef, viewChild,
   ViewChild,
   WritableSignal
 } from '@angular/core';
@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import {
   CcSelectControlInterface,
   CdkControlStatusDirective,
-  CdkListboxControlDirective, CdkPopupPanelDirective,
+  CdkPrimitiveValueAccessorDirective, CdkPopupPanelDirective,
   CdkSelectListboxDirective,
   CdkSelectOptionDirective,
   CdkSelectTriggerDirective,
@@ -29,7 +29,7 @@ import {
   templateUrl: './select-control.component.html',
   hostDirectives: [
     CdkSelectTriggerDirective,
-    CdkListboxControlDirective,
+    CdkPrimitiveValueAccessorDirective,
     CdkControlStatusDirective
   ],
   host: {
@@ -45,40 +45,18 @@ import {
     }
   ]
 })
-export class SuiSelectControlComponent implements CcSelectControlInterface,AfterViewInit {
+export class SuiSelectControlComponent implements CcSelectControlInterface {
 
-  readonly valueControl = inject(CdkListboxControlDirective)
 
   options = input([])
 
   placeholder = input<string>('')
+  disabled = inject(CdkPrimitiveValueAccessorDirective).disabled
 
-  listbox: WritableSignal<CdkSelectListboxDirective> = signal(null);
-  portal:  WritableSignal<CdkPopupPanelDirective> = signal(null);
-  elementRef = inject(ElementRef)
+  value = inject(CdkPrimitiveValueAccessorDirective).value
+  listbox = viewChild(CdkSelectListboxDirective)
+  portal = viewChild(CdkPopupPanelDirective)
 
-  @ViewChild(CdkSelectListboxDirective)  _listbox: CdkSelectListboxDirective
-  @ViewChild(CdkPopupPanelDirective)  _portal: CdkPopupPanelDirective
-
-  constructor() {
-    effect(() => {
-      const portal =  this.portal();
-      if(portal && portal.isOpened()) {
-        setTimeout(()=>{
-          console.log(this._listbox)
-        },500)
-
-      }
-    });
-  }
-
-  ngAfterViewInit(): void {
-
-
-    this.portal.set(this._portal)
-
-  }
-
-
+  triggerRef = inject(ElementRef<HTMLElement>)
 
 }

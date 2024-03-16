@@ -1,12 +1,11 @@
 import { computed, Directive, inject, input } from '@angular/core';
-import { CdkListboxControlDirective } from '@synevyr/cdk';
 
 @Directive({
   selector: '[cdkSelectDisplayValue]',
   standalone: true,
   host: {
     '[innerHtml]': 'displayValue()',
-    '[attr.data-empty]': 'selectControl.isEmpty() || null'
+    '[attr.data-empty]': 'isEmpty() || null'
   }
 })
 export class SelectDisplayValueDirective {
@@ -15,14 +14,13 @@ export class SelectDisplayValueDirective {
 
   placeholder = input<string>('')
 
-  readonly selectControl = inject(CdkListboxControlDirective)
-
+  value = input<string | number | string[] | number[]>('')
 
   displayValue = computed(() => {
-    const selected = this.selectControl.value();
+    const selected = this.value();
     const items = this.items();
 
-    if (this.selectControl.multiple && Array.isArray(selected) && items) {
+    if ( Array.isArray(selected) && items) {
       // @ts-ignore
       return items.filter(item => selected.includes(item.value))
         .map(item => item.label)
@@ -31,4 +29,9 @@ export class SelectDisplayValueDirective {
       return items.find((item => item.value === selected))?.label;
     } else return this.placeholder();
   });
+
+  isEmpty = computed(()=> {
+    const value = this.value()
+    return value === null || value === '' || (Array.isArray(value) && Array.length === 0)
+  })
 }

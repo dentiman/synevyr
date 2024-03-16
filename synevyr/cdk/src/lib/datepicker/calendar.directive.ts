@@ -1,4 +1,4 @@
-import {computed, Directive, inject, Input, Output, Signal, signal} from '@angular/core';
+import { computed, Directive, inject, input, Input, Output, Signal, signal } from '@angular/core';
 import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 import {DateAdapter} from "./date-adapter";
 import {ActiveDateState} from "./active-date.state";
@@ -16,27 +16,10 @@ export class CdkCalendarDirective {
 
     isRangePicker = !!inject(START_DATE, { optional: true })
 
-    @Input()
-    get minDate() {
-        return this.min()
-    }
+    minDate = input(null,{transform: (value) => this._dateAdapter.getValidDateOrNull(value)})
+    maxDate = input(null,{transform: (value) => this._dateAdapter.getValidDateOrNull(value)})
 
-    set minDate(value: Date | null) {
-        this.min.set(this._dateAdapter.getValidDateOrNull(value))
-    }
 
-    min = signal<Date>(null)
-
-    @Input()
-    get maxDate() {
-        return this.max()
-    }
-
-    set maxDate(value: Date | null) {
-        this.max.set(this._dateAdapter.getValidDateOrNull(value))
-    }
-
-    max = signal<Date>(null)
 
 
     private _activeDateState = new ActiveDateState(this._dateAdapter)

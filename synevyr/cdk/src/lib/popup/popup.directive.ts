@@ -2,11 +2,11 @@ import {
     AfterContentInit,
     AfterViewInit,
     DestroyRef,
-    Directive,
+    Directive, effect,
     ElementRef, HostListener,
     inject,
-    InjectionToken,
-    Input, signal,
+    InjectionToken, input,
+    Input, Signal, signal,
     TemplateRef, ViewContainerRef
 } from '@angular/core';
 import {POPUP_SERVICE} from "./popup.service";
@@ -28,11 +28,11 @@ export const POPUP = new InjectionToken<CdkPopupDirective>('POPUP')
 @Directive({
     standalone: true
 })
-export abstract class CdkPopupDirective implements AfterContentInit {
+export abstract class CdkPopupDirective {
 
-    abstract triggerRef: ElementRef
-    @Input({alias:'cdkPopupOrigin'}) originRef?: CdkPopupOriginDirective
-    abstract componentOrTemplateRef: ComponentType<Element> | TemplateRef<Element>
+    abstract triggerRef: Signal<ElementRef<HTMLElement>>
+    abstract componentOrTemplateRef: Signal<ComponentType<Element> | TemplateRef<Element>>
+
     private _id = `popup-id-${popupNextId++}`;
 
     private _popup = inject(POPUP_SERVICE)
@@ -40,7 +40,7 @@ export abstract class CdkPopupDirective implements AfterContentInit {
     private popupConfig? = inject(POPUP_CONFIG, {optional: true})
     destroyRef = inject(DestroyRef);
 
-
+    @Input({alias:'cdkPopupOrigin'}) originRef?: CdkPopupOriginDirective
     @Input() interaction: Interaction = 'toggleOnClick';
     @Input() popupRole?: PopupRole = 'menu'
     @Input() cdkPopupMaxHeight?: string | number
@@ -64,23 +64,33 @@ export abstract class CdkPopupDirective implements AfterContentInit {
 
     isOpened = this._opened.asReadonly()
 
+    constructor() {
+        effect(()=>{
+            this.registerInteractionHandler(this.triggerRef().nativeElement)
+        })
+    }
+
     open() {
+
         let config: PopupConfig = {
             //TODO: make id to be required
             id: this._id,
             popupRole: this.popupRole,
             hasTriggerElementWidth: this._hasTriggerElementWidth,
-            elementRef: this.originRef?.elementRef || this.triggerRef,
+            elementRef: this.originRef?.elementRef || this.triggerRef(),
             maxHeight: this.cdkPopupMaxHeight,
             width: this.cdkPopupMaxWidth,
             addPanelClass: this.addPopupClass
         }
         config = {...this.popupConfig ?? {}, ...config}
-        this.popupRef = this._popup.open(this.componentOrTemplateRef, config)
+
+        this.popupRef = this._popup.open(this.componentOrTemplateRef(), config)
+        console.log( this.popupRef)
         this._opened.set(true)
     }
 
     close() {
+        console.log( 'close: ' + this.popupRef)
         this.popupRef?.close()
         this._opened.set(false)
     }
@@ -113,11 +123,6 @@ export abstract class CdkPopupDirective implements AfterContentInit {
         }
     }
 
-    ngAfterContentInit(): void {
-        if(this.triggerRef) {
-            this.registerInteractionHandler(this.triggerRef.nativeElement)
-        }
-    }
 }
 
 
@@ -141,13 +146,8 @@ export class CdkPopupOriginDirective {
     providers: [{provide: POPUP, useExisting: CdkPopupPanelDirective}]
 })
 export class CdkPopupPanelDirective extends CdkPopupDirective {
-    @Input() triggerRef: ElementRef
-    componentOrTemplateRef = inject(TemplateRef)
-    private _templatePortal: TemplatePortal
-    constructor( viewContainerRef: ViewContainerRef,) {
-        super();
-        this._templatePortal = new TemplatePortal(this.componentOrTemplateRef, viewContainerRef);
-    }
+    triggerRef = input<ElementRef<HTMLElement>>()
+    componentOrTemplateRef = signal(inject(TemplateRef)).asReadonly()
 }
 
 
@@ -158,8 +158,8 @@ export class CdkPopupPanelDirective extends CdkPopupDirective {
 })
 export class CdkPopupTriggerForDirective extends CdkPopupDirective {
 
-    triggerRef = inject(ElementRef)
-    @Input({alias:'cdkPopupTriggerFor'})  componentOrTemplateRef: ComponentType<Element> | TemplateRef<Element>
+    triggerRef = signal(inject(ElementRef)).asReadonly()
+    componentOrTemplateRef = input<ComponentType<Element> | TemplateRef<Element>>(null,{alias:'cdkPopupTriggerFor'})
 
 }
 

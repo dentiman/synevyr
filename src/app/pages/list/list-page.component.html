@@ -3,7 +3,7 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm" >
-  <ul   cdkSelectListbox  cdkListboxControl [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
+  <ul   cdkSelectListbox  [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
     @for (item of items;track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"
@@ -20,13 +20,16 @@
 </nav>
 
 <p>
-  Selected: {{ ctrl.value }}
+  Control value : {{ ctrl.value }}<br>
+  Errors: {{ ctrl.errors | json}}<br>
+  Errors: {{ ctrl.status}}<br>
+  Invalid: {{ ctrl.invalid | json}}<br>
 </p>
 
-<button (click)="ctrl.setValue( 2)">Change form value to 2</button>
-<button (click)="ctrl.setValue( 3)">Change form value to 3</button>
-<button (click)="ctrl.disable()">Disable</button>
-<button (click)="ctrl.enable()">Enable</button>
+<button suiButton (click)="ctrl.setValue( 2)">Change form value to 2</button>
+<button  suiButton  (click)="ctrl.setValue( 3)">Change form value to 3</button>
+<button  suiButton  (click)="ctrl.disable()">Disable</button>
+<button  suiButton  (click)="ctrl.enable()">Enable</button>
 
 
 <div class="border-b border-gray-200 pb-5 pt-5">
@@ -34,7 +37,7 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm">
-  <ul cdkSelectListbox cdkListboxControl cdkListboxMultiple [formControl]="multipleCtrl"  class="-mx-2 space-y-1">
+  <ul cdkSelectListbox [cdkListboxMultiple]="true"  [formControl]="multipleCtrl"  class="-mx-2 space-y-1">
     @for (item of items;track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"

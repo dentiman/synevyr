@@ -5,6 +5,9 @@ import { ListPageComponent } from './pages/list/list-page.component';
 import { SelectPageComponent } from './pages/select/select-page.component';
 import { AutocompletePageComponent } from './pages/autocomplete/autocomplete-page.component';
 import { DropdownPageComponent } from './pages/dropdown/dropdown-page.component';
+import { ButtonPageComponent } from './pages/button/button-page.component';
+import { ChipPageComponent } from './pages/chip/chip-page.component';
+import { InputPageComponent } from './pages/input/input-page.component';
 
 export const appRoutes: Route[] = [
   {
@@ -30,6 +33,18 @@ export const appRoutes: Route[] = [
       {
         path: 'dropdown',
         component: DropdownPageComponent
+      },
+      {
+        path: 'button',
+        component: ButtonPageComponent
+      },
+      {
+        path: 'chip',
+        component: ChipPageComponent
+      },
+      {
+        path: 'input',
+        component: InputPageComponent
       },
     ]
   }

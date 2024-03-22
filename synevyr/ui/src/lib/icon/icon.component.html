@@ -1,0 +1,6 @@
+@if(iconTemplateRef()) {
+  <ng-container [ngTemplateOutlet]="iconTemplateRef()"></ng-container>
+}
+@if(iconHtml()) {
+  <span [innerHtml]="iconHtml()" ></span>
+}

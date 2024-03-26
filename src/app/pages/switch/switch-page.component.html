@@ -1,0 +1,11 @@
+<sui-switch [formControl]="control" />
+<sui-switch [disabled]="true"  class="bg-red-600"  />
+
+
+<p>
+  <button suiButton (click)="toggle()">Toggle</button>
+  <button  suiButton  (click)="control.disable()">Disable</button>
+  <button  suiButton  (click)="control.enable()">Enable</button>
+  <br>
+  Control value: {{ control.value | json }}
+</p>

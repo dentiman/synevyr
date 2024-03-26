@@ -8,6 +8,9 @@ import { DropdownPageComponent } from './pages/dropdown/dropdown-page.component'
 import { ButtonPageComponent } from './pages/button/button-page.component';
 import { ChipPageComponent } from './pages/chip/chip-page.component';
 import { InputPageComponent } from './pages/input/input-page.component';
+import { SwitchPageComponent } from './pages/switch/switch-page.component';
+import { CheckboxPageComponent } from './pages/checkbox/checkbox-page.component';
+import { RadioBoxPageComponent } from './pages/radio-box/radio-box-page.component';
 
 export const appRoutes: Route[] = [
   {
@@ -45,6 +48,18 @@ export const appRoutes: Route[] = [
       {
         path: 'input',
         component: InputPageComponent
+      },
+      {
+        path: 'switch',
+        component: SwitchPageComponent
+      },
+      {
+        path: 'checkbox',
+        component: CheckboxPageComponent
+      },
+      {
+        path: 'radio-box',
+        component: RadioBoxPageComponent
       },
     ]
   }

@@ -24,7 +24,7 @@ export class CdkPrimitiveValueAccessorDirective implements ControlValueAccessor 
   constructor(@Optional() @Self() public ngControl?: NgControl) {
 
     if (ngControl) {
-      this.ngControl.valueAccessor = this;
+      ngControl.valueAccessor = this;
 
       effect(() => {
         this.onChange(this.value());

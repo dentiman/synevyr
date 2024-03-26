@@ -1,0 +1,24 @@
+<div class="flex items-center mb-4">
+  <input type="checkbox"
+         [formControl]="control"
+         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
+         id="hs-small-switch">
+  <label for="hs-small-switch" class="text-sm text-gray-500 ml-3 dark:text-gray-400">Toggle</label>
+</div>
+
+<div class="flex items-center mb-4">
+  <input type="checkbox"
+         [formControl]="control"
+         class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+         id="hs-small-switch-2">
+  <label for="hs-small-switch-2" class="text-sm text-gray-500 ml-3 dark:text-gray-400">Toggle</label>
+</div>
+
+
+<p>
+  <button suiButton (click)="toggle()">Toggle</button>
+  <button  suiButton  (click)="control.disable()">Disable</button>
+  <button  suiButton  (click)="control.enable()">Enable</button>
+  <br>
+  Control value: {{ control.value | json }}
+</p>

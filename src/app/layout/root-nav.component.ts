@@ -28,9 +28,15 @@ export class RootNavComponent {
         children: [
           {
             label: 'Button',
-            url: '/button',
-            badge: '2'
-
+            url: '/button'
+          },
+          {
+            label: 'Checkbox',
+            url: '/checkbox',
+          },
+          {
+            label: 'Switch',
+            url: '/switch',
           },
           {
             label: 'Chip',
@@ -47,6 +53,10 @@ export class RootNavComponent {
           {
             label: 'Autocomplete',
             url: '/au',
+          },
+          {
+            label: 'Radio',
+            url: '/radio-box',
           },
         ],
       },

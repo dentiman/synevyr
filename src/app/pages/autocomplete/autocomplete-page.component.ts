@@ -2,7 +2,7 @@ import { Component, forwardRef, inject, model, OnInit, viewChild } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  CcSelectControlInterface, CdkAutocompleteInputDirective, CdkPrimitiveValueAccessorDirective,
+  CcSelectControlInterface, CdkAutocompleteInputDirective,
   CdkPopupPanelDirective,
   CdkSelectListboxDirective,
   CdkSelectOptionDirective, SELECT_CONTROL

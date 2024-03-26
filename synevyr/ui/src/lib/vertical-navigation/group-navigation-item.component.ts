@@ -5,7 +5,7 @@ import { ChildNavigationItemComponent } from './child-navigation-item.component'
 import { TwClassDirective } from '@synevyr/cdk';
 import { RouterLinkActive } from '@angular/router';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { IconComponent } from '../icon/icon.component';
 
 

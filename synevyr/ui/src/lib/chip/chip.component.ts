@@ -6,13 +6,15 @@ import type { ClassValue } from 'clsx';
 import { twc } from '@synevyr/cdk';
 
 @Component({
-  selector: 'button[suiChip]',
+  selector: 'sui-chip,button[suiChip]',
   standalone: true,
   imports: [CommonModule, AvatarComponent, SuiCloseButtonComponent],
   template:'<ng-content></ng-content>',
   host: {
-    '[disabled]': 'disabled()',
     '[class]': '_computed()',
+    'tabindex': '0',
+    '[style.pointer-events]': 'disabled() ? "none" : "auto"',
+    '[attr.aria-disabled]': 'disabled()',
   }
 })
 export class SuiChipComponent  {

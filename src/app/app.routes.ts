@@ -11,6 +11,7 @@ import { InputPageComponent } from './pages/input/input-page.component';
 import { SwitchPageComponent } from './pages/switch/switch-page.component';
 import { CheckboxPageComponent } from './pages/checkbox/checkbox-page.component';
 import { RadioBoxPageComponent } from './pages/radio-box/radio-box-page.component';
+import { SelectMultiplePageComponent } from './pages/select-multiple/select-multiple-page.component';
 
 export const appRoutes: Route[] = [
   {
@@ -28,6 +29,10 @@ export const appRoutes: Route[] = [
       {
         path: 'select',
         component: SelectPageComponent
+      },
+      {
+        path: 'select-multiple',
+        component: SelectMultiplePageComponent
       },
       {
         path: 'au',

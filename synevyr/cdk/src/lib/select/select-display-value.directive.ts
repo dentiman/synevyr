@@ -20,7 +20,9 @@ export class SelectDisplayValueDirective {
     const selected = this.value();
     const items = this.items();
 
-    if ( Array.isArray(selected) && items) {
+    if(this.isEmpty()) {
+      return this.placeholder();
+    } else if ( Array.isArray(selected) && items) {
       // @ts-ignore
       return items.filter(item => selected.includes(item.value))
         .map(item => item.label)
@@ -32,6 +34,6 @@ export class SelectDisplayValueDirective {
 
   isEmpty = computed(()=> {
     const value = this.value()
-    return value === null || value === '' || (Array.isArray(value) && Array.length === 0)
+    return value === null || value === '' || (Array.isArray(value) && value.length === 0)
   })
 }

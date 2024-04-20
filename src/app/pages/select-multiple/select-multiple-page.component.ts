@@ -17,11 +17,12 @@ import { ButtonComponent, SuiSelectControlComponent } from '@synevyr/ui';
   imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective,
     CdkSelectListboxDirective,
     CdkSelectTriggerDirective,  SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective, TwClassDirective],
-  templateUrl: './select-page.component.html',
+  templateUrl: './select-multiple-page.component.html',
 })
-export class SelectPageComponent {
+export class SelectMultiplePageComponent {
 
-  ctrl = new FormControl([2])
+  value = signal([1])
+  ctrl = new FormControl([1,2,3,4,5])
 
   setDisabled() {
     this.ctrl.disable()

@@ -1,1 +1,12 @@
-<p>button-page works!</p>
+<div class="space-x-2">
+  <sui-button>Button</sui-button>
+  <sui-button [disabled]="disabled()">Disabled</sui-button>
+  <sui-button [isLoading]="loading()">Loading</sui-button>
+
+</div>
+
+<div class="space-x-2">
+  <sui-button (click)="toggleDisabled()">Disable</sui-button>
+  <sui-button (click)="toggleLoading()">Loading</sui-button>
+
+</div>

@@ -4,23 +4,22 @@
 <button suiButton (click)="setEnabled()" > Enable </button>
 
 
-<div class="max-w-sm pb-4">
+<div class="pb-4 max-w-sm">
   <label id="listbox-label-2" class="block text-sm font-medium leading-6 text-gray-900">Choices to</label>
   <div class="relative mt-2">
-    <sui-select class="block w-full" [options]="items" [formControl]="ctrl" [placeholder]="'choose a user'"/>
+    <sui-select
+                [multiple]="true"
+                [displaySelected]="'chip'" [options]="items"
+                [formControl]="ctrl"
+                [placeholder]="'Select a value'"
+    />
+
   </div>
 </div>
 
 <button  suiButton (click)="setValue()" > Set value 4 </button><br>
 
-
-Control value : {{ ctrl.value }}<br>
+Control value : {{ ctrl.value | json }}<br>
 Errors: {{ ctrl.errors | json}}<br>
 Errors: {{ ctrl.status}}<br>
 Invalid: {{ ctrl.invalid | json}}<br>
-
-<div class="max-w-sm pb-4">
-  <div class="relative mt-2">
-    <sui-select  [options]="items" [formControl]="ctrl" [placeholder]="'choose a user'"/>
-  </div>
-</div>

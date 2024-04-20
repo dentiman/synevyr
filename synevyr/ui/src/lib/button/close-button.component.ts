@@ -4,7 +4,7 @@ import type { ClassValue } from 'clsx';
 import { twc } from '@synevyr/cdk';
 
 @Component({
-  selector: 'button[suiCloseButton]',
+  selector: 'sui-close-button,button[suiCloseButton]',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -12,8 +12,10 @@ import { twc } from '@synevyr/cdk';
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>`,
   host: {
-    '[disabled]': 'disabled()',
     '[class]': '_computed()',
+    'tabindex': '0',
+    '[style.pointer-events]': 'disabled() ? "none" : "auto"',
+    '[attr.aria-disabled]': 'disabled()',
   }
 })
 export class SuiCloseButtonComponent {
@@ -26,5 +28,5 @@ export class SuiCloseButtonComponent {
     return  twc(this.twClass, this._class());
   });
 
-  twClass = 'rounded-full text-gray-500 shadow-sm hover:bg-red-700/50 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-gray-50'
+  twClass = 'rounded-full text-gray-500 shadow-sm hover:bg-red-700/50 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-gray-50 aria-disabled:bg-gray-300'
 }

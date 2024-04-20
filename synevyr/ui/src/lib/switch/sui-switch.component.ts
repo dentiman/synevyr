@@ -10,8 +10,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   imports: [CommonModule, TwClassDirective],
   templateUrl: './sui-switch.component.html',
   host: {
-    '[attr.disabled]': 'disabled()',
-    '[attr.aria-disabled]': 'disabled()',
     '[class]': '_computed()',
     'role': 'switch',
     '[attr.aria-checked]': 'checked()',
@@ -20,7 +18,9 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
     '(blur)': '_onTouched()',
     '(keydown.space)': '_onKeydown($event)',
     '(keydown.enter)': '_onKeydown($event)',
-    'tabindex': '0'
+    'tabindex': '0',
+    '[style.pointer-events]': 'disabled() ? "none" : "auto"',
+    '[attr.aria-disabled]': 'disabled()',
   }
 })
 export class SuiSwitchComponent implements ControlValueAccessor {

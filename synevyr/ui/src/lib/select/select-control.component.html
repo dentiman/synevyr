@@ -1,6 +1,22 @@
-<span cdkSelectDisplayValue [value]="value()" [items]="options()" [placeholder]="placeholder()"
-      class="block truncate h-6 data-[empty=true]:text-gray-700"></span>
-@if (value() === null || disabled() ) {
+@if(displaySelected() === 'chip' && !isEmpty() ) {
+  <span class="w-full flex flex-wrap  gap-x-1.5  gap-y-1.5 ">
+        @for  (value of value();track value) {
+          <sui-chip [disabled]="disabled()" class="h-6 rounded-md">
+             <span cdkSelectDisplayValue
+                   [value]="value" [items]="options()"
+                   class="truncate "></span>
+            @if(!disabled()) {
+              <sui-close-button (click)="removeValue(value)" class="-mr-1"></sui-close-button>
+            }
+          </sui-chip>
+        }
+  </span>
+} @else {
+  <span cdkSelectDisplayValue [value]="value()" [items]="options()" [placeholder]="placeholder()"
+  class="truncate data-[empty=true]:text-gray-700"></span>
+}
+
+@if (multiple() || value() === null || disabled() ) {
   <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
     <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd"
@@ -19,7 +35,7 @@
 }
 
 <ng-template cdkPopupPanel [hasTriggerElementWidth]="true" [triggerRef]="triggerRef">
-  <ul cdkSelectListbox [(value)]="value" [(disabled)]="disabled" >
+  <ul cdkSelectListbox [cdkListboxMultiple]="multiple()" [(value)]="value" [(disabled)]="disabled" >
     @for (item of options();track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"

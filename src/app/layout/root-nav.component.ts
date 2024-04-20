@@ -62,8 +62,17 @@ export class RootNavComponent {
       },
       {
         label: 'Select',
-        url: '/select',
         icon: this.folderIcon(),
+        children: [
+          {
+            label: 'Single',
+            url: '/select',
+          },
+          {
+            label: 'Multiple',
+            url: '/select-multiple',
+          },
+        ]
       },
       {
         label: 'Input',

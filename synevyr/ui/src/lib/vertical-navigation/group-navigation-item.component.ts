@@ -33,7 +33,7 @@ import { IconComponent } from '../icon/icon.component';
         </svg>
       </button>
 
-      <ul [twClass]="{'block': expanded(),'hidden': !expanded() || item().children.length === 0 }"
+      <ul [twClass]="{'block': expanded(),'hidden': !expanded() || item().children?.length === 0 }"
           class="mt-1 px-2" [id]="'sub-menu-'+id">
         @for (child of item().children; track $index) {
           <li suiChildNavigationItem

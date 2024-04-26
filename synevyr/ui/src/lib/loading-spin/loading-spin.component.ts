@@ -15,7 +15,6 @@ import { CommonModule } from '@angular/common';
 })
 export class SuiLoadingSpinComponent {
 
-  @Input() size: number
   @Input() strokeWidth: number = 6
 
 }

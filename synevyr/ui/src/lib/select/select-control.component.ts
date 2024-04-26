@@ -51,7 +51,7 @@ import type { ClassValue } from 'clsx';
 })
 export class SuiSelectControlComponent implements CcSelectControlInterface {
 
-  options = input([])
+  options = input<{label:string,value:string}[]>([])
   multiple = input(false)
   placeholder = input<string>('')
   displaySelected = input<TemplateRef<any>|string|null>(null)
@@ -78,7 +78,7 @@ export class SuiSelectControlComponent implements CcSelectControlInterface {
     return value === null || value === '' || (Array.isArray(value) && value.length === 0)
   })
 
-  removeValue(value) {
+  removeValue(value: any) {
 
     if (this.multiple() && Array.isArray(this.value())) {
       // @ts-ignore1

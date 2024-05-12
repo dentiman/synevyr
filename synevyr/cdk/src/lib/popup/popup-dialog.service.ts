@@ -1,6 +1,5 @@
 import {inject, Injectable, TemplateRef} from '@angular/core';
 import {Dialog, DialogRef} from "@angular/cdk/dialog";
-import PopupRef from "./popup-ref";
 import {ComponentType, Overlay} from "@angular/cdk/overlay";
 import PopupConfig from "./popup-config";
 import {PopupServiceInterface} from "./popup.service";
@@ -12,7 +11,7 @@ export class PopupDialogService implements PopupServiceInterface {
 
   private _dialog = inject(Dialog)
   private _overlay = inject(Overlay)
-  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, config: PopupConfig): PopupRef {
+  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, config: PopupConfig): DialogRef {
 
     const existDialogRef = this._dialog.getDialogById(config.id);
     if(existDialogRef) return existDialogRef;

@@ -1,12 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, TemplateRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   CdkDatepickerInputDirective,
-  DatepickerDirective,
-  CdkPopupPanelDirective,
-  CdkPopupTriggerForDirective,
-  CdkPopupOriginDirective, CdkDateRangePickerDirective, CdkStartDateInputDirective, CdkEndDateInputDirective
+  DatepickerDirective, CdkDateRangePickerDirective, CdkStartDateInputDirective, CdkEndDateInputDirective, popup
 } from '@synevyr/cdk';
 import { SuiCalendarComponent } from '@synevyr/ui';
 
@@ -18,9 +15,6 @@ import { SuiCalendarComponent } from '@synevyr/ui';
     CdkDatepickerInputDirective,
     SuiCalendarComponent,
     DatepickerDirective,
-    CdkPopupTriggerForDirective,
-    CdkPopupPanelDirective,
-    CdkPopupOriginDirective,
     CdkDateRangePickerDirective,
     CdkStartDateInputDirective,
     CdkEndDateInputDirective
@@ -30,5 +24,7 @@ import { SuiCalendarComponent } from '@synevyr/ui';
 export class DatepickerPageComponent {
   date = new FormControl<string>('2023-10-12');
   dateEnd = new FormControl<string>('2023-10-17');
-
+  popupOriginRef = viewChild<ElementRef>('popupOrigin')
+  popupPortalRef = viewChild<TemplateRef<any>>('popupPortal')
+  popupRef = popup(this.popupPortalRef,this.popupOriginRef)
 }

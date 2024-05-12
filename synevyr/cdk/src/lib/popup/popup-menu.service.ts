@@ -1,6 +1,5 @@
 import {inject, Injectable, TemplateRef} from '@angular/core';
-import {Dialog} from "@angular/cdk/dialog";
-import PopupRef from "./popup-ref";
+import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import {
   ComponentType,
   FlexibleConnectedPositionStrategy,
@@ -20,7 +19,7 @@ export class PopupMenuService implements PopupServiceInterface {
   private _dialog = inject(Dialog)
   private _overlay = inject(Overlay)
   private _viewportRuler: ViewportRuler = inject(ViewportRuler)
-  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, config: PopupConfig): PopupRef {
+  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, config: PopupConfig): DialogRef {
     const existDialogRef = this._dialog.getDialogById(config.id);
 
     if(existDialogRef) return existDialogRef;
@@ -28,20 +27,18 @@ export class PopupMenuService implements PopupServiceInterface {
 
     config = {...DEFAULT_POPUP_MENU_CONFIG_DATA,...config}
 
-    config.positionStrategy = this._getOverlayPositionStrategy(config)
+    if(!config.positionStrategy) {
+      config.positionStrategy = this._getOverlayPositionStrategy(config);
+    }
 
-    if(config.hasTriggerElementWidth) {
+    if(config.hasOriginElementWidth) {
       config.width = config.elementRef.nativeElement.getBoundingClientRect().width
     }
 
 
     const dialogRef =  this._dialog.open(componentOrTemplateRef,config)
 
-    // dialogRef.outsidePointerEvents.subscribe((event)=> {
-    //   console.log(event)
-    // })
-
-    if(config.hasTriggerElementWidth) {
+    if(config.hasOriginElementWidth) {
       this._viewportRuler.change().pipe(
           takeUntil( dialogRef.closed)
       ).subscribe(()=>{

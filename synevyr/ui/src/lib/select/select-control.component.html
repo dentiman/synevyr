@@ -34,7 +34,7 @@
   </span>
 }
 
-<ng-template cdkPopupPanel [hasTriggerElementWidth]="true" [triggerRef]="triggerRef">
+<ng-template #selectPortal>
   <ul cdkSelectListbox [cdkListboxMultiple]="multiple()" [(value)]="value" [(disabled)]="disabled" >
     @for (item of options();track item.value) {
       <li>

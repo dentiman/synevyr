@@ -1,14 +1,23 @@
 <div class="max-w-sm pb-4">
-  <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900 peer-aria-invalid:text-pink-600">Assigned to: </label>
-  <div class="relative mt-2" >
+  <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900 peer-aria-invalid:text-pink-600">Assigned
+    to: </label>
+  <div class="relative mt-2">
 
     <input type="text"
-           cdkAutocompleteInput
+           #autocompleteInput
            [formControl]="ctrl"
            cdkControlStatus
+           aria-haspopup='listbox'
+           (keydown)='listbox().onKeydown($event)'
+           [attr.aria-expanded]="popupRef.opened()"
+           role='combobox'
+           [value]="value()"
+           aria-controls='options'
            placeholder="search"
+           (focus)="popupRef.open()"
            class="peer w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset
-         ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-gray-200 aria-disabled:bg-gray-200  aria-invalid:ring-pink-600"
+    ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-gray-200
+    aria-disabled:bg-gray-200 aria-invalid:ring-pink-600"
     >
 
     <p class="mt-2 invisible peer-aria-invalid:visible text-pink-600 text-sm">
@@ -16,9 +25,9 @@
     </p>
 
 
-    <ng-template cdkPopupPanel [hasTriggerElementWidth]="true" [triggerRef]="triggerRef().elementRef">
-      <ul cdkSelectListbox  [(value)]="value" >
-        @for (item of filteredOptions | async ;track item) {
+    <ng-template #autocompletePortal>
+      <ul cdkSelectListbox [(value)]="value">
+        @for (item of filteredOptions | async; track item) {
           <li>
             <a [cdkSelectOption]="item"
 
@@ -27,7 +36,7 @@
            aria-[selected=false]:data-[active=true]:bg-gray-100
            aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"
             >
-              {{ item}}
+              {{ item }}
             </a>
           </li>
         }
@@ -39,12 +48,12 @@
 
 Control value : {{ ctrl.value }}<br>
 Model value : {{ value() }}<br>
-Errors: {{ ctrl.errors | json}}<br>
-Errors: {{ ctrl.status}}<br>
-Invalid: {{ ctrl.invalid | json}}<br>
+Errors: {{ ctrl.errors | json }}<br>
+Errors: {{ ctrl.status }}<br>
+Invalid: {{ ctrl.invalid | json }}<br>
 
-<button suiButton  (click)="setEnabled()" > Enable </button><br>
-<button suiButton (click)="setDisabled()" > Disable </button><br>
-<button  suiButton (click)="setErrors()" > Errors </button><br>
-<button  suiButton (click)="setValue()" > Set value Two </button><br>
+<button suiButton (click)="setEnabled()"> Enable</button><br>
+<button suiButton (click)="setDisabled()"> Disable</button><br>
+<button suiButton (click)="setErrors()"> Errors</button><br>
+<button suiButton (click)="setValue()"> Set value Two</button><br>
 

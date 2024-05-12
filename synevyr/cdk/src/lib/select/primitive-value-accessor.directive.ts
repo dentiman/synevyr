@@ -15,11 +15,11 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
     '(blur)': '_onTouched()'
   }
 })
-export class CdkPrimitiveValueAccessorDirective implements ControlValueAccessor {
+export class CdkPrimitiveValueAccessorDirective<T> implements ControlValueAccessor {
 
   disabled = model(false);
 
-  value = model(null);
+  value = model<T>(null);
 
   constructor(@Optional() @Self() public ngControl?: NgControl) {
 

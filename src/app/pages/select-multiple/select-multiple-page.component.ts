@@ -2,10 +2,8 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   CdkControlStatusDirective,
-  CdkPopupTriggerForDirective,
   CdkSelectListboxDirective,
-  CdkSelectOptionDirective,
-  CdkSelectTriggerDirective, TwClassDirective
+  CdkSelectOptionDirective,TwClassDirective
 } from '@synevyr/cdk';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,9 +12,8 @@ import { ButtonComponent, SuiSelectControlComponent } from '@synevyr/ui';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective, CdkPopupTriggerForDirective,
-    CdkSelectListboxDirective,
-    CdkSelectTriggerDirective,  SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective, TwClassDirective],
+  imports: [CommonModule, ReactiveFormsModule, CdkSelectOptionDirective,
+    CdkSelectListboxDirective, SelectDisplayValueDirective, SuiSelectControlComponent, ButtonComponent, CdkControlStatusDirective, TwClassDirective],
   templateUrl: './select-multiple-page.component.html',
 })
 export class SelectMultiplePageComponent {

@@ -1,5 +1,6 @@
 import {DialogConfig} from "@angular/cdk/dialog";
 import {ElementRef, InjectionToken} from "@angular/core";
+import { BasePortalOutlet } from '@angular/cdk/portal';
 
 export type PopupRole = 'dialog' | 'sidebar' | 'menu'
 
@@ -23,9 +24,9 @@ export  const  POPUP_CONFIG = new InjectionToken<PopupConfig>('POPUP_CONFIG')
 
 
 
-export default  class PopupConfig extends DialogConfig {
+export default  class PopupConfig<D = unknown, R = unknown, C extends BasePortalOutlet = BasePortalOutlet> extends DialogConfig<D , R , C > {
     readonly elementRef?: ElementRef
-    hasTriggerElementWidth?: boolean
+    hasOriginElementWidth?: boolean
     readonly popupRole?: PopupRole
     addPanelClass?: string[]
 }

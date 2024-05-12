@@ -1,41 +1,61 @@
-import { Component, forwardRef, inject, model, OnInit, viewChild } from '@angular/core';
+import {
+  Component, DestroyRef,
+  effect,
+  ElementRef,
+  forwardRef,
+  inject,
+  model,
+  OnInit,
+  TemplateRef,
+  viewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  CcSelectControlInterface, CdkAutocompleteInputDirective,
-  CdkPopupPanelDirective,
   CdkSelectListboxDirective,
-  CdkSelectOptionDirective, SELECT_CONTROL
+  CdkSelectOptionDirective, popup
 } from '@synevyr/cdk';
 import { CdkControlStatusDirective } from '@synevyr/cdk';
 import { map, Observable, startWith } from 'rxjs';
 import { ButtonComponent } from '@synevyr/ui';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'synevyr-autocomplete-page',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, CdkSelectListboxDirective,
-    CdkSelectOptionDirective, CdkControlStatusDirective, ButtonComponent, CdkPopupPanelDirective, CdkAutocompleteInputDirective
+    CdkSelectOptionDirective, CdkControlStatusDirective, ButtonComponent,
   ],
   templateUrl: './autocomplete-page.component.html',
 
-  providers: [
-    {
-      provide: SELECT_CONTROL,
-      useExisting:  forwardRef(() => AutocompletePageComponent )
-    }
-  ]
-
 })
-export class AutocompletePageComponent implements OnInit, CcSelectControlInterface  {
+export class AutocompletePageComponent implements OnInit  {
 
   ctrl = new FormControl('One',{validators: Validators.required})
 
   value = model(null)
   listbox = viewChild(CdkSelectListboxDirective)
-  portal = viewChild(CdkPopupPanelDirective)
-  triggerRef = viewChild(CdkAutocompleteInputDirective)
+
+  autocompletePortal = viewChild<TemplateRef<any>>('autocompletePortal')
+  autocompleteInput = viewChild<ElementRef>('autocompleteInput')
+  popupRef = popup(this.autocompletePortal,this.autocompleteInput,{hasOriginElementWidth: true})
+
+
   filteredOptions: Observable<string[]>;
+
+  constructor(destroyRef: DestroyRef) {
+    effect(() => {
+
+      this.listbox()?.optionTriggered
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe(
+          () => {
+            this.popupRef.close();
+          }
+        );
+
+    });
+  }
 
   ngOnInit() {
     this.filteredOptions = this.ctrl.valueChanges.pipe(

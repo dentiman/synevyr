@@ -1,37 +1,32 @@
 import {
   AfterViewInit,
-  Component, computed, effect, ElementRef, forwardRef,
+  Component, computed, DestroyRef, effect, ElementRef, forwardRef,
   inject,
   input, model,
   OnInit,
   signal,
-  Signal,
   TemplateRef, viewChild,
-  ViewChild,
-  WritableSignal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  CcSelectControlInterface,
   CdkControlStatusDirective,
-  CdkPrimitiveValueAccessorDirective, CdkPopupPanelDirective,
+  CdkPrimitiveValueAccessorDirective,
   CdkSelectListboxDirective,
   CdkSelectOptionDirective,
-  CdkSelectTriggerDirective,
-  SELECT_CONTROL,
-  SelectDisplayValueDirective, twc
+  SelectDisplayValueDirective, twc, popup
 } from '@synevyr/cdk';
 import { SuiChipComponent } from '../chip/chip.component';
 import { SuiCloseButtonComponent } from '../button/close-button.component';
 import type { ClassValue } from 'clsx';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'sui-select,button[suiSelectControl]',
   standalone: true,
-  imports: [CommonModule, SelectDisplayValueDirective, CdkSelectListboxDirective, CdkSelectOptionDirective, CdkPopupPanelDirective, SuiChipComponent, SuiCloseButtonComponent],
+  imports: [CommonModule, SelectDisplayValueDirective, CdkSelectListboxDirective, CdkSelectOptionDirective,
+    SuiChipComponent, SuiCloseButtonComponent],
   templateUrl: './select-control.component.html',
   hostDirectives: [
-    CdkSelectTriggerDirective,
     CdkPrimitiveValueAccessorDirective,
     CdkControlStatusDirective
   ],
@@ -40,16 +35,13 @@ import type { ClassValue } from 'clsx';
     'tabindex': '0',
     '[style.pointer-events]': 'disabled() ? "none" : "auto"',
     '[attr.aria-disabled]': 'disabled()',
+    '(keydown)': 'onKeydown($event)',
+    '[aria-expanded]': 'popupRef.opened()',
+    '(click)': 'popupRef.open()',
   },
-  providers: [
-    {
-      provide: SELECT_CONTROL,
-      useExisting:  forwardRef(() => SuiSelectControlComponent)
-    }
-  ],
 
 })
-export class SuiSelectControlComponent implements CcSelectControlInterface {
+export class SuiSelectControlComponent  {
 
   options = input<{label:string,value:string}[]>([])
   multiple = input(false)
@@ -59,10 +51,34 @@ export class SuiSelectControlComponent implements CcSelectControlInterface {
 
   value = inject(CdkPrimitiveValueAccessorDirective).value
   listbox = viewChild(CdkSelectListboxDirective)
-  portal = viewChild(CdkPopupPanelDirective)
 
+  triggerRef = signal(inject(ElementRef)).asReadonly()
+  portalRef = viewChild<TemplateRef<any>>('selectPortal')
 
-  triggerRef = inject(ElementRef<HTMLElement>)
+  popupRef = popup(this.portalRef,this.triggerRef,{hasOriginElementWidth: true})
+
+  onKeydown($event) {
+    this.listbox()?.onKeydown($event);
+  }
+
+  constructor(destroyRef: DestroyRef) {
+
+    effect(() => {
+
+        this.listbox()?.optionTriggered
+          .pipe(takeUntilDestroyed(destroyRef))
+          .subscribe(
+            () => {
+              if (!this.listbox()?.multiple()) {
+                this.popupRef.close();
+              }
+            }
+          );
+
+    });
+
+  }
+
 
   class = input<ClassValue>('',{alias: 'class'})
 

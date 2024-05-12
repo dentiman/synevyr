@@ -58,6 +58,14 @@ export class RootNavComponent {
             label: 'Radio',
             url: '/radio-box',
           },
+          {
+            label: 'Tooltips',
+            url: '/tooltips',
+          },
+          {
+            label: 'Tabs',
+            url: '/tabs',
+          },
         ],
       },
       {

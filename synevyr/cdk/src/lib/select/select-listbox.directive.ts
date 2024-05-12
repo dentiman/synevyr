@@ -26,7 +26,7 @@ let nextListboxId = 0;
     '(keydown)': 'onKeydown($event)'
   }
 })
-export class CdkSelectListboxDirective extends CdkPrimitiveValueAccessorDirective implements OnDestroy, AfterContentInit {
+export class CdkSelectListboxDirective<T> extends CdkPrimitiveValueAccessorDirective<T> implements OnDestroy, AfterContentInit {
 
   destroyRef = inject(DestroyRef);
 

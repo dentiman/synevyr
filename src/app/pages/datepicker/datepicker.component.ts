@@ -1,4 +1,4 @@
-import { Component, ElementRef, TemplateRef, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, TemplateRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -6,6 +6,7 @@ import {
   DatepickerDirective, CdkDateRangePickerDirective, CdkStartDateInputDirective, CdkEndDateInputDirective, popup
 } from '@synevyr/cdk';
 import { SuiCalendarComponent } from '@synevyr/ui';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -26,5 +27,12 @@ export class DatepickerPageComponent {
   dateEnd = new FormControl<string>('2023-10-17');
   popupOriginRef = viewChild<ElementRef>('popupOrigin')
   popupPortalRef = viewChild<TemplateRef<any>>('popupPortal')
-  popupRef = popup(this.popupPortalRef,this.popupOriginRef)
+
+  popupRef = popup(toObservable(computed(()=>{
+    return {
+      componentOrTemplateRef: this.popupPortalRef(),
+      elementRef: this.popupOriginRef()
+    }
+  })))
+
 }

@@ -1,5 +1,5 @@
 import {
-  Component, DestroyRef,
+  Component, computed, DestroyRef,
   effect,
   ElementRef,
   forwardRef,
@@ -18,7 +18,7 @@ import {
 import { CdkControlStatusDirective } from '@synevyr/cdk';
 import { map, Observable, startWith } from 'rxjs';
 import { ButtonComponent } from '@synevyr/ui';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'synevyr-autocomplete-page',
@@ -38,7 +38,14 @@ export class AutocompletePageComponent implements OnInit  {
 
   autocompletePortal = viewChild<TemplateRef<any>>('autocompletePortal')
   autocompleteInput = viewChild<ElementRef>('autocompleteInput')
-  popupRef = popup(this.autocompletePortal,this.autocompleteInput,{hasOriginElementWidth: true})
+
+  // @ts-ignore
+  popupRef = popup(toObservable(computed(()=>{
+    return {
+      componentOrTemplateRef: this.autocompletePortal(),
+      elementRef: this.autocompleteInput()
+    }
+  })))
 
 
   filteredOptions: Observable<string[]>;

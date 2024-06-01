@@ -10,10 +10,10 @@ type DefaultPortalData = {
   selector: 'synevyr-default-popup-portal',
   standalone: true,
   imports: [CommonModule],
-  template: `{{message()}}`,
+  template: `{{message}}`,
 })
 export class DefaultPopupPortalComponent {
   popupRef = inject(PopupRef);
   // @ts-ignore
-  message = this.popupRef.config.data.message;
+  message = this.popupRef.config().data.message;
 }

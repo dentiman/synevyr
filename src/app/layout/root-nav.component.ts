@@ -63,6 +63,10 @@ export class RootNavComponent {
             url: '/tooltips',
           },
           {
+            label: 'Popup Playground',
+            url: '/popup-playground',
+          },
+          {
             label: 'Tabs',
             url: '/tabs',
           },

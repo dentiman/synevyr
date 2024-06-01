@@ -7,7 +7,7 @@ import {
   ViewportRuler
 } from "@angular/cdk/overlay";
 import PopupConfig, {DEFAULT_POPUP_MENU_CONFIG_DATA} from "./popup-config";
-import {DROPDOWN_LEFT_POSITIONS} from "./popup-positions";
+import {  getConnectedPosition } from './popup-positions';
 import {filter, fromEvent, takeUntil} from "rxjs";
 import {PopupServiceInterface} from "./popup.service";
 
@@ -19,7 +19,7 @@ export class PopupMenuService implements PopupServiceInterface {
   private _dialog = inject(Dialog)
   private _overlay = inject(Overlay)
   private _viewportRuler: ViewportRuler = inject(ViewportRuler)
-  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, config: PopupConfig): DialogRef {
+  open<C = unknown>( config: PopupConfig): DialogRef {
     const existDialogRef = this._dialog.getDialogById(config.id);
 
     if(existDialogRef) return existDialogRef;
@@ -36,7 +36,7 @@ export class PopupMenuService implements PopupServiceInterface {
     }
 
 
-    const dialogRef =  this._dialog.open(componentOrTemplateRef,config)
+    const dialogRef =  this._dialog.open(config.componentOrTemplateRef,config)
 
     if(config.hasOriginElementWidth) {
       this._viewportRuler.change().pipe(
@@ -71,12 +71,7 @@ export class PopupMenuService implements PopupServiceInterface {
         .flexibleConnectedTo(config.elementRef)
         .withLockedPosition()
         .withGrowAfterOpen()
-        .withPositions(this._getOverlayPositions(config));
-  }
-
-
-  private _getOverlayPositions(config) {
-    return DROPDOWN_LEFT_POSITIONS;
+        .withPositions(getConnectedPosition('below.left',5));
   }
 
 }

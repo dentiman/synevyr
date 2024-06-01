@@ -6,7 +6,7 @@ import {PopupDialogService} from "./popup-dialog.service";
 import {PopupMenuService} from "./popup-menu.service";
 
 export interface PopupServiceInterface {
-  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, popupConfig: PopupConfig): DialogRef
+  open( popupConfig: PopupConfig): DialogRef
 }
 
 export const POPUP_SERVICE = new InjectionToken<PopupServiceInterface>(
@@ -21,10 +21,10 @@ export class PopupService implements PopupServiceInterface  {
   private _dialog = inject(PopupDialogService)
   private _menu = inject(PopupMenuService)
 
-  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, popupConfig: PopupConfig): DialogRef {
-      if(popupConfig.popupRole === 'dialog') return  this._dialog.open(componentOrTemplateRef,popupConfig)
-      if(popupConfig.popupRole === 'menu') return  this._menu.open(componentOrTemplateRef,popupConfig)
-      return  this._menu.open(componentOrTemplateRef,popupConfig)
+  open<C = unknown>( popupConfig: PopupConfig): DialogRef {
+      if(popupConfig.popupRole === 'dialog') return  this._dialog.open(popupConfig)
+      if(popupConfig.popupRole === 'menu') return  this._menu.open(popupConfig)
+      return  this._menu.open(popupConfig)
   }
 
 }

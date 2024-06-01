@@ -14,6 +14,7 @@ import { RadioBoxPageComponent } from './pages/radio-box/radio-box-page.componen
 import { SelectMultiplePageComponent } from './pages/select-multiple/select-multiple-page.component';
 import { TooltipPageComponent } from './pages/tooltip/tooltip-page.component';
 import { TabsPageComponent } from './pages/tabs/tabs-page.component';
+import { PopupPlaygroundPageComponent } from './pages/popup-playground/popup-playground-page.component';
 
 export const appRoutes: Route[] = [
   {
@@ -71,6 +72,10 @@ export const appRoutes: Route[] = [
       {
         path: 'tooltips',
         component: TooltipPageComponent
+      },
+      {
+        path: 'popup-playground',
+        component: PopupPlaygroundPageComponent
       },
       {
         path: 'tabs',

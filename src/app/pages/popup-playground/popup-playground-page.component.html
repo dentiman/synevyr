@@ -1,0 +1,79 @@
+<div class="space-x-2 mb-3 mt-14">
+  <sui-button class="w-15" (click)="open()" #popupOrigin>Trigger</sui-button>
+  <ng-template #popupPortal>
+    <div class="w-24 h-24 bg-gray-100">
+      popup content
+    </div>
+  </ng-template>
+
+</div>
+
+<div class="mb-4">
+  <label class="text-base font-semibold text-gray-900">OriginX</label>
+  <form>
+  <fieldset class="mt-4">
+    <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+      @for (item of x; track ('originX' + $index)) {
+      <div class="flex items-center">
+        <input [id]="'originX'+item" name="OriginX" (change)="originX.set(item)" [value]="item"   type="radio"  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+        <label [for]="'originX'+item"  class="ml-3 block text-sm font-medium leading-6 text-gray-900">{{item}}</label>
+      </div>
+      }
+    </div>
+  </fieldset>
+  </form>
+</div>
+<div class="mb-4">
+  <label class="text-base font-semibold text-gray-900">OriginY</label>
+  <form>
+  <fieldset class="mt-4">
+    <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+      @for (item of y; track ('originY' + $index)) {
+        <div class="flex items-center">
+          <input [id]="'originY'+item" name="OriginY" (change)="originY.set(item)" [value]="item"   type="radio"  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+          <label [for]="'originY'+item"  class="ml-3 block text-sm font-medium leading-6 text-gray-900">{{item}}</label>
+        </div>
+      }
+    </div>
+  </fieldset>
+  </form>
+</div>
+
+<div class="mb-4">
+  <label class="text-base font-semibold text-gray-900">OverlayX</label>
+  <form>
+    <fieldset class="mt-4">
+      <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+        @for (item of x; track ('overlayX' + $index)) {
+          <div class="flex items-center">
+            <input [id]="'overlayX'+item" name="OverlayX"  (change)="overlayX.set(item)" [value]="item"   type="radio"  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            <label [for]="'overlayX'+item"  class="ml-3 block text-sm font-medium leading-6 text-gray-900">{{item}}</label>
+          </div>
+        }
+      </div>
+    </fieldset>
+  </form>
+</div>
+<div class="mb-4">
+  <label class="text-base font-semibold text-gray-900">OverlayY</label>
+  <form>
+    <fieldset class="mt-4">
+      <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+        @for (item of y; track ('overlayY' + $index)) {
+          <div class="flex items-center">
+            <input [id]="'overlayY'+item" name="OverlayY"  (change)="overlayY.set(item)" [value]="item"   type="radio"  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            <label [for]="'overlayY'+item"  class="ml-3 block text-sm font-medium leading-6 text-gray-900">{{item}}</label>
+          </div>
+        }
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+
+<div class="pb-4">
+ originX: {{originX()}}<br>
+ originY: {{originY()}}<br>
+ overlayX: {{overlayX()}}<br>
+ overlayY:  {{overlayY()}}<br>
+</div>

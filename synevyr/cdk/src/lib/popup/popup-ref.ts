@@ -1,66 +1,74 @@
 import { POPUP_SERVICE, PopupServiceInterface } from './popup.service';
 import PopupConfig, { POPUP_CONFIG } from './popup-config';
 
-import { computed, ElementRef, inject, Signal, signal, TemplateRef, WritableSignal } from '@angular/core';
-import { ComponentType } from '@angular/cdk/overlay';
-import { DialogRef } from '@angular/cdk/dialog';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { filter, Subject } from 'rxjs';
+import { computed,  inject, Signal, signal,  } from '@angular/core';
+import {  OverlayRef } from '@angular/cdk/overlay';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { map, Observable, Subject, tap } from 'rxjs';
 
 
 export function popup(
-  componentOrTemplateRef: Signal<ComponentType<any> | TemplateRef<any>| undefined>,
-  originElementRef: Signal<ElementRef<HTMLElement>>,
-  config: PopupConfig = {}
+  config: Observable< PopupConfig> | Signal<PopupConfig>,
 ) {
   const popupService = inject(POPUP_SERVICE);
-  const popupConfig = { ...inject(POPUP_CONFIG, { optional: true }),...config };
+  const defaultConfig = inject(POPUP_CONFIG, { optional: true }) ?? {}
 
-  return new PopupRef(popupService,popupConfig,componentOrTemplateRef,originElementRef)
+  const config$ = config instanceof Observable ? config :  toObservable(config);
+
+  return new PopupRef(popupService,config$.pipe(map(value=> { return { ...defaultConfig, ...value } })))
 }
 
 let popupInstanceId = 0;
 
 export class PopupRef {
-
-  private _cdkDialogRef? = signal<DialogRef>(null)
   private _id = `popup-id-${popupInstanceId++}`;
-  opened = computed(()=>!!this._cdkDialogRef()?.overlayRef.hasAttached())
-  closed$ = toObservable( this.opened).pipe(filter((value)=> value === false))
-  overlayRef = computed(()=> {
-   return this._cdkDialogRef()?.overlayRef;
-  })
 
-  open$ = new Subject<DialogRef>();
 
-  config: WritableSignal<PopupConfig>
+  _open$ = new Subject<OverlayRef>();
+  open$ = this._open$.asObservable()
+  overlayRef = toSignal(this._open$.asObservable())
+  opened = computed(()=>!!this.overlayRef()?.hasAttached())
+
+  config = signal<PopupConfig>(null)
 
   constructor(
     private _popupService: PopupServiceInterface,
-    config: PopupConfig,
-    private _componentOrTemplateRef: Signal<ComponentType<any> | TemplateRef<Element>>,
-    private _originElementRef: Signal<ElementRef<HTMLElement>>
+    config: Observable<PopupConfig>,
   ) {
-    this.config =  signal<PopupConfig>(config)
+    config.pipe(
+      map(value => {
+      return {...value, ...{
+          id: this._id,
+          providers: [
+            {
+              provide: PopupRef,
+              useValue: this,
+            }
+          ]
+        }}
+    }),
+    tap((config: PopupConfig)=>{
+      const overlayRef = this.overlayRef()
+      if(overlayRef && this.overlayRef()?.hasAttached()  && config.positionStrategy) {
+        overlayRef.updatePositionStrategy(config.positionStrategy);
+        overlayRef.updatePosition();
+      }
+    })
+    ).subscribe((value)=>{
+
+      this.config.set(value)
+    })
   }
 
   open() {
-    const config = {...this.config() ?? {}, ...{
-        elementRef: this._originElementRef(),
-        id: this._id,
-        providers: [
-          {
-            provide: PopupRef,
-            useValue: this,
-          }
-        ]
-      }}
-    this._cdkDialogRef.set(this._popupService.open(this._componentOrTemplateRef(),  config))
+
+    this._open$.next(this._popupService.open(this.config()).overlayRef)
+
   }
 
   close() {
-    this._cdkDialogRef()?.close()
-    this._cdkDialogRef.set(null)
+    this.overlayRef()?.detach()
+
   }
   toggle() {
     if (this.opened()) {

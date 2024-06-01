@@ -11,14 +11,14 @@ export class PopupDialogService implements PopupServiceInterface {
 
   private _dialog = inject(Dialog)
   private _overlay = inject(Overlay)
-  open<C = unknown>( componentOrTemplateRef: ComponentType<C> | TemplateRef<C>, config: PopupConfig): DialogRef {
+  open<C = unknown>( config: PopupConfig): DialogRef {
 
     const existDialogRef = this._dialog.getDialogById(config.id);
     if(existDialogRef) return existDialogRef;
     config = {...{
         hasBackdrop: true,
       }, ...config}
-    const dialogRef =  this._dialog.open(componentOrTemplateRef,config)
+    const dialogRef =  this._dialog.open(config.componentOrTemplateRef,config)
     return dialogRef
   }
 

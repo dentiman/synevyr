@@ -18,7 +18,7 @@ import {
 import { SuiChipComponent } from '../chip/chip.component';
 import { SuiCloseButtonComponent } from '../button/close-button.component';
 import type { ClassValue } from 'clsx';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'sui-select,button[suiSelectControl]',
@@ -55,7 +55,15 @@ export class SuiSelectControlComponent  {
   triggerRef = signal(inject(ElementRef)).asReadonly()
   portalRef = viewChild<TemplateRef<any>>('selectPortal')
 
-  popupRef = popup(this.portalRef,this.triggerRef,{hasOriginElementWidth: true})
+
+  // @ts-ignore
+  popupRef = popup(computed(()=>{
+    return {
+      componentOrTemplateRef: this.portalRef(),
+      elementRef: this.triggerRef(),
+      hasOriginElementWidth: true
+    }
+  }))
 
   onKeydown($event) {
     this.listbox()?.onKeydown($event);

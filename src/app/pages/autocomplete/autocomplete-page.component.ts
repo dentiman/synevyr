@@ -43,7 +43,8 @@ export class AutocompletePageComponent implements OnInit  {
   popupRef = popup(toObservable(computed(()=>{
     return {
       componentOrTemplateRef: this.autocompletePortal(),
-      elementRef: this.autocompleteInput()
+      elementRef: this.autocompleteInput(),
+      hasOriginElementWidth: true
     }
   })))
 

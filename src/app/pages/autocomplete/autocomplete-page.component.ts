@@ -2,8 +2,6 @@ import {
   Component, computed, DestroyRef,
   effect,
   ElementRef,
-  forwardRef,
-  inject,
   model,
   OnInit,
   TemplateRef,
@@ -39,7 +37,7 @@ export class AutocompletePageComponent implements OnInit  {
   autocompletePortal = viewChild<TemplateRef<any>>('autocompletePortal')
   autocompleteInput = viewChild<ElementRef>('autocompleteInput')
 
-  // @ts-ignore
+
   popupRef = popup(toObservable(computed(()=>{
     return {
       componentOrTemplateRef: this.autocompletePortal(),

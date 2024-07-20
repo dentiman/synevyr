@@ -1,7 +1,7 @@
 import {
   AfterContentInit, computed,
   ContentChildren, DestroyRef,
-  Directive, ElementRef, EventEmitter, inject, input, model, OnDestroy, Optional, Output, QueryList, Self, signal
+  Directive, ElementRef, EventEmitter, inject, input,  OnDestroy,  Output, QueryList, signal
 } from '@angular/core';
 
 import { CdkSelectOptionDirective } from './select-option.directive';
@@ -9,7 +9,6 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, hasModifierKey, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CdkPrimitiveValueAccessorDirective } from './primitive-value-accessor.directive';
-import { NgControl } from '@angular/forms';
 
 let nextListboxId = 0;
 
@@ -17,14 +16,7 @@ let nextListboxId = 0;
 @Directive({
   selector: '[cdkSelectListbox]',
   exportAs: 'cdkSelectListbox',
-  standalone: true,
-  host: {
-    'role': 'listbox',
-    '[attr.tabindex]': '1',
-    '[id]': 'id',
-    'attr.aria-orientation': 'vertical',
-    '(keydown)': 'onKeydown($event)'
-  }
+  standalone: true
 })
 export class CdkSelectListboxDirective<T> extends CdkPrimitiveValueAccessorDirective<T> implements OnDestroy, AfterContentInit {
 
@@ -34,7 +26,7 @@ export class CdkSelectListboxDirective<T> extends CdkPrimitiveValueAccessorDirec
 
   nextSelectOptionId = 0
 
-  multiple = input(false, {alias: 'cdkListboxMultiple'})
+  multiple = input(false, {alias: 'cdkListboxMultiple'});
 
   @Output() optionTriggered = new EventEmitter<void>();
 

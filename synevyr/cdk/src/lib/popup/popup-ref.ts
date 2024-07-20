@@ -9,7 +9,7 @@ import { map, Observable, Subject, tap } from 'rxjs';
 
 export function popup(
   config: Observable< PopupConfig> | Signal<PopupConfig>,
-) {
+): PopupRef {
   const popupService = inject(POPUP_SERVICE);
   const defaultConfig = inject(POPUP_CONFIG, { optional: true }) ?? {}
 

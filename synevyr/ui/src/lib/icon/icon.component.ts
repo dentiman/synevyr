@@ -15,10 +15,9 @@ export class IconComponent {
   sanitizer = inject(DomSanitizer);
   icon = input<Icon>();
 
-  // @ts-ignore
-  iconTemplateRef = computed<TemplateRef<any>>(()=>{
+  iconTemplateRef = computed(()=>{
     if(this.icon() instanceof TemplateRef) {
-      return this.icon();
+      return this.icon() as TemplateRef<any>;
     }
     return null;
   })

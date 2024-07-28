@@ -1,0 +1,1 @@
+docker run --rm --interactive --tty  --volume $PWD:/app -w /app  node:20-alpine npm install

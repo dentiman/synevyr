@@ -1,0 +1,11 @@
+
+services:
+  synevyr:
+    image: node:20-alpine
+    container_name: synevyr
+    working_dir: /app
+    ports:
+      - '4200:4200'
+    volumes:
+      - .:/app
+    command: sh -c 'npx nx run synevyr:serve --host 0.0.0.0 --disable-host-check'

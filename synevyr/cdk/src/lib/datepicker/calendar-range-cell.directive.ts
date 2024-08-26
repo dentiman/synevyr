@@ -11,6 +11,12 @@ import { DialogRef } from '@angular/cdk/dialog';
         '(mouseenter)': '_handleMouseenter()',
         '(mouseleave)': '_handleMouseleave()',
         '(click)': 'setBySelection()',
+        '[attr.disabled]': 'disabled() || null',
+        '[attr.data-disabled]': 'disabled() || null',
+        '[attr.data-today]': 'isToday()',
+        '[attr.data-active-month]': 'isActiveMonth()',
+        '[attr.data-selected]': 'isSelected()',
+        '[attr.aria-selected]': 'isSelected()',
         '[attr.type]': '"button"'
     }
 })

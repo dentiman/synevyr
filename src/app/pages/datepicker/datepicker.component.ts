@@ -5,7 +5,7 @@ import {
   CdkDatepickerInputDirective,
   DatepickerDirective, CdkDateRangePickerDirective, CdkStartDateInputDirective, CdkEndDateInputDirective, popup
 } from '@synevyr/cdk';
-import { SuiCalendarComponent } from '@synevyr/ui';
+import {SuiCalendarComponent} from '@synevyr/ui';
 import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -23,8 +23,8 @@ import { toObservable } from '@angular/core/rxjs-interop';
   templateUrl: './datepicker.component.html'
 })
 export class DatepickerPageComponent {
-  date = new FormControl<string>('2023-10-12');
-  dateEnd = new FormControl<string>('2023-10-17');
+  date = new FormControl<string>('2024-08-01');
+  dateEnd = new Date('2024-08-29');
   popupOriginRef = viewChild<ElementRef>('popupOrigin')
   popupPortalRef = viewChild<TemplateRef<any>>('popupPortal')
 

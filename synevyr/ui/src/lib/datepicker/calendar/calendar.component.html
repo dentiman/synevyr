@@ -51,9 +51,25 @@
     @for ( week of calendar.weeks(); track $index) {
       @for ( date of week; track date) {
         @if(calendar.isRangePicker) {
-          <button suiCalendarRangeCell [date]="date"></button>
+          <button cdkCalendarRangeCell
+                  class="py-2 focus:z-10 mb-1  bg-gray-100 "
+                  [date]="date">
+              <div class="mx-auto flex h-5 w-5 items-center justify-center rounded-full ">{{ date.getDate() }}</div>
+          </button>
         } @else {
-          <button suiCalendarCell [date]="date"></button>
+          <button cdkCalendarCell
+                  class="py-2 focus:z-10 mb-1
+                         disabled:bg-gray-100
+                         disabled:text-gray-400
+                         data-[today=true]:text-indigo-600
+                         aria-[selected=false]:data-[active-month=false]:text-gray-300
+                         aria-[selected=false]:data-[active-month=true]:text-gray-500
+                         data-[selected=true]:bg-indigo-600
+                         data-[selected=true]:text-white
+                         data-[selected=true]:rounded-md"
+                  [date]="date">
+              <div class="mx-auto flex h-5 w-5 items-center justify-center rounded-full ">{{ date.getDate() }}</div>
+          </button>
         }
       }
     }

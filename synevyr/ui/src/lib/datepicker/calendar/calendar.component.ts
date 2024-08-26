@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CdkCalendarDirective } from '@synevyr/cdk';
+import {CdkCalendarCellDirective, CdkCalendarDirective, CdkCalendarRangeCellDirective} from '@synevyr/cdk';
 import { SuiCalendarCellComponent } from '../calendar-cell/calendar-cell.component';
 import { SuiCalendarRangeCellComponent } from '../calendar-range-cell/calendar-range-cell.component';
 
 @Component({
   selector: 'sui-calendar',
   standalone: true,
-  imports: [CommonModule, SuiCalendarCellComponent, SuiCalendarRangeCellComponent],
+  imports: [CommonModule, SuiCalendarCellComponent, SuiCalendarRangeCellComponent, CdkCalendarCellDirective, CdkCalendarRangeCellDirective],
   hostDirectives: [
     {
       directive: CdkCalendarDirective,

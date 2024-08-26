@@ -9,6 +9,11 @@ import {CdkCalendarDirective} from "./calendar.directive";
     host: {
         '(click)': 'select()',
         '[attr.disabled]': 'disabled() || null',
+        '[attr.data-disabled]': 'disabled() || null',
+        '[attr.data-today]': 'isToday()',
+        '[attr.data-active-month]': 'isActiveMonth()',
+        '[attr.data-selected]': 'isSelected()',
+        '[attr.aria-selected]': 'isSelected()',
         '[attr.type]': '"button"'
     }
 })

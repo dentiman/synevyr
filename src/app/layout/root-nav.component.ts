@@ -22,6 +22,25 @@ export class RootNavComponent {
   items = computed< NavigationItem[]>(()=>{
     return [
       {
+        label: 'Directives',
+        icon: this.folderIcon(),
+        children: [
+          {
+            label: 'Listbox',
+            url: '/listbox'
+          },
+          {
+            label: 'Popup',
+            url: '/popup'
+          },
+          {
+            label: 'DatePicker',
+            url: '/datepicker'
+          },
+        ],
+      },
+
+      {
         label: 'Components',
         url: null,
         icon: this.folderIcon(),

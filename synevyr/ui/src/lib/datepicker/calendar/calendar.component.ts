@@ -1,18 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {CdkCalendarCellDirective, CdkCalendarDirective, CdkCalendarRangeCellDirective} from '@synevyr/cdk';
+import {CdkCalendarCellDirective, CdkCalendarDirective} from '@synevyr/cdk';
 import { SuiCalendarCellComponent } from '../calendar-cell/calendar-cell.component';
 import { SuiCalendarRangeCellComponent } from '../calendar-range-cell/calendar-range-cell.component';
 
 @Component({
   selector: 'sui-calendar',
   standalone: true,
-  imports: [CommonModule, SuiCalendarCellComponent, SuiCalendarRangeCellComponent, CdkCalendarCellDirective, CdkCalendarRangeCellDirective],
+  imports: [CommonModule, SuiCalendarCellComponent, SuiCalendarRangeCellComponent, CdkCalendarCellDirective],
   hostDirectives: [
     {
       directive: CdkCalendarDirective,
-      inputs: ['selected','minDate','maxDate'],
-      outputs: ['selectedChange']
+      inputs: ['value','minDate','maxDate','isRangePicker'],
+      outputs: ['valueChange']
     }
   ],
   templateUrl: './calendar.component.html',

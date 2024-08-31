@@ -1,5 +1,6 @@
 import {DateAdapter} from "./date-adapter";
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 export class ActiveDateState {
     constructor(private _dateAdapter:  DateAdapter) {
@@ -8,6 +9,8 @@ export class ActiveDateState {
     _date = new BehaviorSubject<Date>(this._dateAdapter.today())
 
     changes$ =  this._date.asObservable()
+
+    value = toSignal(this.changes$)
 
     get() {
         return  this._date.value

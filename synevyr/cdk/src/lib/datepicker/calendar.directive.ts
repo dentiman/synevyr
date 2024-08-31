@@ -1,9 +1,23 @@
-import { computed, Directive, inject, input, Input, Output, Signal, signal } from '@angular/core';
-import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
-import {DateAdapter} from "./date-adapter";
-import {ActiveDateState} from "./active-date.state";
-import { SELECTION_DATE, START_DATE } from './datepicker.states';
+import {
+    computed,
+    DestroyRef,
+    Directive,
+    effect, EventEmitter,
+    inject,
+    input,
+    Input,
+    model,
+    Output,
+    Signal,
+    signal, WritableSignal
+} from '@angular/core';
+import {CalendarDateAdapter} from "./calendar-date-adapter";
+import {takeUntilDestroyed, toObservable} from "@angular/core/rxjs-interop";
 
+export type DateRange = {
+    end: string| null,
+    start:string | null
+}
 
 @Directive({
     selector: '[cdkCalendar]',
@@ -11,96 +25,129 @@ import { SELECTION_DATE, START_DATE } from './datepicker.states';
     standalone: true
 })
 export class CdkCalendarDirective {
+    private _dateAdapter = inject(CalendarDateAdapter)
 
-    private _dateAdapter = inject(DateAdapter)
+    isRangePicker = input<boolean>(false)
 
-    isRangePicker = !!inject(START_DATE, { optional: true })
+    minDate = input<string|null>(null)
+    maxDate = input<string|null>(null)
 
-    minDate = input(null,{transform: (value) => this._dateAdapter.getValidDateOrNull(value)})
-    maxDate = input(null,{transform: (value) => this._dateAdapter.getValidDateOrNull(value)})
+    @Input() format: string = 'y-MM-dd'
 
-
-
-
-    private _activeDateState = new ActiveDateState(this._dateAdapter)
-    private _selectedDateState =  inject(SELECTION_DATE)
-
-    activeDate = toSignal(this._activeDateState.changes$)
-
-    selectedDate =  toSignal(this._selectedDateState.changes$)
-
-    @Input()
-    get selected() {
-        return this.selectedDate()
-    }
-
-    set selected(value: Date | null) {
-        this.selectDate(this._dateAdapter.getValidDateOrNull(value))
-    }
-
-    @Output() readonly selectedChange = this._selectedDateState.changes$
+    activeDate =    signal<string>(this._dateAdapter.today())
+    selectedDate =  signal<string|null>(null)
+    startDate =     signal<string|null>(null)
+    endDate =       signal<string|null>(null)
+    hoverDate =     signal<string|null>(null)
 
 
-    constructor() {
-        this._selectedDateState.changes$
+    value = model<string|DateRange>(null)
+
+        constructor() {
+
+        toObservable(this.value)
             .pipe(takeUntilDestroyed())
-            .subscribe((selected) => {
-                const compareDate = selected ? selected : this._dateAdapter.today()
-                if(this._activeDateState.isNotTheSameMonthAs(compareDate)) {
-                    this._activeDateState.set( compareDate)
+            .subscribe((value) => {
+                const isRangePicker = this.isRangePicker()
+                if( isRangePicker === false) {
+                    this._updateDateIfValid(value,this.selectedDate)
+                    this._updateDateIfValid(value,this.activeDate)
+                } else if( isRangePicker && typeof value === 'object')  {
+
+                    if( value !== null && 'start' in value) {
+                        this._updateDateIfValid(value.start, this.startDate)
+                    }
+                    if( value !== null && 'end' in value) {
+                        this._updateDateIfValid(value.end, this.endDate)
+                    }
                 }
             })
     }
 
 
-    weeks: Signal<Date[][]> = computed(() => {
+    weeks: Signal<string[][]> = computed(() => {
         const date = this.activeDate()
-        const startMonthDate = this._dateAdapter.createNewDate(date.getFullYear(), date.getMonth(), 1);
-
-        const dayOfWeek = startMonthDate.getDay();
-        const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-        const startOfWeekDate = this._dateAdapter.fromTime(startMonthDate.setDate(startMonthDate.getDate() - daysToSubtract));
-        const weeks = []
-
-        let nextDate = this._dateAdapter.fromTime(startOfWeekDate.getTime())
-        for (let w = 1; w <= 6; w++) {
-            const daysOfWeek = []
-            for (let d = 1; d <= 7; d++) {
-                daysOfWeek.push(this._dateAdapter.fromTime(nextDate.getTime()))
-                nextDate = this._dateAdapter.fromTime(nextDate.setDate(nextDate.getDate() + 1))
-            }
-            weeks.push(daysOfWeek)
-        }
-        return weeks
-
+        return this._dateAdapter.getCalendarMonth(date)
     })
 
+    getDay(date: string) {
+        return this._dateAdapter.getDay(date)
+    }
 
     setActiveMonth(month: number) {
-        this._activeDateState.setMonth(month)
+       this.activeDate.update(date =>  this._dateAdapter.setMonth(date, month))
     }
 
     setActiveNextMonth() {
-        this._activeDateState.setNextMonth()
+        this.activeDate.update(date =>  this._dateAdapter.setNextMonth(date))
     }
 
     setActivePreviousMonth() {
-        this._activeDateState.setPreviousMonth()
+        this.activeDate.update(date =>  this._dateAdapter.setPreviousMonth(date))
     }
 
     setActiveYear(fullYear: number) {
-        this._activeDateState.setYear(fullYear)
+        this.activeDate.update(date =>  this._dateAdapter.setYear(date, fullYear))
     }
 
     setActiveNextYear() {
-        this._activeDateState.setNextYear();
+        this.activeDate.update(date =>  this._dateAdapter.setNextYear(date))
     }
 
     setActivePreviousYear() {
-        this._activeDateState.setPreviousYear()
+        this.activeDate.update(date =>  this._dateAdapter.setPreviousYear(date))
     }
-    selectDate(date: Date | null) {
-        this._selectedDateState.setValue(date)
+    selectDate(date: string | null) {
+        this.selectedDate.set(date)
+
+
+        if(this.isRangePicker()) {
+            this._changeRangeSelection(date)
+            this.value.set({
+                end: this.endDate(),
+                start: this.startDate()
+            })
+        } else {
+            this.value.set(date)
+        }
+
+        //todo: check if month no changed -no need to update
+        if(date) {
+            this.activeDate.set(date)
+        }
+    }
+
+    //in this method in condition where I check if equal null need  check als if variable equal undefined
+    protected _changeRangeSelection(date: string) {
+        const startDate = this.startDate()
+        const endDate = this.endDate()
+
+        if (
+            startDate && (endDate === null || endDate === undefined) && this._dateAdapter.firstIsMoreOrEqualThenSecond( date , startDate)
+        ) {
+            this.endDate.set(date);
+        } else if (
+            startDate && (endDate === null || endDate === undefined) && this._dateAdapter.firstIsMoreOrEqualThenSecond( startDate, date)
+        ) {
+            this.startDate.set(date);
+        } else {
+            this.startDate.set(date);
+            this.endDate.set(null);
+        }
+    }
+
+    protected _updateDateIfValid(value, date: WritableSignal<string|null>) {
+        if( typeof value ===  'string'
+            && this._dateAdapter.isValidDate(value)
+            && this._dateAdapter.isEqualTo(value,date()) === false
+        ) {
+            date.set(value)
+        }
+
+        if ( value === null && date() !== null )
+        {
+            date.set(null)
+        }
     }
 
 

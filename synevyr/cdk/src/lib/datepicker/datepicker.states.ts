@@ -15,22 +15,20 @@ export class DateState {
     constructor(private _dateAdapter:  DateAdapter) {
     }
 
-    _date = new BehaviorSubject<Date|null>(null)
+    _date = new Subject<Date|null>()
     changes$ =  this._date.asObservable()
     value = toSignal(this.changes$)
 
     setValue(date: Date | null ) {
-        const  newDate = this._dateAdapter.getValidDateOrNull(date)
-        if (newDate ) {
-            this._setValidDate(newDate)
-        } else if(this.value() !== null) {
+        console.log('set -'+ date)
+        const  newDateOrNull = this._dateAdapter.getValidDateOrNull(date)
+        if(newDateOrNull === null && !this.value() === null) {
             this._date.next(null)
-        }
-    }
+        } else if ( this.value() && newDateOrNull && !this._dateAdapter.isEqualTo(newDateOrNull, this.value())) {
+            this._date.next(newDateOrNull)
+        } else if(newDateOrNull) {
 
-    private _setValidDate(date: Date) {
-        if ( this.value() === null || !this._dateAdapter.isEqualTo(date, this.value())) {
-            this._date.next(date)
+            this._date.next(newDateOrNull)
         }
     }
 }

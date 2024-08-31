@@ -4,12 +4,14 @@ import { appRoutes } from './app.routes';
 import {DEFAULT_DIALOG_CONFIG} from "@angular/cdk/dialog";
 import {
   DateAdapter,
+  CalendarDateAdapter,
   DEFAULT_DIALOG_CONFIG_DATA,
   POPUP_SERVICE,
   PopupDialogService,
   PopupMenuService,
   PopupService
 } from "@synevyr/cdk";
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +26,7 @@ export const appConfig: ApplicationConfig = {
     },
     PopupDialogService,
     PopupMenuService,
-    DateAdapter
+    DateAdapter,
+    CalendarDateAdapter
   ],
 };

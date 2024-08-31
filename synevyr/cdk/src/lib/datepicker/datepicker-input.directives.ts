@@ -60,7 +60,7 @@ export class DatepickerInputBase implements ControlValueAccessor {
 
     writeValue(value: any): void {
         this._renderer.setProperty(this._elementRef.nativeElement, 'value', value == null ? '' : value);
-        this._dateState.setValue(this._dateAdapter.deserialize(value) );
+
     }
 
     @HostListener('input', ['$event.target.value'])

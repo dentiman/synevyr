@@ -18,7 +18,7 @@
     </button>
 
     <div class="flex-auto text-sm font-semibold py-2 px-2 ">
-      {{ calendar.activeDate() | date: 'MMMM y' }}
+      {{ calendar.activeDate() }}
     </div>
 
     <button type="button" (click)="calendar.setActiveNextMonth()"
@@ -50,28 +50,12 @@
   <div class="isolate mt-2 grid grid-cols-7  text-sm ">
     @for ( week of calendar.weeks(); track $index) {
       @for ( date of week; track date) {
-        @if(calendar.isRangePicker) {
-          <button cdkCalendarRangeCell
-                  class="py-2 focus:z-10 mb-1  bg-gray-100 "
-                  [date]="date">
-              <div class="mx-auto flex h-5 w-5 items-center justify-center rounded-full ">{{ date.getDate() }}</div>
+          <button  suiCalendarCell [date]="date">
           </button>
-        } @else {
-          <button cdkCalendarCell
-                  class="py-2 focus:z-10 mb-1
-                         disabled:bg-gray-100
-                         disabled:text-gray-400
-                         data-[today=true]:text-indigo-600
-                         aria-[selected=false]:data-[active-month=false]:text-gray-300
-                         aria-[selected=false]:data-[active-month=true]:text-gray-500
-                         data-[selected=true]:bg-indigo-600
-                         data-[selected=true]:text-white
-                         data-[selected=true]:rounded-md"
-                  [date]="date">
-              <div class="mx-auto flex h-5 w-5 items-center justify-center rounded-full ">{{ date.getDate() }}</div>
-          </button>
-        }
       }
     }
   </div>
 </div>
+<p>val: {{ calendar.value() | json }}</p>
+<p> start: {{ calendar.startDate()   | json }}</p>
+<p> end: {{ calendar.endDate()  | json }}</p>

@@ -1,66 +1,62 @@
-import {DateAdapter} from "./date-adapter";
-import {BehaviorSubject} from "rxjs";
-import {toSignal} from "@angular/core/rxjs-interop";
+import {CalendarDateAdapter} from "./calendar-date-adapter";
+import {computed, Signal, signal, WritableSignal} from "@angular/core";
 
-export class ActiveDateState {
-    constructor(private _dateAdapter:  DateAdapter) {
+export class ActiveMonth {
+    private _dateAdapter: CalendarDateAdapter;
+    private _activeDate: WritableSignal<string>;
+
+    constructor(dateAdapter: CalendarDateAdapter) {
+        this._dateAdapter = dateAdapter;
+        this._activeDate = signal(this._dateAdapter.today());
     }
 
-    _date = new BehaviorSubject<Date>(this._dateAdapter.today())
+    year = computed(()=>{
+      return   this._dateAdapter.getYear(this._activeDate())
+    })
 
-    changes$ =  this._date.asObservable()
+    month = computed(()=>{
+        return   this._dateAdapter.getMonth(this._activeDate())
+    })
 
-    value = toSignal(this.changes$)
-
-    get() {
-        return  this._date.value
-    }
-
-    set(date: Date ) {
-        const  newDate = this._dateAdapter.getValidDateOrNull(date)
-        if (newDate ) {
-            this._setValidDate(newDate)
+    setFromDate(date: string): void {
+        //todo: check if month no changed -no need to update
+        if ( typeof date === 'string'
+            && this._dateAdapter.isValidDate(date)
+            && this._dateAdapter.isEqualTo(date,this._activeDate()) === false
+        ) {
+            this._activeDate.set(date);
         }
     }
 
-    private _setValidDate(date: Date) {
-        if (this._dateAdapter.isEqualTo(date, this.get()) === false) {
-            this._date.next(date)
-        }
+    setMonth(month: number): void {
+        this._activeDate.update(date => this._dateAdapter.setMonth(date, month));
     }
 
-    setMonth(month: number) {
-        const activeDate =  this._dateAdapter.createSameDate(this.get())
-        this._setValidDate(new Date(activeDate.setMonth(month)))
+    setNextMonth(): void {
+        this._activeDate.update(date => this._dateAdapter.setNextMonth(date));
     }
 
-    setNextMonth() {
-        const activeDate = this._dateAdapter.createSameDate(this.get())
-        this._setValidDate(new Date(activeDate.setMonth(activeDate.getMonth() + 1)))
+    setPreviousMonth(): void {
+        this._activeDate.update(date => this._dateAdapter.setPreviousMonth(date));
     }
 
-    setPreviousMonth() {
-        const activeDate =  this._dateAdapter.createSameDate(this.get())
-        this._setValidDate(new Date(activeDate.setMonth(activeDate.getMonth() - 1)))
+    setYear(fullYear: number): void {
+        this._activeDate.update(date => this._dateAdapter.setYear(date, fullYear));
     }
 
-    setYear(fullYear: number) {
-        const activeDate =  this._dateAdapter.createSameDate(this.get())
-        this._setValidDate(new Date(activeDate.setFullYear(fullYear)))
+    setNextYear(): void {
+        this._activeDate.update(date => this._dateAdapter.setNextYear(date));
     }
 
-    setNextYear() {
-        const activeDate = this._dateAdapter.createSameDate(this.get())
-        this._setValidDate(new Date(activeDate.setFullYear(activeDate.getFullYear() + 1)))
+    setPreviousYear(): void {
+        this._activeDate.update(date => this._dateAdapter.setPreviousYear(date));
     }
 
-    setPreviousYear() {
-        const activeDate =  this._dateAdapter.createSameDate(this.get())
-        this._setValidDate(new Date(activeDate.setFullYear(activeDate.getFullYear() - 1)))
+    hasTheSameMonthAs(date: string): boolean {
+        return  this._dateAdapter.hasTheSameMonthAs(date,this._activeDate())
     }
 
-    isNotTheSameMonthAs(date: Date) {
-       return   !(this.get().getFullYear() === date.getFullYear() && this.get().getMonth() === date.getMonth())
-    }
+    //set date from time
 
 }
+

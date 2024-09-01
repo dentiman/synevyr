@@ -35,7 +35,7 @@ export class CdkCalendarCellDirective {
     }
 
     isActiveMonth = computed(() => {
-        return this._dateAdapter.hasTheSameMonthAs(this.date, this.calendar.activeDate())
+        return this.calendar.activeMonth.hasTheSameMonthAs(this.date)
     })
 
     isSelected = computed(() => {

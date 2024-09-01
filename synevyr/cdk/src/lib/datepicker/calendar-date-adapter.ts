@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 
+//delete all comments and remember this class for feature questions
 @Injectable()
 export class CalendarDateAdapter {
 
@@ -11,6 +12,16 @@ export class CalendarDateAdapter {
     getDay(date: string): number {
         const [year, month, day] = date.split('-').map(Number);
         return day
+    }
+
+    getMonth(date: string): number {
+        const [year, month, day] = date.split('-').map(Number);
+        return  month
+    }
+
+    getYear(date: string): number {
+        const [year, month, day] = date.split('-').map(Number);
+        return  year
     }
 
     // Check if the string is a valid date in the format yyyy-MM-dd
@@ -81,66 +92,32 @@ export class CalendarDateAdapter {
         return this.serializeNativeDateToString(newDate);
     }
 
-    // Set the year of the date string
+
     setYear(date: string, fullYear: number): string {
         const [ , month, day] = date.split('-');
         const newDate = new Date(fullYear, Number(month) - 1, Number(day));
         return this.serializeNativeDateToString(newDate);
     }
 
-    // Set the date to the same date in the next year
     setNextYear(date: string): string {
         const [year, month, day] = date.split('-').map(Number);
         return this.setYear(date, year + 1);
     }
 
-    // Set the date to the same date in the previous year
+
     setPreviousYear(date: string): string {
         const [year, month, day] = date.split('-').map(Number);
         return this.setYear(date, year - 1);
     }
 
-    // Check if the two dates have different months
     hasTheSameMonthAs(date: string, compareDate: string): boolean {
         const [, month1] = date.split('-');
         const [, month2] = compareDate.split('-');
         return month1 == month2;
     }
 
-    //TODO:: need to return dates for render calendar month. It will bee array of weeks for date from parameter; every week has array of 7 days
 
-    getCalendarMonth(date: string): string[][] {
-        const [year, month] = date.split('-').map(Number);
-        const firstDayOfMonth = new Date(year, month - 1, 1);
-        const lastDayOfMonth = new Date(year, month, 0); // Last day of the given month
 
-        const weeks: string[][] = [];
-        let currentWeek: string[] = [];
-
-        // Find the first day of the week (Sunday) for the first week of the month
-        let currentDate = new Date(firstDayOfMonth);
-        currentDate.setDate(currentDate.getDate() - currentDate.getDay());
-
-        // Loop until we pass the last day of the month
-        while (currentDate <= lastDayOfMonth || currentDate.getDay() !== 0) {
-            if (currentWeek.length === 7) {
-                weeks.push(currentWeek);
-                currentWeek = [];
-            }
-
-            currentWeek.push(this.serializeNativeDateToString(currentDate));
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-
-        // Add the last week if it's not complete
-        if (currentWeek.length > 0) {
-            weeks.push(currentWeek);
-        }
-
-        return weeks;
-    }
-
-    // This method is ready
     serializeNativeDateToString(date: Date): string {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');

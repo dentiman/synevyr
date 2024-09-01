@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import {CalendarDateAdapter} from "./calendar-date-adapter";
 import {takeUntilDestroyed, toObservable} from "@angular/core/rxjs-interop";
+import {ActiveMonth} from "./active-date.state";
 
 export type DateRange = {
     end: string| null,
@@ -34,7 +35,9 @@ export class CdkCalendarDirective {
 
     @Input() format: string = 'y-MM-dd'
 
-    activeDate =    signal<string>(this._dateAdapter.today())
+
+    activeMonth = new ActiveMonth(this._dateAdapter)
+
     selectedDate =  signal<string|null>(null)
     startDate =     signal<string|null>(null)
     endDate =       signal<string|null>(null)
@@ -51,7 +54,9 @@ export class CdkCalendarDirective {
                 const isRangePicker = this.isRangePicker()
                 if( isRangePicker === false) {
                     this._updateDateIfValid(value,this.selectedDate)
-                    this._updateDateIfValid(value,this.activeDate)
+                    if (typeof value === "string") {
+                        this.activeMonth.setFromDate(value)
+                    }
                 } else if( isRangePicker && typeof value === 'object')  {
 
                     if( value !== null && 'start' in value) {
@@ -66,37 +71,37 @@ export class CdkCalendarDirective {
 
 
     weeks: Signal<string[][]> = computed(() => {
-        const date = this.activeDate()
-        return this._dateAdapter.getCalendarMonth(date)
+        const year = this.activeMonth.year()
+        const month = this.activeMonth.month()
+        const firstDayOfMonth = new Date(year, month - 1, 1);
+        const lastDayOfMonth = new Date(year, month, 0); // Last day of the given month
+
+        const weeks: string[][] = [];
+        let currentWeek: string[] = [];
+
+        // Find the first day of the week (Sunday) for the first week of the month
+        const currentDate = new Date(firstDayOfMonth);
+        currentDate.setDate(currentDate.getDate() - currentDate.getDay());
+
+        // Loop until we pass the last day of the month
+        while (currentDate <= lastDayOfMonth || currentDate.getDay() !== 0) {
+            if (currentWeek.length === 7) {
+                weeks.push(currentWeek);
+                currentWeek = [];
+            }
+
+            currentWeek.push(this._dateAdapter.serializeNativeDateToString(currentDate));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        // Add the last week if it's not complete
+        if (currentWeek.length > 0) {
+            weeks.push(currentWeek);
+        }
+
+        return weeks;
     })
 
-    getDay(date: string) {
-        return this._dateAdapter.getDay(date)
-    }
-
-    setActiveMonth(month: number) {
-       this.activeDate.update(date =>  this._dateAdapter.setMonth(date, month))
-    }
-
-    setActiveNextMonth() {
-        this.activeDate.update(date =>  this._dateAdapter.setNextMonth(date))
-    }
-
-    setActivePreviousMonth() {
-        this.activeDate.update(date =>  this._dateAdapter.setPreviousMonth(date))
-    }
-
-    setActiveYear(fullYear: number) {
-        this.activeDate.update(date =>  this._dateAdapter.setYear(date, fullYear))
-    }
-
-    setActiveNextYear() {
-        this.activeDate.update(date =>  this._dateAdapter.setNextYear(date))
-    }
-
-    setActivePreviousYear() {
-        this.activeDate.update(date =>  this._dateAdapter.setPreviousYear(date))
-    }
     selectDate(date: string | null) {
         this.selectedDate.set(date)
 
@@ -111,13 +116,13 @@ export class CdkCalendarDirective {
             this.value.set(date)
         }
 
-        //todo: check if month no changed -no need to update
+
         if(date) {
-            this.activeDate.set(date)
+            this.activeMonth.setFromDate(date)
         }
     }
 
-    //in this method in condition where I check if equal null need  check als if variable equal undefined
+
     protected _changeRangeSelection(date: string) {
         const startDate = this.startDate()
         const endDate = this.endDate()

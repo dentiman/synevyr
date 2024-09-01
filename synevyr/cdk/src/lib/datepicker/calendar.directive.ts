@@ -46,28 +46,45 @@ export class CdkCalendarDirective {
 
     value = model<string|DateRange>(null)
 
-        constructor() {
-
+    constructor() {
         toObservable(this.value)
             .pipe(takeUntilDestroyed())
             .subscribe((value) => {
-                const isRangePicker = this.isRangePicker()
-                if( isRangePicker === false) {
-                    this._updateDateIfValid(value,this.selectedDate)
-                    if (typeof value === "string") {
-                        this.activeMonth.setFromDate(value)
+                const isRangePicker = this.isRangePicker();
+                if (isRangePicker === false) {
+                    // Update selectedDate only if date is within minDate and maxDate
+                    if (typeof value === "string" && this._isDateWithinRange(value)) {
+                        this._updateDateIfValid(value, this.selectedDate);
+                        this.activeMonth.setFromDate(value);
                     }
-                } else if( isRangePicker && typeof value === 'object')  {
-
-                    if( value !== null && 'start' in value) {
-                        this._updateDateIfValid(value.start, this.startDate)
+                } else if (isRangePicker && typeof value === 'object') {
+                    if (value !== null && 'start' in value) {
+                        if (this._isDateWithinRange(value.start)) {
+                            this._updateDateIfValid(value.start, this.startDate);
+                        }
                     }
-                    if( value !== null && 'end' in value) {
-                        this._updateDateIfValid(value.end, this.endDate)
+                    if (value !== null && 'end' in value) {
+                        if (this._isDateWithinRange(value.end)) {
+                            this._updateDateIfValid(value.end, this.endDate);
+                        }
                     }
                 }
-            })
+            });
     }
+
+// Helper method to check if a date is within the minDate and maxDate range
+    private _isDateWithinRange(date: string | null): boolean {
+        if (date === null) return false;
+
+        const minDate = this.minDate();
+        const maxDate = this.maxDate();
+
+        const isAfterMinDate = minDate ? this._dateAdapter.firstIsMoreOrEqualThenSecond(date, minDate) : true;
+        const isBeforeMaxDate = maxDate ? this._dateAdapter.firstIsMoreOrEqualThenSecond(maxDate, date) : true;
+
+        return isAfterMinDate && isBeforeMaxDate;
+    }
+
 
 
     weeks: Signal<string[][]> = computed(() => {

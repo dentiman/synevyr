@@ -11,7 +11,6 @@ import {
   PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective, DateRange
 } from '@synevyr/cdk';
 import {SuiCalendarComponent} from '@synevyr/ui';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -34,8 +33,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 export class DatepickerPageComponent {
   date = new FormControl<string>('2024-07-02');
   dateEnd = '2024-08-29';
-  popupOriginRef = viewChild<ElementRef>('popupOrigin')
-  popupPortalRef = viewChild<TemplateRef<any>>('popupPortal')
+
 
   valueModel = signal<string|DateRange>('2024-07-02')
 

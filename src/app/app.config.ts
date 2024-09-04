@@ -9,7 +9,7 @@ import {
   POPUP_SERVICE,
   PopupDialogService,
   PopupMenuService,
-  PopupService
+  PopupService, CALENDAR_DATE_FORMAT
 } from "@synevyr/cdk";
 
 
@@ -23,6 +23,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: POPUP_SERVICE,
       useClass: PopupService
+    },
+    {
+      provide: CALENDAR_DATE_FORMAT,
+      useValue: 'yyyy-MM-dd'
     },
     PopupDialogService,
     PopupMenuService,

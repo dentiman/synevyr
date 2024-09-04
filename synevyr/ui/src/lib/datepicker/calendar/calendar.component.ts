@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {CdkCalendarCellDirective, CdkCalendarDirective} from '@synevyr/cdk';
+import {CdkCalendarCellDirective, CdkCalendarDirective, DateRange} from '@synevyr/cdk';
 import { SuiCalendarCellComponent } from '../calendar-cell/calendar-cell.component';
 import { SuiCalendarRangeCellComponent } from '../calendar-range-cell/calendar-range-cell.component';
 

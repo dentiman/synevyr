@@ -61,18 +61,20 @@ export class CdkCalendarDirective {
                     if (value !== null && 'start' in value) {
                         if (this._isDateWithinRange(value.start)) {
                             this._updateDateIfValid(value.start, this.startDate);
+                            this.activeMonth.setFromDate(value.start);
                         }
                     }
                     if (value !== null && 'end' in value) {
                         if (this._isDateWithinRange(value.end)) {
                             this._updateDateIfValid(value.end, this.endDate);
+                            this.activeMonth.setFromDate(value.end);
                         }
                     }
                 }
             });
     }
 
-// Helper method to check if a date is within the minDate and maxDate range
+    // Helper method to check if a date is within the minDate and maxDate range
     private _isDateWithinRange(date: string | null): boolean {
         if (date === null) return false;
 

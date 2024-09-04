@@ -17,14 +17,14 @@
       placeholder="choose date">
   </div>
   <ng-template cdkPopupPortal #popupPortal="cdkPopupPortal" [popupOriginRef]="popupOrigin" >
-    <sui-calendar [value]="valueModel()" (valueChange)="valueModel.set($event)"     [maxDate]="dateEnd" ></sui-calendar>
+    <sui-calendar [(value)]="valueModel"      [maxDate]="dateEnd" ></sui-calendar>
   </ng-template>
 </div>
 
-<sui-calendar id="1"  [value]="valueModel()" (valueChange)="valueModel.set($event)"    [maxDate]="dateEnd" ></sui-calendar>
+<sui-calendar id="1"  [(value)]="valueModel"   [maxDate]="dateEnd" ></sui-calendar>
 
 <div class="border-b border-gray-200 pb-5">
     <h3 class="text-base font-semibold leading-6 text-gray-900">Date Range picker </h3>
   </div>
 
-<sui-calendar id="2" [isRangePicker]="true"  [value]="rangeModel()" (valueChange)="rangeModel.set($event)" ></sui-calendar>
+<sui-calendar id="2" [isRangePicker]="true"  [(value)]="rangeModel" (valueChange)="rangeModel.set($event)" ></sui-calendar>

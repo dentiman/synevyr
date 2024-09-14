@@ -1,17 +1,18 @@
-import {computed, Directive, inject, Input} from '@angular/core';
-import {END_DATE, HOVER_DATE, START_DATE} from "./datepicker.states";
-import { CdkCalendarDirective } from './calendar.directive';
+import {computed, Directive, inject, input, Input} from '@angular/core';
+import { CdkDatepickerDirective } from './datepicker.directive';
 import { DialogRef } from '@angular/cdk/dialog';
 import {toSignal} from "@angular/core/rxjs-interop";
+import {CalendarDateAdapter} from "./calendar-date-adapter";
+import {ActiveMonth} from "./active-date.state";
 
 @Directive({
     selector: '[cdkCalendarRangeCell]',
     exportAs: 'cdkCalendarRangeCell',
     standalone: true,
     host: {
-        '(mouseenter)': '_handleMouseenter()',
-        '(mouseleave)': '_handleMouseleave()',
-        '(click)': 'setBySelection()',
+        // '(mouseenter)': '_handleMouseenter()',
+        // '(mouseleave)': '_handleMouseleave()',
+        // '(click)': 'setBySelection()',
         '[attr.disabled]': 'disabled() || null',
         '[attr.data-disabled]': 'disabled() || null',
         '[attr.data-today]': 'isToday()',
@@ -23,63 +24,73 @@ import {toSignal} from "@angular/core/rxjs-interop";
 })
 export class CdkCalendarRangeCellDirective {
 
-
-    calendar = inject(CdkCalendarDirective)
-    private dialogRef? = inject(DialogRef,{optional: true})
-
+    private _dateAdapter = inject(CalendarDateAdapter)
     @Input({required: true})
-    date: Date
+    date: string
+    minDate = input<string|null>(null)
+    maxDate = input<string|null>(null)
+    selectedDate =  input.required<string|null>()
+    activeMonth = input.required<ActiveMonth>()
 
-    _handleMouseenter() {
 
+    get day(): number {
+        return  this._dateAdapter.getDay(this.date)
     }
-
-    _handleMouseleave() {
-
-    }
-
-    isSelected = computed(() => {
-
-        return false
-    })
 
     isActiveMonth = computed(() => {
-        return false
+        return this.activeMonth()?.hasTheSameMonthAs(this.date)
+    })
+
+    isSelected = computed(() => {
+        const selected = this.selectedDate()
+        return selected && this.date ===  selected
     })
 
     disabled = computed(() => {
-    return false
+        const minDate = this.minDate()
+        const maxDate = this.maxDate()
+        return (minDate && this._dateAdapter.firstIsMoreThenSecond(minDate,this.date)) ||
+            (maxDate && this._dateAdapter.firstIsMoreThenSecond(this.date,maxDate))
     })
 
     isToday = computed(()=> {
-        return this.date.toDateString() === (new Date).toDateString()
+        return this.date === this._dateAdapter.today()
     })
 
 
-    isInRange = computed(()=> {
-     return false
-    })
-
-    isInHoverRange = computed(()=>{
-        return false
-    })
-
-    isEndOfHoverRange = computed(()=>{
-        return false
-    })
-
-    isStartOfRange = computed(()=>{
-        return false
-    })
-
-    isEndOfRange = computed(()=>{
-        return false
-    })
-
-
-    setBySelection() {
-
-    }
+    // isInRange = computed(()=> {
+    //     return this.calendar.startDate()
+    //         && this.calendar.endDate()
+    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
+    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.calendar.endDate(), this.date)
+    //
+    // })
+    //
+    // isInHoverRange = computed(()=>{
+    //     return this.calendar.startDate()
+    //         && this.calendar.hoverDate()
+    //         && this.calendar.endDate() == null
+    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
+    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.calendar.endDate(), this.calendar.hoverDate())
+    // })
+    //
+    // isEndOfHoverRange = computed(()=>{
+    //     return this.calendar.startDate()
+    //         && this.calendar.hoverDate()
+    //         && this.calendar.endDate() == null
+    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
+    //         && this.date ===  this.calendar.hoverDate()
+    // })
+    //
+    // isStartOfRange = computed(()=>{
+    //     return this.calendar.startDate()
+    //         && this.date  ===  this.calendar.startDate()
+    // })
+    //
+    // isEndOfRange = computed(()=>{
+    //     return this.calendar.endDate()
+    //         && this.date ===  this.calendar.endDate()
+    // })
 
 
 }

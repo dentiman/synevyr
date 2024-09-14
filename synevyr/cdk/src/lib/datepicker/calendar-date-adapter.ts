@@ -110,4 +110,13 @@ export class CalendarDateAdapter {
     private parseDate(date: string): Date {
         return parse(date, this.dateFormat, new Date());
     }
+
+    isDateWithinRange(date: string | null, minDate: string, maxDate: string): boolean {
+        if (date === null) return false;
+
+        const isAfterMinDate = minDate ? this.firstIsMoreOrEqualThenSecond(date, minDate) : true;
+        const isBeforeMaxDate = maxDate ? this.firstIsMoreOrEqualThenSecond(maxDate, date) : true;
+
+        return isAfterMinDate && isBeforeMaxDate;
+    }
 }

@@ -10,7 +10,7 @@ import { CdkCalendarRangeCellDirective } from '@synevyr/cdk';
   hostDirectives: [
     {
       directive: CdkCalendarRangeCellDirective,
-      inputs: ['date'],
+      inputs: ['date','minDate','maxDate','selectedDate','activeMonth'],
     }
   ],
   templateUrl: './calendar-range-cell.component.html',
@@ -31,16 +31,16 @@ export class SuiCalendarRangeCellComponent {
       'mb-1' : true,
       'bg-gray-100 text-gray-400': this.calendarRangeCell.disabled() || false,
       'text-indigo-600': this.calendarRangeCell.isToday(),
-      'text-gray-300': !this.calendarRangeCell.isActiveMonth() && !this.calendarRangeCell.disabled(),
-      'text-gray-500': ((this.calendarRangeCell.isActiveMonth() &&  !this.calendarRangeCell.disabled()) || this.calendarRangeCell.isInRange()) || false,
-      'bg-indigo-600': (this.calendarRangeCell.isSelected() && !this.calendarRangeCell.isInRange() && !this.calendarRangeCell.isStartOfRange() && !this.calendarRangeCell.isEndOfRange()) || false,
-      'text-white': (this.calendarRangeCell.isSelected() && !this.calendarRangeCell.isInRange() && !this.calendarRangeCell.isStartOfRange() && !this.calendarRangeCell.isEndOfRange()) || false,
-      'rounded-md': (this.calendarRangeCell.isSelected() && !this.calendarRangeCell.isInRange() && !this.calendarRangeCell.isStartOfRange() && !this.calendarRangeCell.isEndOfRange()) || false,
-      'rounded-l-md': this.calendarRangeCell.isStartOfRange() || false,
-      'rounded-r-md': (this.calendarRangeCell.isEndOfRange() || this.calendarRangeCell.isEndOfHoverRange()) || false,
-      'bg-indigo-300': (this.calendarRangeCell.isEndOfRange() || this.calendarRangeCell.isStartOfRange()) ||  false,
-      'bg-indigo-200': this.calendarRangeCell.isInRange() || false,
-      'bg-gray-200': this.calendarRangeCell.isInHoverRange() || false,
+      // 'text-gray-300': !this.calendarRangeCell.isActiveMonth() && !this.calendarRangeCell.disabled(),
+      // 'text-gray-500': ((this.calendarRangeCell.isActiveMonth() &&  !this.calendarRangeCell.disabled()) || this.calendarRangeCell.isInRange()) || false,
+      // 'bg-indigo-600': (this.calendarRangeCell.isSelected() && !this.calendarRangeCell.isInRange() && !this.calendarRangeCell.isStartOfRange() && !this.calendarRangeCell.isEndOfRange()) || false,
+      // 'text-white': (this.calendarRangeCell.isSelected() && !this.calendarRangeCell.isInRange() && !this.calendarRangeCell.isStartOfRange() && !this.calendarRangeCell.isEndOfRange()) || false,
+      // 'rounded-md': (this.calendarRangeCell.isSelected() && !this.calendarRangeCell.isInRange() && !this.calendarRangeCell.isStartOfRange() && !this.calendarRangeCell.isEndOfRange()) || false,
+      // // 'rounded-l-md': this.calendarRangeCell.isStartOfRange() || false,
+      // 'rounded-r-md': (this.calendarRangeCell.isEndOfRange() || this.calendarRangeCell.isEndOfHoverRange()) || false,
+      // 'bg-indigo-300': (this.calendarRangeCell.isEndOfRange() || this.calendarRangeCell.isStartOfRange()) ||  false,
+      // 'bg-indigo-200': this.calendarRangeCell.isInRange() || false,
+      // 'bg-gray-200': this.calendarRangeCell.isInHoverRange() || false,
     }
   }
 

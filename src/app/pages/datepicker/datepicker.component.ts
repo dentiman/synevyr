@@ -2,33 +2,31 @@ import {Component, computed, ElementRef, signal, TemplateRef, viewChild} from '@
 import { CommonModule } from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
-  CdkDatepickerInputDirective,
-  DatepickerDirective,
   CdkDateRangePickerDirective,
-  CdkStartDateInputDirective,
-  CdkEndDateInputDirective,
-  popup,
   PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective, DateRange
 } from '@synevyr/cdk';
 import {SuiCalendarComponent} from '@synevyr/ui';
+import {DatepickerModelComponent} from "./datepicke-model.component";
+import {DatepickerFormControlComponent} from "./datepicker-form-control.component";
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CdkDatepickerInputDirective,
     SuiCalendarComponent,
-    DatepickerDirective,
     CdkDateRangePickerDirective,
-    CdkStartDateInputDirective,
-    CdkEndDateInputDirective,
     PopupPortalDirective,
     CdkPopupOriginDirective,
     CdkPrimitiveValueAccessorDirective,
-    FormsModule
+    FormsModule,
+    DatepickerModelComponent,
+    DatepickerFormControlComponent
   ],
-  templateUrl: './datepicker.component.html'
+  template: `
+   <app-datepicker-model></app-datepicker-model>
+   <app-datepicker-form-control></app-datepicker-form-control>
+    `
 })
 export class DatepickerPageComponent {
   date = new FormControl<string>('2024-07-02');
@@ -41,4 +39,5 @@ export class DatepickerPageComponent {
     'start': '2024-07-10',
     'end':  '2024-07-15'
   })
+    protected readonly console = console;
 }

@@ -2,8 +2,7 @@ import {Component, computed, ElementRef, signal, TemplateRef, viewChild} from '@
 import { CommonModule } from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
-  CdkDateRangePickerDirective,
-  PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective, DateRange
+  PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective
 } from '@synevyr/cdk';
 import {SuiCalendarComponent} from '@synevyr/ui';
 import {DatepickerModelComponent} from "./datepicke-model.component";
@@ -15,7 +14,6 @@ import {DatepickerFormControlComponent} from "./datepicker-form-control.componen
     CommonModule,
     ReactiveFormsModule,
     SuiCalendarComponent,
-    CdkDateRangePickerDirective,
     PopupPortalDirective,
     CdkPopupOriginDirective,
     CdkPrimitiveValueAccessorDirective,
@@ -33,11 +31,7 @@ export class DatepickerPageComponent {
   dateEnd = '2024-08-29';
 
 
-  valueModel = signal<string|DateRange>('2024-07-02')
+  valueModel = signal<string>('2024-07-02')
 
-  rangeModel = signal<string|DateRange>({
-    'start': '2024-07-10',
-    'end':  '2024-07-15'
-  })
     protected readonly console = console;
 }

@@ -1,6 +1,6 @@
 import {Component, HostBinding, inject, input, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {CalendarDateAdapter, CdkCalendarCellDirective} from '@synevyr/cdk';
+import { CdkCalendarCellDirective} from '@synevyr/cdk';
 
 
 @Component({
@@ -11,7 +11,7 @@ import {CalendarDateAdapter, CdkCalendarCellDirective} from '@synevyr/cdk';
   hostDirectives: [
     {
       directive: CdkCalendarCellDirective,
-      inputs: ['date','minDate','maxDate','selectedDate','activeMonth'],
+      inputs: ['date','minDate','maxDate','selectionModel'],
     }
   ],
   templateUrl: './calendar-cell.component.html',

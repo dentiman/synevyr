@@ -1,7 +1,6 @@
 import {computed, Directive, inject, input, Input} from '@angular/core';
-import {CdkDatepickerDirective} from "./datepicker.directive";
 import {CalendarDateAdapter} from "./calendar-date-adapter";
-import {ActiveMonth} from "./active-date.state";
+import {DateSelectionModel} from "./date-selection-model";
 
 
 @Directive({
@@ -15,7 +14,8 @@ import {ActiveMonth} from "./active-date.state";
         '[attr.data-active-month]': 'isActiveMonth()',
         '[attr.data-selected]': 'isSelected()',
         '[attr.aria-selected]': 'isSelected()',
-        '[attr.type]': '"button"'
+        '[attr.type]': '"button"',
+        '(click)': 'selectionModel()?.selectDate(date)'
     }
 })
 export class CdkCalendarCellDirective {
@@ -24,19 +24,19 @@ export class CdkCalendarCellDirective {
     date: string
     minDate = input<string|null>(null)
     maxDate = input<string|null>(null)
-    selectedDate =  input.required<string|null>()
-    activeMonth = input.required<ActiveMonth>()
+    selectionModel = input.required<DateSelectionModel>()
+
 
     get day(): number {
       return  this._dateAdapter.getDay(this.date)
     }
 
     isActiveMonth = computed(() => {
-        return this.activeMonth()?.hasTheSameMonthAs(this.date)
+        return this.selectionModel()?.activeMonth.hasTheSameMonthAs(this.date)
     })
 
     isSelected = computed(() => {
-        const selected = this.selectedDate()
+        const selected = this.selectionModel()?.selectedDate()
         return selected && this.date ===  selected
     })
 

@@ -1,13 +1,25 @@
-<div class="max-w-xs flex-none p-1">
+import {Component, computed, inject, Input, input, model, signal} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DateSelectionModel} from '@synevyr/cdk';
+import { SuiCalendarCellComponent } from '../calendar-cell/calendar-cell.component';
+import { SuiCalendarRangeCellComponent } from '../calendar-range-cell/calendar-range-cell.component';
+
+
+@Component({
+  selector: 'sui-calendar-navigation',
+  standalone: true,
+  imports: [CommonModule, SuiCalendarCellComponent, SuiCalendarRangeCellComponent],
+  template: `
+  <div class="max-w-xs flex-none p-1">
   <div class="flex items-center text-center text-gray-900 space-x-2">
-    <button type="button" (click)="activeMonth.setPreviousYear()"
+    <button type="button" (click)="state.activeMonth.setPreviousYear()"
             class=" flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 py-2 px-2 hover:bg-gray-100 rounded-md">
       <span class="sr-only">Previous month</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
       </svg>
     </button>
-    <button type="button" (click)="activeMonth.setPreviousMonth()"
+    <button type="button" (click)="state.activeMonth.setPreviousMonth()"
             class=" flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 py-2 px-2 hover:bg-gray-100 rounded-md">
       <span class="sr-only">Previous month</span>
       <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -18,10 +30,10 @@
     </button>
 
     <div class="flex-auto text-sm font-semibold py-2 px-2 ">
-      {{ activeMonth.monthName()  }} {{ activeMonth.year() }}
+      {{ state.activeMonth.monthName()  }} {{ state.activeMonth.year() }}
     </div>
 
-    <button type="button" (click)="activeMonth.setNextMonth()"
+    <button type="button" (click)="state.activeMonth.setNextMonth()"
             class=" flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 py-2 px-2 hover:bg-gray-100 rounded-md">
       <span class="sr-only">Next month</span>
       <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -30,7 +42,7 @@
               clip-rule="evenodd"/>
       </svg>
     </button>
-    <button type="button" (click)="activeMonth.setNextYear()"
+    <button type="button" (click)="state.activeMonth.setNextYear()"
             class=" flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 py-2 px-2 hover:bg-gray-100 rounded-md">
       <span class="sr-only">Next month</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -47,12 +59,13 @@
     <div>F</div>
     <div>S</div>
   </div>
-  <div class="isolate mt-2 grid grid-cols-7  text-sm ">
-    @for ( week of activeMonth.weeks(); track $index) {
-      @for ( date of week; track date+$index) {
-          <button  suiCalendarCell (click)="selectDate(date)" [date]="date" [selectedDate]="selectedDate()" [activeMonth]="activeMonth"   >
-          </button>
-      }
-    }
-  </div>
+    <div class="isolate mt-2 grid grid-cols-7  text-sm ">
+      <ng-content></ng-content>
+    </div>
 </div>
+  `,
+})
+export class SuiCalendarNavigationComponent {
+  @Input({required: true})
+  state!: DateSelectionModel;
+}

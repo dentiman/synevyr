@@ -1,7 +1,4 @@
 import {computed, Directive, inject, input, Input} from '@angular/core';
-import { CdkDatepickerDirective } from './datepicker.directive';
-import { DialogRef } from '@angular/cdk/dialog';
-import {toSignal} from "@angular/core/rxjs-interop";
 import {CalendarDateAdapter} from "./calendar-date-adapter";
 import {ActiveMonth} from "./active-date.state";
 

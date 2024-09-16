@@ -2,7 +2,7 @@ import {Component, computed, ElementRef, signal, TemplateRef, viewChild} from '@
 import { CommonModule } from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
-  PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective, DateRange
+  PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective
 } from '@synevyr/cdk';
 import {CalendarRangeComponent, SuiCalendarComponent} from '@synevyr/ui';
 

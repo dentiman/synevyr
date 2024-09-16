@@ -1,17 +1,18 @@
 import {CalendarDateAdapter} from "./calendar-date-adapter";
 import {computed, Signal, signal, WritableSignal} from "@angular/core";
 import {toObservable} from "@angular/core/rxjs-interop";
+import {Observable} from "rxjs";
 
 export class ActiveMonth {
     private _dateAdapter: CalendarDateAdapter;
     private _activeDate: WritableSignal<string>;
 
-    constructor(changes: Signal<any>, dateAdapter: CalendarDateAdapter) {
+    constructor(changes: Observable<any>, dateAdapter: CalendarDateAdapter) {
         this._dateAdapter = dateAdapter;
         this._activeDate = signal(this._dateAdapter.today());
 
         //TODO: unsubscribe
-        toObservable(changes).subscribe((value) => {
+        changes.subscribe((value) => {
             this.setFromDate(value);
         });
 

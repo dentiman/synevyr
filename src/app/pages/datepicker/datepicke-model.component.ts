@@ -1,9 +1,8 @@
 import {Component, computed, ElementRef, signal, TemplateRef, viewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
-  CdkDateRangePickerDirective,
-  PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective, DateRange
+  PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective
 } from '@synevyr/cdk';
 import {CalendarRangeComponent, SuiCalendarComponent} from '@synevyr/ui';
 
@@ -14,7 +13,6 @@ import {CalendarRangeComponent, SuiCalendarComponent} from '@synevyr/ui';
     CommonModule,
     ReactiveFormsModule,
     SuiCalendarComponent,
-    CdkDateRangePickerDirective,
     PopupPortalDirective,
     CdkPopupOriginDirective,
     CdkPrimitiveValueAccessorDirective,
@@ -42,12 +40,10 @@ import {CalendarRangeComponent, SuiCalendarComponent} from '@synevyr/ui';
   </div>
   <ng-template cdkPopupPortal #popupPortal="cdkPopupPortal" [popupOriginRef]="popupOrigin" >
     <sui-calendar [(value)]="valueModel"    [maxDate]="dateEnd" ></sui-calendar>
+    <button (click)="valueModel.set(null)" > set null</button>
+    <button (click)="valueModel.set('2024-07-03')" > set new date</button>
   </ng-template>
 </div>
-
- <div class="border-b border-gray-200 pb-5">
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Date Range picker </h3>
-  </div>
 
   `
 })
@@ -55,5 +51,7 @@ export class DatepickerModelComponent {
   dateEnd = '2024-08-29';
 
   valueModel = signal<string>('2024-07-02')
+
+
 
 }

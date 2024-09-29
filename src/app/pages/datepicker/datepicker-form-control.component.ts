@@ -4,7 +4,7 @@ import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   PopupPortalDirective, CdkPopupOriginDirective, CdkPrimitiveValueAccessorDirective
 } from '@synevyr/cdk';
-import {CalendarRangeComponent, SuiCalendarComponent} from '@synevyr/ui';
+import { SuiCalendarComponent} from '@synevyr/ui';
 
 @Component({
   selector: 'app-datepicker-form-control',
@@ -16,8 +16,7 @@ import {CalendarRangeComponent, SuiCalendarComponent} from '@synevyr/ui';
     PopupPortalDirective,
     CdkPopupOriginDirective,
     CdkPrimitiveValueAccessorDirective,
-    FormsModule,
-    CalendarRangeComponent
+    FormsModule
   ],
   template: `
     <div class="border-b border-gray-200 pb-5">
@@ -39,13 +38,10 @@ import {CalendarRangeComponent, SuiCalendarComponent} from '@synevyr/ui';
             placeholder="choose date">
       </div>
       <ng-template cdkPopupPortal #popupPortal="cdkPopupPortal" [popupOriginRef]="popupOrigin" >
-        <sui-calendar [value]="date.value" (valueChange)="date.setValue($event)"  (daySelect)="popupPortal.popupRef?.close()"   ></sui-calendar>
+        <sui-calendar [value]="date.value" (valueChange)="date.setValue($event)"  (selectionChange)="popupPortal.popupRef?.close()"   ></sui-calendar>
       </ng-template>
     </div>
 
-    <div class="border-b border-gray-200 pb-5">
-      <h3 class="text-base font-semibold leading-6 text-gray-900">Date Range picker </h3>
-    </div>
 
   `
 })

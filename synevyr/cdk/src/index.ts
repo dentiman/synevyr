@@ -1,5 +1,4 @@
 export * from './lib/common/control-status.directive'
-export * from './lib/datepicker/datepicker.module'
 export * from './lib/datepicker/active-date.state'
 export * from './lib/datepicker/calendar-cell.directive'
 export * from './lib/datepicker/calendar-range-cell.directive'

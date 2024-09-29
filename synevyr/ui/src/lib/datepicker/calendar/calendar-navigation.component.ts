@@ -1,8 +1,8 @@
 import {Component, computed, inject, Input, input, model, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DateSelectionModel} from '@synevyr/cdk';
-import { SuiCalendarCellComponent } from '../calendar-cell/calendar-cell.component';
-import { SuiCalendarRangeCellComponent } from '../calendar-range-cell/calendar-range-cell.component';
+import { SuiCalendarCellComponent } from './calendar-cell.component';
+import { SuiCalendarRangeCellComponent } from './calendar-range-cell.component';
 
 
 @Component({

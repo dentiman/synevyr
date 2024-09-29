@@ -36,8 +36,6 @@ export class SingleDateSelectionModel implements DateSelectionModel {
     ) {
         this.selectedDate = toSignal(toObservable(source).pipe(
             takeUntilDestroyed(),
-            //TODO: sometime reset date
-            tap(value => console.log('selectedDate', value)),
             startWith(undefined),
             pairwise(),
             filter(([prev,current]) => {
@@ -59,7 +57,8 @@ export class SingleDateSelectionModel implements DateSelectionModel {
 
 export class DateRangeSelectionModel implements DateSelectionModel {
 
-    selectedDate: Signal<string | null>
+    hoverDate: WritableSignal<string | null> = signal(null)
+    selectedDate: Signal<string | null>  = signal(null)
     startDate: Signal<string | null>
     endDate: Signal<string | null>
     changes: Observable<string | null>
@@ -72,7 +71,7 @@ export class DateRangeSelectionModel implements DateSelectionModel {
     ) {
 
         const startDate$ = this.filterSource(startDateSource)
-        this.selectedDate = toSignal(startDate$)
+        this.startDate = toSignal(startDate$)
         const endDate$ = this.filterSource(endDateSource)
         this.endDate = toSignal(endDate$)
 
@@ -101,8 +100,6 @@ export class DateRangeSelectionModel implements DateSelectionModel {
     filterSource(source: WritableSignal<any>) {
        return  toObservable(source).pipe(
             takeUntilDestroyed(),
-            //TODO: sometime reset date
-            tap(value => console.log('selectedDate', value)),
             startWith(undefined),
             pairwise(),
             filter(([prev,current]) => {

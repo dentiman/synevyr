@@ -26,7 +26,6 @@ export class CdkCalendarCellDirective {
     maxDate = input<string|null>(null)
     selectionModel = input.required<DateSelectionModel>()
 
-
     get day(): number {
       return  this._dateAdapter.getDay(this.date)
     }
@@ -50,40 +49,4 @@ export class CdkCalendarCellDirective {
     isToday = computed(()=> {
         return this.date === this._dateAdapter.today()
     })
-
-
-    // isInRange = computed(()=> {
-    //     return this.calendar.startDate()
-    //         && this.calendar.endDate()
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.calendar.endDate(), this.date)
-    //
-    // })
-    //
-    // isInHoverRange = computed(()=>{
-    //     return this.calendar.startDate()
-    //         && this.calendar.hoverDate()
-    //         && this.calendar.endDate() == null
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.calendar.endDate(), this.calendar.hoverDate())
-    // })
-    //
-    // isEndOfHoverRange = computed(()=>{
-    //     return this.calendar.startDate()
-    //         && this.calendar.hoverDate()
-    //         && this.calendar.endDate() == null
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
-    //         && this.date ===  this.calendar.hoverDate()
-    // })
-    //
-    // isStartOfRange = computed(()=>{
-    //     return this.calendar.startDate()
-    //         && this.date  ===  this.calendar.startDate()
-    // })
-    //
-    // isEndOfRange = computed(()=>{
-    //     return this.calendar.endDate()
-    //         && this.date ===  this.calendar.endDate()
-    // })
-
 }

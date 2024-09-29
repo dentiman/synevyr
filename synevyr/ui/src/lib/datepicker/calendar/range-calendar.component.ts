@@ -1,7 +1,7 @@
 import {Component, inject, input, model} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiCalendarCellComponent } from '../calendar-cell/calendar-cell.component';
-import { SuiCalendarRangeCellComponent } from '../calendar-range-cell/calendar-range-cell.component';
+import { SuiCalendarCellComponent } from './calendar-cell.component';
+import { SuiCalendarRangeCellComponent } from './calendar-range-cell.component';
 import {SuiCalendarNavigationComponent} from "./calendar-navigation.component";
 import {CalendarDateAdapter, DateRangeSelectionModel} from "@synevyr/cdk";
 
@@ -14,7 +14,7 @@ import {CalendarDateAdapter, DateRangeSelectionModel} from "@synevyr/cdk";
       @for ( week of state.activeMonth.weeks(); track $index) {
         @for ( date of week; track date+$index) {
           
-          <button  suiCalendarCell
+          <button  suiCalendarRangeCell
                    [date]="date"
                    [selectionModel]="state"
                    [minDate]="minDate()"
@@ -35,4 +35,7 @@ export class SuiRangeCalendarComponent {
   endDate = model<string|null>(null)
 
   state = new DateRangeSelectionModel(this.startDate,this.endDate, this._dateAdapter)
+
+
+
 }

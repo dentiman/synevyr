@@ -1,22 +1,14 @@
 import {computed, Directive, inject, input, Input} from '@angular/core';
 import {CalendarDateAdapter} from "./calendar-date-adapter";
-import {ActiveMonth} from "./active-date.state";
+import {DateRangeSelectionModel} from "./date-selection-model";
 
 @Directive({
     selector: '[cdkCalendarRangeCell]',
     exportAs: 'cdkCalendarRangeCell',
     standalone: true,
     host: {
-        // '(mouseenter)': '_handleMouseenter()',
-        // '(mouseleave)': '_handleMouseleave()',
-        // '(click)': 'setBySelection()',
-        '[attr.disabled]': 'disabled() || null',
-        '[attr.data-disabled]': 'disabled() || null',
-        '[attr.data-today]': 'isToday()',
-        '[attr.data-active-month]': 'isActiveMonth()',
-        '[attr.data-selected]': 'isSelected()',
-        '[attr.aria-selected]': 'isSelected()',
-        '[attr.type]': '"button"'
+        '(mouseenter)': '_handleMouseenter()',
+        '(mouseleave)': '_handleMouseleave()',
     }
 })
 export class CdkCalendarRangeCellDirective {
@@ -24,70 +16,60 @@ export class CdkCalendarRangeCellDirective {
     private _dateAdapter = inject(CalendarDateAdapter)
     @Input({required: true})
     date: string
-    minDate = input<string|null>(null)
-    maxDate = input<string|null>(null)
-    selectedDate =  input.required<string|null>()
-    activeMonth = input.required<ActiveMonth>()
 
+    selectionModel = input.required<DateRangeSelectionModel>()
 
-    get day(): number {
-        return  this._dateAdapter.getDay(this.date)
+    startDate = computed(()=> {
+        return this.selectionModel()?.startDate()
+    })
+
+    endDate = computed(()=> {
+        return this.selectionModel()?.endDate()
+    })
+
+    hoverDate = computed(()=> {
+        return this.selectionModel()?.hoverDate()
+    })
+
+    isInRange = computed(()=> {
+        return this.startDate()
+            && this.endDate()
+            && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date,this.startDate())
+            && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.endDate(), this.date)
+
+    })
+
+    isInHoverRange = computed(()=>{
+        return this.startDate()
+            && this.hoverDate()
+            && this.endDate() == null
+            && this._dateAdapter.isDateWithinRange(this.date, this.startDate(), this.hoverDate())
+    })
+
+    isEndOfHoverRange = computed(()=>{
+        return this.startDate()
+            && this.hoverDate()
+            && this.endDate() == null
+            && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.startDate())
+            && this.date ===  this.hoverDate()
+    })
+
+    isStartOfRange = computed(()=>{
+        return this.startDate()
+            && this.date  ===  this.startDate()
+    })
+
+    isEndOfRange = computed(()=>{
+        return this.endDate()
+            && this.date ===  this.endDate()
+    })
+
+    _handleMouseenter() {
+        this.selectionModel()?.hoverDate.set(this.date)
     }
-
-    isActiveMonth = computed(() => {
-        return this.activeMonth()?.hasTheSameMonthAs(this.date)
-    })
-
-    isSelected = computed(() => {
-        const selected = this.selectedDate()
-        return selected && this.date ===  selected
-    })
-
-    disabled = computed(() => {
-        const minDate = this.minDate()
-        const maxDate = this.maxDate()
-        return (minDate && this._dateAdapter.firstIsMoreThenSecond(minDate,this.date)) ||
-            (maxDate && this._dateAdapter.firstIsMoreThenSecond(this.date,maxDate))
-    })
-
-    isToday = computed(()=> {
-        return this.date === this._dateAdapter.today()
-    })
-
-
-    // isInRange = computed(()=> {
-    //     return this.calendar.startDate()
-    //         && this.calendar.endDate()
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.calendar.endDate(), this.date)
-    //
-    // })
-    //
-    // isInHoverRange = computed(()=>{
-    //     return this.calendar.startDate()
-    //         && this.calendar.hoverDate()
-    //         && this.calendar.endDate() == null
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.calendar.endDate(), this.calendar.hoverDate())
-    // })
-    //
-    // isEndOfHoverRange = computed(()=>{
-    //     return this.calendar.startDate()
-    //         && this.calendar.hoverDate()
-    //         && this.calendar.endDate() == null
-    //         && this._dateAdapter.firstIsMoreOrEqualThenSecond(this.date, this.calendar.startDate())
-    //         && this.date ===  this.calendar.hoverDate()
-    // })
-    //
-    // isStartOfRange = computed(()=>{
-    //     return this.calendar.startDate()
-    //         && this.date  ===  this.calendar.startDate()
-    // })
-    //
-    // isEndOfRange = computed(()=>{
-    //     return this.calendar.endDate()
-    //         && this.date ===  this.calendar.endDate()
-    // })
+    _handleMouseleave() {
+        this.selectionModel()?.hoverDate.set(null)
+    }
 
 
 }

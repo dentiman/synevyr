@@ -7,6 +7,7 @@ import {
 import {SuiCalendarComponent} from '@synevyr/ui';
 import {DatepickerModelComponent} from "./datepicke-model.component";
 import {DatepickerFormControlComponent} from "./datepicker-form-control.component";
+import {DateRangePickerModelComponent} from "./date-range-picker-model.component";
 
 @Component({
   standalone: true,
@@ -19,11 +20,14 @@ import {DatepickerFormControlComponent} from "./datepicker-form-control.componen
     CdkPrimitiveValueAccessorDirective,
     FormsModule,
     DatepickerModelComponent,
-    DatepickerFormControlComponent
+    DatepickerFormControlComponent,
+    DatepickerModelComponent,
+    DateRangePickerModelComponent
   ],
   template: `
-   <app-datepicker-model></app-datepicker-model>
-   <app-datepicker-form-control></app-datepicker-form-control>
+   <app-datepicker-model/>
+   <app-datepicker-form-control/>
+   <app-date-range-picker-model/>
     `
 })
 export class DatepickerPageComponent {

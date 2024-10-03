@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   CdkSelectListboxDirective,
-  CdkSelectOptionDirective, popup
+  CdkSelectOptionDirective, CdkSingleSelectionModelDirective, popup
 } from '@synevyr/cdk';
 import { CdkControlStatusDirective } from '@synevyr/cdk';
 import { map, Observable, startWith } from 'rxjs';
@@ -22,7 +22,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
   selector: 'synevyr-autocomplete-page',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, CdkSelectListboxDirective,
-    CdkSelectOptionDirective, CdkControlStatusDirective, ButtonComponent,
+    CdkSelectOptionDirective, CdkControlStatusDirective, ButtonComponent, CdkSingleSelectionModelDirective
   ],
   templateUrl: './autocomplete-page.component.html',
 
@@ -36,7 +36,6 @@ export class AutocompletePageComponent implements OnInit  {
 
   autocompletePortal = viewChild<TemplateRef<any>>('autocompletePortal')
   autocompleteInput = viewChild<ElementRef>('autocompleteInput')
-
 
   popupRef = popup(toObservable(computed(()=>{
     return {

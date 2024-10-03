@@ -7,6 +7,7 @@ export * from './lib/button/button.component';
 export * from './lib/button/close-button.component';
 export * from './lib/chip/chip.component';
 export * from './lib/select/select-control.component';
+export * from './lib/select/multiple-select-control.component';
 
 export * from './lib/loading-spin/loading-spin.component';
 export * from './lib/loading-spin/loading-spin.component';

@@ -1,13 +1,14 @@
 import {
   booleanAttribute,
   computed,
-  Directive, ElementRef,
-  inject,
+  Directive, effect, ElementRef,
+  inject, input,
   Input,
-  Signal
+  Signal, untracked
 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
 import { CdkSelectListboxDirective } from './select-listbox.directive';
+import { SELECTION_MODEL, SelectionModel } from './selection-models';
 
 
 @Directive({
@@ -18,42 +19,42 @@ import { CdkSelectListboxDirective } from './select-listbox.directive';
     'role': 'option',
     '[id]': 'id',
     '[attr.aria-selected]': 'isSelected()',
-    '[attr.aria-disabled]': 'disabled',
+    '[attr.aria-disabled]': '(_disabled() === true || this.listbox.disabled() === true) || null',
     '[attr.data-active]': 'isActive()',
     '(mouseenter)': 'setActive()',
     '(click)': 'triggerSelection()'
   }
 })
-export class CdkSelectOptionDirective implements Highlightable {
+export class CdkSelectOptionDirective<T> implements Highlightable {
 
   readonly listbox = inject(CdkSelectListboxDirective)
 
   readonly element: HTMLElement = inject(ElementRef).nativeElement;
 
+  selectionModel = inject(SELECTION_MODEL) as SelectionModel<T>;
+
   id =  this.listbox.id + `-option-${this.listbox.nextSelectOptionId++}`;
 
-  @Input({required: true, alias:'cdkSelectOption'}) value!: string | number
+  @Input({required: true, alias:'cdkSelectOption'}) value!: T
 
+  _disabled = input(false,{alias: 'disabled'})
 
-  @Input({transform: booleanAttribute})
+  selectedByDefault = input(false, {alias: 'selected'})
+
+  constructor() {
+    effect(() => {
+      if(this.selectedByDefault()) {
+       untracked(() => this.selectionModel.select(this.value))
+      }
+    });
+  }
+
   get disabled(): boolean {
-    return  this._disabled || this.listbox.disabled();
+    return  this._disabled();
   }
-  set disabled(value: boolean) {
-    this._disabled = value;
-  }
-  private _disabled: boolean = false;
-
 
   isSelected: Signal<boolean> = computed(()=> {
-      const selected = this.listbox.value()
-
-      // @ts-ignore
-    if(this.listbox.multiple() && Array.isArray(selected) && selected.includes(this.value)) {
-        return true
-      } else {
-        return  selected === this.value
-      }
+    return this.selectionModel.isSelected(this.value)
   })
 
   isActive: Signal<boolean> = computed(() => {
@@ -62,22 +63,8 @@ export class CdkSelectOptionDirective implements Highlightable {
 
 
   triggerSelection() {
-    if(this.disabled) return;
-    if(this.listbox.multiple()) {
-        // @ts-ignore
-      this.listbox.value.update(selectedValues => {
-           // @ts-ignore
-          if(Array.isArray(selectedValues)  &&  selectedValues.includes(this.value)) {
-              return  selectedValues.filter(value => value !== this.value)
-           }
-           if(Array.isArray(selectedValues)) {
-            return  [...selectedValues,this.value]
-          }
-           return [this.value]
-        })
-    } else {
-       this.listbox.value.set(this.value)
-    }
+    if(this.disabled === true) return;
+    this.selectionModel.select(this.value)
     this.listbox.optionTriggered.emit()
   }
 

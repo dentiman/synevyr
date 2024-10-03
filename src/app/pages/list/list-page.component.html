@@ -2,27 +2,26 @@
   <h3 class="text-base font-semibold leading-6 text-gray-900">List Base</h3>
 </div>
 
-<nav class="flex flex-1 flex-col max-w-sm" >
-  <ul   cdkSelectListbox  [formControl]="ctrl" role="list" class="-mx-2 space-y-1">
-    @for (item of items;track item.value) {
-      <li>
-        <a [cdkSelectOption]="item.value"
-           class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 text-gray-700 cursor-pointer
-           aria-selected:bg-indigo-500 aria-selected:aria-disabled:bg-indigo-300 aria-selected:text-white
-           aria-[selected=false]:data-[active=true]:bg-gray-100
-           aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"
-        >
-          {{ item.label }}
-        </a>
-      </li>
-    }
-  </ul>
-</nav>
+<!--<nav class="flex flex-1 flex-col max-w-sm" >-->
+<!--  <ul   cdkSelectListbox  [formControl]="ctrl" role="list" class="-mx-2 space-y-1">-->
+<!--    @for (item of items;track item.value) {-->
+<!--      <li>-->
+<!--        <a [cdkSelectOption]="item.value"-->
+<!--           class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 text-gray-700 cursor-pointer-->
+<!--           aria-selected:bg-indigo-500 aria-selected:aria-disabled:bg-indigo-300 aria-selected:text-white-->
+<!--           aria-[selected=false]:data-[active=true]:bg-gray-100-->
+<!--           aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"-->
+<!--        >-->
+<!--          {{ item.label }}-->
+<!--        </a>-->
+<!--      </li>-->
+<!--    }-->
+<!--  </ul>-->
+<!--</nav>-->
 
 <p>
   Control value : {{ ctrl.value }}<br>
   Errors: {{ ctrl.errors | json}}<br>
-  Errors: {{ ctrl.status}}<br>
   Invalid: {{ ctrl.invalid | json}}<br>
 </p>
 
@@ -37,20 +36,20 @@
 </div>
 
 <nav class="flex flex-1 flex-col max-w-sm">
-  <ul cdkSelectListbox [cdkListboxMultiple]="true"  [formControl]="multipleCtrl"  class="-mx-2 space-y-1">
-    @for (item of items;track item.value) {
-      <li>
-        <a [cdkSelectOption]="item.value"
-           class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 text-gray-700 cursor-pointer
-           aria-selected:bg-indigo-500 aria-selected:aria-disabled:bg-indigo-300 aria-selected:text-white
-           aria-[selected=false]:data-[active=true]:bg-gray-100
-           aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"
-        >
-          {{ item.label }}
-        </a>
-      </li>
-    }
-  </ul>
+<!--  <ul cdkSelectListbox [cdkListboxMultiple]="true"  [formControl]="multipleCtrl"  class="-mx-2 space-y-1">-->
+<!--    @for (item of items;track item.value) {-->
+<!--      <li>-->
+<!--        <a [cdkSelectOption]="item.value"-->
+<!--           class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 text-gray-700 cursor-pointer-->
+<!--           aria-selected:bg-indigo-500 aria-selected:aria-disabled:bg-indigo-300 aria-selected:text-white-->
+<!--           aria-[selected=false]:data-[active=true]:bg-gray-100-->
+<!--           aria-disabled:bg-gray-50 aria-disabled:cursor-not-allowed"-->
+<!--        >-->
+<!--          {{ item.label }}-->
+<!--        </a>-->
+<!--      </li>-->
+<!--    }-->
+<!--  </ul>-->
 </nav>
 <p>
   Selected: {{ multipleCtrl.value }}

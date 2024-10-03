@@ -8,7 +8,6 @@ import { CdkSelectOptionDirective } from './select-option.directive';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, hasModifierKey, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CdkPrimitiveValueAccessorDirective } from './primitive-value-accessor.directive';
 
 let nextListboxId = 0;
 
@@ -18,7 +17,7 @@ let nextListboxId = 0;
   exportAs: 'cdkSelectListbox',
   standalone: true
 })
-export class CdkSelectListboxDirective<T> extends CdkPrimitiveValueAccessorDirective<T> implements OnDestroy, AfterContentInit {
+export class CdkSelectListboxDirective<T>  implements OnDestroy, AfterContentInit {
 
   destroyRef = inject(DestroyRef);
 
@@ -26,18 +25,18 @@ export class CdkSelectListboxDirective<T> extends CdkPrimitiveValueAccessorDirec
 
   nextSelectOptionId = 0
 
-  multiple = input(false, {alias: 'cdkListboxMultiple'});
+  disabled = input(false);
 
   @Output() optionTriggered = new EventEmitter<void>();
 
-  @ContentChildren(CdkSelectOptionDirective, { descendants: true }) options = new QueryList<CdkSelectOptionDirective>();
+  @ContentChildren(CdkSelectOptionDirective, { descendants: true }) options = new QueryList<CdkSelectOptionDirective<T>>();
 
   id = `listbox-${nextListboxId++}`;
 
-  protected _listKeyManager: ActiveDescendantKeyManager<CdkSelectOptionDirective>;
+  protected _listKeyManager: ActiveDescendantKeyManager<CdkSelectOptionDirective<T>>;
 
 
-  protected _activeOption = signal<CdkSelectOptionDirective>(null);
+  protected _activeOption = signal<CdkSelectOptionDirective<T>>(null);
 
   activeOptionValue = computed(() => {
     return this._activeOption()?.value;
@@ -46,7 +45,7 @@ export class CdkSelectListboxDirective<T> extends CdkPrimitiveValueAccessorDirec
 
 
 
-  setActiveOption(option: CdkSelectOptionDirective) {
+  setActiveOption(option: CdkSelectOptionDirective<T>) {
     this._activeOption.set(option);
     this._listKeyManager?.setActiveItem(option);
   }

@@ -19,7 +19,7 @@ import { ButtonComponent, SuiSelectControlComponent } from '@synevyr/ui';
 })
 export class SelectPageComponent {
 
-  ctrl = new FormControl([2])
+  ctrl = new FormControl(2)
 
   setDisabled() {
     this.ctrl.disable()
@@ -29,7 +29,7 @@ export class SelectPageComponent {
   }
 
   setValue() {
-    this.ctrl.setValue([4])
+    this.ctrl.setValue(4)
   }
 
   items: any = [

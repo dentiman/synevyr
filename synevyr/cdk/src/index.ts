@@ -21,6 +21,7 @@ export * from './lib/popup/popup-portal.directive'
 
 export * from './lib/select/select-option.directive'
 export * from './lib/select/select-listbox.directive'
+export * from './lib/select/selection-models'
 
 export * from './lib/select/primitive-value-accessor.directive'
 export * from './lib/select/select-display-value.directive'

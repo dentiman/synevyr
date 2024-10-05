@@ -21,3 +21,7 @@ export * from './lib/input/input.component';
 export * from './lib/avatar/avatar.component';
 
 export * from './lib/switch/sui-switch.component';
+
+export * from './lib/tab/tabs.component';
+
+export * from './lib/tab/tab.component';

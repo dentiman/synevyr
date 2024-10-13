@@ -39,7 +39,7 @@ export class CdkSelectListboxDirective<T>  implements OnDestroy, AfterContentIni
   protected _activeOption = signal<CdkSelectOptionDirective<T>>(null);
 
   activeOptionValue = computed(() => {
-    return this._activeOption()?.value;
+    return this._activeOption()?.value();
   });
 
 
@@ -90,7 +90,7 @@ export class CdkSelectListboxDirective<T>  implements OnDestroy, AfterContentIni
 
         if (this._listKeyManager.activeItem === null && this.activeOptionValue() !== null) {
           this._activeOption.set(null);
-        } else if (this._listKeyManager.activeItem.value !== this.activeOptionValue()) {
+        } else if (this._listKeyManager.activeItem.value() !== this.activeOptionValue()) {
           this._activeOption.set(this._listKeyManager.activeItem);
         }
       });

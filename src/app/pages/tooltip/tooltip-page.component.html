@@ -29,3 +29,36 @@
 <ng-template #tooltipPortal>
 
 </ng-template>
+<span  role="tooltip"
+      class="pointer-events-none z-50 inline-flex items-center justify-center rounded-md px-3 py-1 font-semibold  transition-opacity duration-300 ease-in-out group-hover:opacity-100 bg-slate-900 text-white min-h-7 text-sm left-1/2 -translate-x-1/2 after:absolute after:block after:size-0 after:border-8 after:border-transparent after:border-t-slate-900 after:bottom-[-0.95rem] after:left-1/2 after:-translate-x-1/2 -top-10">
+      Medium tooltip</span>
+
+<div class="flex items-center justify-start gap-4">
+  <!-- Primary Medium Tooltip -->
+  <div class="group relative inline-block whitespace-nowrap">
+    <div aria-describedby=":S1:">
+      <!-- Tooltip Target -->
+      <span class="flex size-6 cursor-pointer items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">i</span>
+    </div>
+    <span id=":S1:" role="tooltip"
+          class="pointer-events-none absolute z-50 inline-flex items-center justify-center rounded-md px-3 py-1 font-semibold opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 bg-slate-900 text-white min-h-7 text-sm left-1/2 -translate-x-1/2 after:absolute after:block after:size-0 after:border-8 after:border-transparent after:border-t-slate-900 after:bottom-[-0.95rem] after:left-1/2 after:-translate-x-1/2 -top-10">
+      Medium tooltip</span>
+  </div>
+  <!-- Label -->
+  <span class="text-sm text-slate-500">Medium</span>
+</div>
+
+<div class="flex items-center justify-start gap-4">
+  <!-- Primary Small Tooltip -->
+  <div class="group relative inline-block whitespace-nowrap">
+    <div aria-describedby=":S2:">
+      <!-- Tooltip Target -->
+      <span class="flex size-6 cursor-pointer items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">i</span>
+    </div>
+    <span id=":S2:" role="tooltip"
+          class="pointer-events-none absolute z-50 inline-flex items-center justify-center rounded-md px-3 py-1 font-semibold opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 bg-slate-900 text-white min-h-6 text-xs left-1/2 -translate-x-1/2 after:absolute after:block after:size-0 after:border-8 after:border-transparent after:border-t-slate-900 after:bottom-[-0.95rem] after:left-1/2 after:-translate-x-1/2 -top-9">
+      Small tooltip</span>
+  </div>
+  <!-- Label -->
+  <span class="text-sm text-slate-500">Small</span>
+</div>

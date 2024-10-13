@@ -11,7 +11,7 @@ import { CdkPortal, CdkPortalOutlet, Portal } from '@angular/cdk/portal';
     <nav  cdkSelectListbox [(cdkSingleSelectionModel)]="activeTab" class="isolate flex divide-x divide-gray-200 rounded-lg shadow" aria-label="Tabs">
       <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
       <a [cdkSelectOption]="myAccount"
-         [selected]="true" 
+         [selected]="true"  
          class="group relative min-w-0 flex-1 overflow-hidden rounded-l-lg bg-white px-4 py-4 text-center text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10" aria-current="page">
         <span>My Account</span>
         <span aria-hidden="true" class="absolute inset-x-0 bottom-0 h-0.5 bg-indigo-500"></span>
@@ -34,6 +34,7 @@ import { CdkPortal, CdkPortalOutlet, Portal } from '@angular/cdk/portal';
     
     
     <ng-container  [cdkPortalOutlet]="activeTab()"></ng-container>
+    
   
   `,
 })

@@ -16,7 +16,6 @@ import { SELECTION_MODEL, SelectionModel } from './selection-models';
   exportAs: 'cdkSelectOption',
   standalone: true,
   host: {
-    'role': 'option',
     '[id]': 'id',
     '[attr.aria-selected]': 'isSelected()',
     '[attr.aria-disabled]': '(_disabled() === true || this.listbox.disabled() === true) || null',
@@ -35,7 +34,7 @@ export class CdkSelectOptionDirective<T> implements Highlightable {
 
   id =  this.listbox.id + `-option-${this.listbox.nextSelectOptionId++}`;
 
-  @Input({required: true, alias:'cdkSelectOption'}) value!: T
+   value = input.required<T>( {alias: 'cdkSelectOption'})
 
   _disabled = input(false,{alias: 'disabled'})
 
@@ -44,7 +43,7 @@ export class CdkSelectOptionDirective<T> implements Highlightable {
   constructor() {
     effect(() => {
       if(this.selectedByDefault()) {
-       untracked(() => this.selectionModel.select(this.value))
+       untracked(() => this.selectionModel.select(this.value()))
       }
     });
   }
@@ -54,17 +53,17 @@ export class CdkSelectOptionDirective<T> implements Highlightable {
   }
 
   isSelected: Signal<boolean> = computed(()=> {
-    return this.selectionModel.isSelected(this.value)
+    return this.selectionModel.isSelected(this.value())
   })
 
   isActive: Signal<boolean> = computed(() => {
-    return this.value === this.listbox.activeOptionValue()
+    return this.value() === this.listbox.activeOptionValue()
   });
 
 
   triggerSelection() {
     if(this.disabled === true) return;
-    this.selectionModel.select(this.value)
+    this.selectionModel.select(this.value())
     this.listbox.optionTriggered.emit()
   }
 

@@ -19,6 +19,7 @@ import { SuiChipComponent } from '../chip/chip.component';
 import { SuiCloseButtonComponent } from '../button/close-button.component';
 import type { ClassValue } from 'clsx';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { CdkMenuTrigger } from '@angular/cdk/menu';
 
 @Component({
   selector: 'sui-select,button[suiSelectControl]',
@@ -50,7 +51,9 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 }
 
 <ng-template #selectPortal>
-  <ul cdkSelectListbox  [(cdkSingleSelectionModel)]="value" [disabled]="disabled()" >
+  <ul cdkSelectListbox  
+      [(cdkSingleSelectionModel)]="value" [disabled]="disabled()" 
+      class="w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" >
     @for (item of options();track item.value) {
       <li>
         <a [cdkSelectOption]="item.value"
@@ -70,7 +73,8 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
   `,
   hostDirectives: [
     CdkPrimitiveValueAccessorDirective,
-    CdkControlStatusDirective
+    CdkControlStatusDirective,
+    CdkMenuTrigger
   ],
   host: {
     '[class]': 'computedClass()',
@@ -78,8 +82,8 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
     '[style.pointer-events]': 'disabled() ? "none" : "auto"',
     '[attr.aria-disabled]': 'disabled()',
     '(keydown)': 'onKeydown($event)',
-    '[aria-expanded]': 'popupRef.opened()',
-    '(click)': 'popupRef.open()',
+
+
   },
 
 })
@@ -98,6 +102,7 @@ export class SuiSelectControlComponent  {
   triggerRef = signal(inject(ElementRef)).asReadonly()
   portalRef = viewChild<TemplateRef<any>>('selectPortal')
 
+  trigger = inject(CdkMenuTrigger)
 
   // @ts-ignore
   popupRef = popup(computed(()=>{
@@ -115,11 +120,16 @@ export class SuiSelectControlComponent  {
   constructor(destroyRef: DestroyRef) {
 
     effect(() => {
+      this.trigger.menuTemplateRef = this.portalRef();
+    });
+
+
+    effect(() => {
 
         this.listbox()?.optionTriggered
           .pipe(takeUntilDestroyed(destroyRef))
           .subscribe(
-            () => {this.popupRef.close();}
+            () => {this.trigger.close();}
           );
 
     });
@@ -136,18 +146,7 @@ export class SuiSelectControlComponent  {
 
   twClass = 'relative block w-full cursor-default rounded-md bg-white  py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600  sm:text-sm sm:leading-6 disabled:bg-gray-200  aria-disabled:bg-gray-200 invalid:ring-red-600  aria-invalid:ring-pink-600'
 
-  isEmpty = computed(()=> {
-    const value  = this.value()
-    return value === null || value === '' || (Array.isArray(value) && value.length === 0)
-  })
 
-  removeValue(value: any) {
 
-    if (this.multiple() && Array.isArray(this.value())) {
-      // @ts-ignore1
-      this.value.update( val => val.filter(v => v !== value))
-
-    }
-  }
 
 }
